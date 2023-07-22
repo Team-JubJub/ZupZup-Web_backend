@@ -4,6 +4,10 @@ build/
 !gradle/wrapper/gradle-wrapper.jar
 !**/src/main/**/build/
 !**/src/test/**/build/
+application-local.yml
+application-prod.yml
+*.log
+*.gz
 
 ### STS ###
 .apt_generated
@@ -35,3 +39,9 @@ out/
 
 ### VS Code ###
 .vscode/
+
+### Key File ###
+*.p8
+
+### mac OS ###
+.DS_Store

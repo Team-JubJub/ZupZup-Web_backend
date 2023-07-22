@@ -1,1 +1,4 @@
 rootProject.name = 'zup'
+include 'seller'
+include 'zupzup_admin'
+
