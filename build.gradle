@@ -21,18 +21,54 @@ repositories {
 	mavenCentral()
 }
 
-dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
-	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-	implementation 'org.springframework.boot:spring-boot-starter-validation'
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	compileOnly 'org.projectlombok:lombok'
-	developmentOnly 'org.springframework.boot:spring-boot-devtools'
-	runtimeOnly 'com.h2database:h2'
-	annotationProcessor 'org.projectlombok:lombok'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
+bootJar {	// 단독으로 실행되지 않으므로, 해당 모듈 라이브러리화 필요
+	enabled = false
+}
+jar {	// 단독으로 실행되지 않으므로, 해당 모듈 라이브러리화 필요
+	enabled = true
 }
 
-tasks.named('test') {
-	useJUnitPlatform()
+subprojects {
+	apply plugin: 'java'
+	apply plugin: 'org.springframework.boot'
+	apply plugin: 'io.spring.dependency-management'
+
+	group = 'zupzup'
+	version = '0.0.1-SNAPSHOT'
+	sourceCompatibility = '17'
+
+	repositories{
+		mavenCentral()
+	}
+
+	dependencies {
+		implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
+		implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+		implementation 'org.springframework.boot:spring-boot-starter-validation'
+		implementation 'org.springframework.boot:spring-boot-starter-web'
+		compileOnly 'org.projectlombok:lombok'
+		developmentOnly 'org.springframework.boot:spring-boot-devtools'
+		runtimeOnly 'com.h2database:h2'
+		annotationProcessor 'org.projectlombok:lombok'
+		testImplementation 'org.springframework.boot:spring-boot-starter-test'
+
+		implementation 'com.mysql:mysql-connector-j' // For prod, dev / 원래는 'mysql:mysql-connector-java'였는데 스프링 부트 버전 업데이트돼서 바뀌었다고 함.
+
+		annotationProcessor 'org.projectlombok:lombok'
+		testImplementation 'org.springframework.boot:spring-boot-starter-test'
+		testImplementation 'junit:junit:4.13.2'
+
+		// Redis
+		implementation group: 'org.springframework.boot', name: 'spring-boot-starter-data-redis', version: '3.0.0'
+
+		// Mac OS -> 소셜 로그인 구현 중 네이버에 access, refresh 토큰 요청 때 에러가 나 추가한 의존성
+		// 참고: https://junho85.pe.kr/2054
+		implementation 'io.netty:netty-resolver-dns-native-macos'
+	}
+
+	test {
+		useJUnitPlatform()
+	}
+}
+project(':seller') {	// 사장님 페이지 모듈
 }
