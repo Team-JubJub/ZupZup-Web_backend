@@ -21,8 +21,8 @@ public class EnterReqs {
 
     @Column(nullable = false) private String storeName;
     @Column(nullable = false) private String storeAddress;
-    @Column(nullable = false) private String crNumber;
-    @Column(nullable = false, columnDefinition = "boolean default false") private Boolean isAccepted;
+    @Column(nullable = false) private String crNumber;  // 사업자 등록 번호
+    @Column(nullable = false, columnDefinition = "boolean default false") private Boolean isAccepted;   // 줍줍 매니저가 승인했는지 여부
 
     public EnterReqsBuilder builder(Long enterReqId) {
         if(enterReqId == null) {
