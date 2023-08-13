@@ -3,7 +3,6 @@ package com.rest.api.model;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
-import lombok.Setter;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @EntityListeners(AuditingEntityListener.class)  // 엔티티에 변화가 생길 때 발동되는 이벤트 리스너 / AuditingEntityListener: 객체의 생성, 변경 탐지 listener

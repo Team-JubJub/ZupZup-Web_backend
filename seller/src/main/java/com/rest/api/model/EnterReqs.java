@@ -9,7 +9,7 @@ import lombok.*;
 @Builder(builderMethodName = "EnterReqsBuilder")
 @Getter
 @Table(name = "enter_reqs")
-public class EnterReqs {
+public class EnterReqs extends BaseEntity {    // 사장님이 입점등록 시 사용되는 entity
     @Id
     @Column(name = "enterReqId")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
