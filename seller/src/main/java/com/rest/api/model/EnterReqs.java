@@ -1,8 +1,7 @@
-package com.rest.api.domain;
+package com.rest.api.model;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.ColumnDefault;
 
 @Entity
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
