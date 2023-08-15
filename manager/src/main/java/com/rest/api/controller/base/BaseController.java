@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 public interface BaseController<Rq, Rs> {
 
     ResponseEntity<Rs> save(@RequestBody Rq request);
-    ResponseEntity<Object> findAllManager();
+    ResponseEntity<Object> findAll();
     ResponseEntity<Rs> update(@RequestBody Rq request);
     ResponseEntity<Long> delete(@PathVariable Long id);
 }
