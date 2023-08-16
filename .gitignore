@@ -8,6 +8,8 @@ application-local.yml
 application-prod.yml
 *.log
 *.gz
+/manager/src/main/resources/application-local.yml
+/manager/src/main/resources/application.yml
 
 ### STS ###
 .apt_generated

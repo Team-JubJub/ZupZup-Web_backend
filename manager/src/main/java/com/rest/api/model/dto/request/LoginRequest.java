@@ -4,10 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter
-public class ManagerRequest {
+public class LoginRequest {
 
-    private Long id;
-    private String name;
     private String loginId;
     private String loginPwd;
 }

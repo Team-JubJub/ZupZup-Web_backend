@@ -31,9 +31,9 @@ public class BaseControllerImpl<E extends BaseEntity, Rq, Rs, R extends JpaRepos
 
     @Override
     @GetMapping
-    public ResponseEntity<Object> findAllManager() {
+    public ResponseEntity<Object> findAll() {
         try {
-            List<Rs> rsList = baseService.findAllManger();
+            List<Rs> rsList = baseService.findAll();
             return new ResponseEntity<>(rsList, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();

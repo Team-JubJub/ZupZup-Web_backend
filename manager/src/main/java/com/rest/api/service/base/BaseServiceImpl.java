@@ -19,17 +19,17 @@ public class BaseServiceImpl<E extends BaseEntity, Rq, Rs, R extends JpaReposito
     ModelMapper modelMapper;
 
     @Override
-    public List<Rs> findAllManger() throws Exception {
+    public List<Rs> findAll() throws Exception {
         try {
-            List<E> allManager = repository.findAll();
-            List<Rs> allManagerRs = new ArrayList<>();
+            List<E> eList = repository.findAll();
+            List<Rs> RsList = new ArrayList<>();
 
-            for(E e : allManager) {
+            for(E e : eList) {
                 Rs rs = modelMapper.map(e, getResponseType());
-                allManagerRs.add(rs);
+                RsList.add(rs);
             }
 
-            return allManagerRs;
+            return RsList;
         } catch (Exception e) {
             throw e;
         }
