@@ -4,7 +4,16 @@
 :sectlinks:
 
 [[resources-post]]
-== Post
+== Manager API
 
-[[resources-post-create]]
-=== Post 생성
+[[manager-생성]]
+=== Manager 생성 (회원가입)
+operation::manager-create[snippets='request-body,request-fields,response-body,response-fields']
+
+[[manager-조회]]
+=== Manager 조회
+operation::manager-get[snippets='response-body,response-fields']
+
+[[manager-수정]]
+=== Manager 수정
+operation::manager-update[snippets='request-body,request-fields,response-body,response-fields']
