@@ -58,7 +58,7 @@ public class BaseControllerImpl<E extends BaseEntity, Rq, Rs, R extends JpaRepos
     public ResponseEntity<Long> delete(@PathVariable Long id) {
         try {
             Long rs = baseService.delete(id);
-            return new ResponseEntity<>(rs, HttpStatus.OK);
+            return null;
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

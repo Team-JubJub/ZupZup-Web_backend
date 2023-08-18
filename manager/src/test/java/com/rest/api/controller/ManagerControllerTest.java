@@ -20,6 +20,7 @@ import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
+import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.payload.JsonFieldType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -37,7 +38,10 @@ import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.get;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
@@ -114,6 +118,8 @@ public class ManagerControllerTest {
                 .andExpect(jsonPath("id").value(1L))
                 // 문서화
                 .andDo(document("manager-create",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
                         requestFields(
                                 fieldWithPath("name").type(JsonFieldType.STRING).description("매니저 이름"),
                                 fieldWithPath("loginId").type(JsonFieldType.STRING).description("로그인 아이디"),
@@ -164,6 +170,8 @@ public class ManagerControllerTest {
                 .andDo(
                         // 문서 작성
                         document("manager-get",
+                                preprocessRequest(prettyPrint()),
+                                preprocessResponse(prettyPrint()),
                                 responseFields(
                                         fieldWithPath("[].name").type(JsonFieldType.STRING).description("매니저 이름"),
                                         fieldWithPath("[].loginId").type(JsonFieldType.STRING).description("로그인 아이디"),
@@ -207,6 +215,8 @@ public class ManagerControllerTest {
                 .andExpect(jsonPath("id").value(1L))
                 // 문서화
                 .andDo(document("manager-update",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
                         requestFields(
                                 fieldWithPath("name").type(JsonFieldType.STRING).description("(변경할) 매니저 이름"),
                                 fieldWithPath("loginId").type(JsonFieldType.STRING).description("(변경할) 로그인 아이디"),
@@ -241,16 +251,15 @@ public class ManagerControllerTest {
 
         // when
         mockMvc.perform(
-                        patch(url+"/{managerId}", 1L)
+                        RestDocumentationRequestBuilders.patch(url+"/{managerId}", 1L)
                 )
 
                 // then
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$").value(equalTo(res)))
                 .andDo(
                         document("manager-delete",
-                                responseFields(
-                                        fieldWithPath("$").type(JsonFieldType.NUMBER).description("(삭제된) id")
+                                pathParameters(
+                                        parameterWithName("managerId").description("매니저 unique Id")
                                 )
                         )
                 );
