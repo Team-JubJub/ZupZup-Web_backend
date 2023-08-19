@@ -9,7 +9,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 @RequiredArgsConstructor
-public class BaseServiceImpl<E extends BaseEntity, Rq, Rs, R extends JpaRepository<E, Long> implements BaseService<E, Rq, Rs, R> {
+public class BaseServiceImpl<E extends BaseEntity, Rq, Rs, R extends JpaRepository<E, Long>> implements BaseService<E, Rq, Rs, R> {
 
     private final R repository;
     @Autowired
