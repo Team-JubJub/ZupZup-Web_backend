@@ -11,8 +11,10 @@ import lombok.*;
 @Table(name = "enter_reqs")
 public class EnterReqs extends BaseEntity {    // 사장님이 입점등록 시 사용되는 entity
 
-    @JoinColumn(name = "seller")
-    private Long sellerId;  // seller와 매핑
+    @ManyToOne @JoinColumn(name = "sellerId")
+    private Long sellerId;  // seller와 매핑, 1:다 => Store와 마찬가지로 entity 생성해서 매핑관계인 거 나타내줘야 할 듯.
+//    @ManyToOne @JoinColumn(name = "sellerId") // 이렇게 돼야 함.
+//    private Seller seller;
 
     @Column(nullable = false) private String storeName;
     @Column(nullable = false) private String storeAddress;
