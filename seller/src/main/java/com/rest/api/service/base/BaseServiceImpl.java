@@ -16,12 +16,12 @@ public class BaseServiceImpl<E extends BaseEntity, Rq, Rs, R extends JpaReposito
     ModelMapper modelMapper;
 
     @Override
-    public List findAllManger() throws Exception {
+    public Object save(Object o) throws Exception {
         return null;
     }
 
     @Override
-    public Object save(Object o) throws Exception {
+    public List findAll() throws Exception {
         return null;
     }
 
@@ -34,4 +34,5 @@ public class BaseServiceImpl<E extends BaseEntity, Rq, Rs, R extends JpaReposito
     public Long delete(Long id) throws Exception {
         return null;
     }
+
 }
