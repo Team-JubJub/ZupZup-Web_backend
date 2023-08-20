@@ -60,7 +60,7 @@ public class BaseServiceImpl<E extends BaseEntity, Rq, Rs, R extends JpaReposito
     public Long delete(Long id) throws Exception {
         E e = repository.findById(id).get();
         e.setDeleted(true);
-        return null;
+        return id;
     }
 
     // Helper method to get the entity type
