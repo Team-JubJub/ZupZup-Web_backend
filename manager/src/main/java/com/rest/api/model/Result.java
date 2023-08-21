@@ -1,12 +1,15 @@
 package com.rest.api.model;
 
 import com.rest.api.model.base.BaseEntity;
+import com.rest.api.model.dto.request.ManagerRequest;
+import com.rest.api.model.dto.request.ResultRequest;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.Where;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Entity
 @Getter
@@ -56,4 +59,25 @@ public class Result extends BaseEntity {
     private Boolean isOpen; // 가게 운영 여부
     @Column
     private String closedDay; // 휴무일 (0-휴무, 1-영업)
+
+    public void updateResult(ResultRequest rq) {
+        this.result = rq.getResult();
+        this.loginId = rq.getLoginId();
+        this.loginPwd = rq.getLoginPwd();
+        this.role = rq.getRole();
+        this.storeName = rq.getStoreName();
+        this.storeImageUrl = rq.getStoreImageUrl();
+        this.storeAddress = rq.getStoreAddress();
+        this.category = rq.getCategory();
+        this.contact = rq.getContact();
+        this.longitude = rq.getLongitude();
+        this.latitude = rq.getLatitude();
+        this.openTime = rq.getOpenTime();
+        this.closeTime = rq.getCloseTime();
+        this.saleTimeStart = rq.getSaleTimeStart();
+        this.saleTimeEnd = rq.getSaleTimeEnd();
+        this.saleMatters = rq.getSaleMatters();
+        this.isOpen = rq.getIsOpen();
+        this.closedDay = rq.getClosedDay();
+    }
 }

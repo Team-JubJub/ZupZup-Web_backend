@@ -36,6 +36,14 @@ public class BaseServiceImpl<E extends BaseEntity, Rq, Rs, R extends JpaReposito
     }
 
     @Override
+    public Rs find(Long id) throws Exception {
+
+        E e = repository.findById(id).orElseThrow(() -> new RuntimeException("찾을 수 없는 사용자입니다."));
+
+        return modelMapper.map(e, getResponseType());
+    }
+
+    @Override
     @Transactional
     public Rs save(Rq rq) throws Exception {
         try {
@@ -50,7 +58,7 @@ public class BaseServiceImpl<E extends BaseEntity, Rq, Rs, R extends JpaReposito
 
     @Override
     @Transactional
-    public Rs update(Rq rq) throws Exception {
+    public Rs update(Long id, Rq rq) throws Exception {
         // 각각의 서비스에서 implement 해서 구현
         return null;
     }

@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -42,11 +43,11 @@ public class BaseControllerImpl<E extends BaseEntity, Rq, Rs, R extends JpaRepos
     }
 
     @Override
-    @PatchMapping
-    public ResponseEntity<Rs> update(Rq request) {
+    @GetMapping("/{id}")
+    public ResponseEntity<Rs> find(@PathVariable Long id) {
         try {
-            Rs rs = baseService.update(request);
-            return new ResponseEntity<>(rs, HttpStatus.OK);
+            Rs res = baseService.find(id);
+            return new ResponseEntity<>(res, HttpStatus.OK);
         } catch (Exception e) {
             e.printStackTrace();
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -55,6 +56,18 @@ public class BaseControllerImpl<E extends BaseEntity, Rq, Rs, R extends JpaRepos
 
     @Override
     @PatchMapping("/{id}")
+    public ResponseEntity<Rs> update(@PathVariable Long id, @RequestBody Rq request) {
+        try {
+            Rs rs = baseService.update(id, request);
+            return new ResponseEntity<>(rs, HttpStatus.OK);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @Override
+    @PatchMapping("/delete/{id}")
     public ResponseEntity<Long> delete(@PathVariable Long id) {
         try {
             Long rs = baseService.delete(id);
