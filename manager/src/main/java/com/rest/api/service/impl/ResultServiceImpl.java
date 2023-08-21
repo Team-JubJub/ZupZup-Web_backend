@@ -8,11 +8,10 @@ import com.rest.api.model.dto.response.ResultResponse;
 import com.rest.api.repository.ResultRepository;
 import com.rest.api.service.ResultService;
 import com.rest.api.service.base.BaseServiceImpl;
-import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class ResultServiceImpl extends BaseServiceImpl<Result, ResultRequest, ResultResponse, ResultRepository> implements ResultService {
@@ -24,6 +23,19 @@ public class ResultServiceImpl extends BaseServiceImpl<Result, ResultRequest, Re
     
     public ResultServiceImpl(ResultRepository repository) {
         super(repository);
+    }
+
+    @Override
+    @Transactional
+    public ResultResponse update(Long id, ResultRequest rq) throws Exception {
+
+        Result r = resultRepository.findById(id)
+                        .orElseThrow(()-> new IllegalArgumentException("사용자를 찾을 수 없습니다."));
+        r.updateResult(rq);
+
+        resultRepository.save(r);
+
+        return modelMapper.map(r, ResultResponse.class);
     }
 
     /**

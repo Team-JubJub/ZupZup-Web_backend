@@ -44,7 +44,7 @@ public class ManagerServiceImpl extends BaseServiceImpl<Manager, ManagerRequest,
      * 매니저 관련 내용 수정
      */
     @Override
-    public ManagerResponse update(ManagerRequest rq) throws Exception {
+    public ManagerResponse update(Long id, ManagerRequest rq) throws Exception {
 
         Manager m = managerRepository.findById(rq.getId())
                 .orElseThrow(() -> new IllegalArgumentException("해당 아이디를 가진 사용자는 존재하지 않습니다."));

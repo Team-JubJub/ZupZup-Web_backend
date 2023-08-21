@@ -34,6 +34,7 @@ import java.util.List;
 
 import static org.hamcrest.core.IsEqual.equalTo;
 import static org.mockito.ArgumentMatchers.any;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
@@ -185,16 +186,17 @@ public class ManagerControllerTest {
     @DisplayName("매니저 업데이트 - 성공")
     public void success_update_manager() throws Exception {
 
+        Long id = 1L;
         // given
         ManagerResponse res = new ManagerResponse();
         res.setLoginId("test22");
         res.setId(1L);
         res.setName("test");
-        given(managerService.update(any(ManagerRequest.class))).willReturn(res);
+        given(managerService.update(eq(id), any(ManagerRequest.class))).willReturn(res);
 
         // when
         mockMvc.perform(
-                patch(url)
+                        RestDocumentationRequestBuilders.patch(url + "/{managerId}", 1L)
                         .contentType(MediaType.APPLICATION_JSON)
                         .accept(MediaType.APPLICATION_JSON)
                         // request 예시
@@ -251,7 +253,7 @@ public class ManagerControllerTest {
 
         // when
         mockMvc.perform(
-                        RestDocumentationRequestBuilders.patch(url+"/{managerId}", 1L)
+                        RestDocumentationRequestBuilders.patch(url+"/delete/{managerId}", 1L)
                 )
 
                 // then
