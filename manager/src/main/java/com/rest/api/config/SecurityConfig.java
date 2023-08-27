@@ -45,11 +45,10 @@ public class SecurityConfig {
                 .and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-//                .authorizeHttpRequests(auth -> {
+                .authorizeHttpRequests(auth -> {
+                    auth.requestMatchers(antMatcher("/**")).permitAll();
 //                    auth.anyRequest().authenticated();
-//                    auth.requestMatchers(antMatcher("/**")).permitAll();
-//                    auth.anyRequest().authenticated();
-//                })
+                })
                 //.anyRequest().hasRole("USER") //다른 url로 접근 시 USER 권한이 있어야 함
                 .addFilterBefore(new JwtAuthenticationFilter(jwtTokenProvider), UsernamePasswordAuthenticationFilter.class)
                 .logout()
