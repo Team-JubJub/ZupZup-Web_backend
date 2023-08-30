@@ -10,6 +10,8 @@ application-prod.yml
 *.gz
 /manager/src/main/resources/application-local.yml
 /manager/src/main/resources/application.yml
+/seller/src/main/resources/application-local.yml
+/seller/src/main/resources/application.yml
 
 ### STS ###
 .apt_generated
