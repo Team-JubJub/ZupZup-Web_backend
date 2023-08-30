@@ -1,0 +1,59 @@
+plugins {
+    id 'java'
+    id 'org.springframework.boot' version '3.0.0'
+    id 'io.spring.dependency-management' version '1.1.0'
+    id "org.asciidoctor.jvm.convert" version "3.3.2"
+}
+
+configurations {
+    asciidoctorExt
+}
+
+ext {
+    snippetsDir = file('build/generated-snippets')
+}
+
+test {
+    useJUnitPlatform()
+    outputs.dir snippetsDir
+}
+
+asciidoctor {
+    inputs.dir snippetsDir
+    configurations 'asciidoctorExt'
+    dependsOn test
+}
+
+bootJar {
+    dependsOn asciidoctor // (1)
+    from("${asciidoctor.outputDir}") { // (2)
+        into 'static/docs'
+    }
+}
+
+dependencies {
+
+    implementation project(':spring-module-common')
+
+    // model-mapper
+    implementation 'org.modelmapper:modelmapper:3.1.1'
+
+    // spring-security
+    implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.security:spring-security-test'
+
+    // jwt
+    implementation 'io.jsonwebtoken:jjwt-api:0.11.5'
+    implementation 'io.jsonwebtoken:jjwt-impl:0.11.5'
+    implementation 'io.jsonwebtoken:jjwt-jackson:0.11.5'
+
+    // json
+    implementation 'com.google.code.gson:gson:2.10.1'
+
+    // test
+    implementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
+    asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor'
+
+    // mockito
+    implementation 'org.mockito:mockito-core'
+}
