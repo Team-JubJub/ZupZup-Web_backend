@@ -16,5 +16,5 @@ public class Enter extends BaseEntity {
     @Column(nullable = false) private String storeName; // 가게 이름
     @Column(nullable = false) private String storeAddress; // 가게 주소
     @Column(nullable = false) private String crNumber;  // 사업자 등록 번호
-    @Column(nullable = false, columnDefinition = "boolean default false") private Boolean isAccepted;
+    // @Column(nullable = false, columnDefinition = "boolean default false") private Boolean isAccepted;
 }
