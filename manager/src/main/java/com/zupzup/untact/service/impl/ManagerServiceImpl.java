@@ -1,8 +1,8 @@
 package com.zupzup.untact.service.impl;
 
 import com.zupzup.untact.model.Manager;
-import com.zupzup.untact.model.dto.request.ManagerRequest;
-import com.zupzup.untact.model.dto.response.ManagerResponse;
+import com.zupzup.untact.model.dto.request.ManagerReq;
+import com.zupzup.untact.model.dto.response.ManagerRes;
 import com.zupzup.untact.repository.ManagerRepository;
 import com.zupzup.untact.service.ManagerService;
 import com.zupzup.untact.service.BaseServiceImpl;
@@ -12,7 +12,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 @Service
-public class ManagerServiceImpl extends BaseServiceImpl<Manager, ManagerRequest, ManagerResponse, ManagerRepository> implements ManagerService {
+public class ManagerServiceImpl extends BaseServiceImpl<Manager, ManagerReq, ManagerRes, ManagerRepository> implements ManagerService {
 
     @Autowired
     ManagerRepository managerRepository;
@@ -29,7 +29,7 @@ public class ManagerServiceImpl extends BaseServiceImpl<Manager, ManagerRequest,
      * 매니저 아이디 생성 및 저장
      */
     @Override
-    public ManagerResponse save(ManagerRequest rq) throws Exception {
+    public ManagerRes save(ManagerReq rq) throws Exception {
 
         Manager m = new Manager();
 
@@ -37,14 +37,14 @@ public class ManagerServiceImpl extends BaseServiceImpl<Manager, ManagerRequest,
         m.updateManager(rq, passwordEncoder);
         managerRepository.save(m);
 
-        return modelMapper.map(m, ManagerResponse.class);
+        return modelMapper.map(m, ManagerRes.class);
     }
 
     /**
      * 매니저 관련 내용 수정
      */
     @Override
-    public ManagerResponse update(Long id, ManagerRequest rq) throws Exception {
+    public ManagerRes update(Long id, ManagerReq rq) throws Exception {
 
         Manager m = managerRepository.findById(rq.getId())
                 .orElseThrow(() -> new IllegalArgumentException("해당 아이디를 가진 사용자는 존재하지 않습니다."));
@@ -53,6 +53,6 @@ public class ManagerServiceImpl extends BaseServiceImpl<Manager, ManagerRequest,
         m.updateManager(rq, passwordEncoder);
         managerRepository.save(m);
 
-        return modelMapper.map(m, ManagerResponse.class);
+        return modelMapper.map(m, ManagerRes.class);
     }
 }

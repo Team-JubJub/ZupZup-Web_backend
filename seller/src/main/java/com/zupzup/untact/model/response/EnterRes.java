@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter
-public class EnterResponse {
+public class EnterRes {
 
     private Long id;
     private String storeName;

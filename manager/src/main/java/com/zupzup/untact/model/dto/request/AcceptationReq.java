@@ -4,8 +4,8 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter
-public class LoginRequest {
+public class AcceptationReq {
 
-    private String loginId;
-    private String loginPwd;
+    // 승인/거절 여부
+    private Boolean result;
 }

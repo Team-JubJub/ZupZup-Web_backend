@@ -4,8 +4,9 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter
-public class AcceptationResponse {
+public class ManagerRes {
 
-    private Long resultId;
-    private String result;
+    private String name;
+    private String loginId;
+    private Long id;
 }

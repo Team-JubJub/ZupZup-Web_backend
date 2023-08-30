@@ -1,6 +1,6 @@
 package com.zupzup.untact.model;
 
-import com.zupzup.untact.model.dto.request.ResultRequest;
+import com.zupzup.untact.model.dto.request.ResultReq;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import lombok.Getter;
@@ -57,7 +57,7 @@ public class Result extends BaseEntity {
     @Column
     private String closedDay; // 휴무일 (0-휴무, 1-영업)
 
-    public void updateResult(ResultRequest rq) {
+    public void updateResult(ResultReq rq) {
         this.result = rq.getResult();
         this.loginId = rq.getLoginId();
         this.loginPwd = rq.getLoginPwd();

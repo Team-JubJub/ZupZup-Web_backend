@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter
-public class ResultRequest {
+public class ResultReq {
 
     // 승인여부
     private Boolean result;

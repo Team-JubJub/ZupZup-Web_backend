@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class TokenRequest {
+public class TokenReq {
 
     private String token;
 }
