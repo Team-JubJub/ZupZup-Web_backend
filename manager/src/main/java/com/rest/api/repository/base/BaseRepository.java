@@ -1,6 +1,6 @@
 package com.rest.api.repository.base;
 
-import com.rest.api.model.base.BaseEntity;
+import com.zupzup.untact.model.BaseEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.NoRepositoryBean;
 

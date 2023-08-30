@@ -1,7 +1,7 @@
 package com.rest.api.model;
 
-import com.rest.api.model.base.BaseEntity;
 import com.rest.api.model.dto.request.ManagerRequest;
+import com.zupzup.untact.model.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;

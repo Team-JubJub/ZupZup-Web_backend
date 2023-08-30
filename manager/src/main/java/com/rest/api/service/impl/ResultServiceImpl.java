@@ -7,7 +7,7 @@ import com.rest.api.model.dto.response.AcceptationResponse;
 import com.rest.api.model.dto.response.ResultResponse;
 import com.rest.api.repository.ResultRepository;
 import com.rest.api.service.ResultService;
-import com.rest.api.service.base.BaseServiceImpl;
+import com.zupzup.untact.service.BaseServiceImpl;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

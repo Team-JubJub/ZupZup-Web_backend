@@ -5,7 +5,7 @@ import com.rest.api.model.dto.request.ManagerRequest;
 import com.rest.api.model.dto.response.ManagerResponse;
 import com.rest.api.repository.ManagerRepository;
 import com.rest.api.service.ManagerService;
-import com.rest.api.service.base.BaseServiceImpl;
+import com.zupzup.untact.service.BaseServiceImpl;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;

@@ -1,17 +1,15 @@
 package com.rest.api.controller.impl;
 
 import com.rest.api.controller.ResultController;
-import com.rest.api.controller.base.BaseControllerImpl;
 import com.rest.api.model.Result;
 import com.rest.api.model.dto.request.AcceptationRequest;
 import com.rest.api.model.dto.request.ResultRequest;
 import com.rest.api.model.dto.response.AcceptationResponse;
 import com.rest.api.model.dto.response.ResultResponse;
 import com.rest.api.repository.ResultRepository;
-import com.rest.api.service.ManagerService;
-import com.rest.api.service.ResultService;
-import com.rest.api.service.base.BaseService;
 import com.rest.api.service.impl.ResultServiceImpl;
+import com.zupzup.untact.controller.BaseControllerImpl;
+import com.zupzup.untact.service.BaseService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

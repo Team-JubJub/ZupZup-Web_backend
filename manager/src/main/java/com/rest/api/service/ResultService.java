@@ -6,7 +6,7 @@ import com.rest.api.model.dto.request.ResultRequest;
 import com.rest.api.model.dto.response.AcceptationResponse;
 import com.rest.api.model.dto.response.ResultResponse;
 import com.rest.api.repository.ResultRepository;
-import com.rest.api.service.base.BaseService;
+import com.zupzup.untact.service.BaseService;
 
 public interface ResultService extends BaseService<Result, ResultRequest, ResultResponse, ResultRepository> {
 

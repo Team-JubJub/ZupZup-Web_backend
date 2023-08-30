@@ -1,15 +1,13 @@
 package com.rest.api.model;
 
-import com.rest.api.model.base.BaseEntity;
-import com.rest.api.model.dto.request.ManagerRequest;
 import com.rest.api.model.dto.request.ResultRequest;
+import com.zupzup.untact.model.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
 import lombok.Setter;
 import org.hibernate.annotations.Where;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Entity
 @Getter
