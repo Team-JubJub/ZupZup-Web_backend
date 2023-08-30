@@ -2,7 +2,7 @@ package com.zupzup.untact.exception;
 
 import org.springframework.http.HttpStatus;
 
-public enum LoginExceptionType implements BaseExceptionType{
+public enum MemberExceptionType implements BaseExceptionType{
     // 회원가입, 로그인 시
     ALREADY_EXIST_USERNAME(600, HttpStatus.OK, "이미 존재하는 아이디입니다."),
     WRONG_PASSWORD(601,HttpStatus.OK, "비밀번호가 잘못되었습니다."),
@@ -13,7 +13,7 @@ public enum LoginExceptionType implements BaseExceptionType{
     private HttpStatus httpStatus;
     private String errorMessage;
 
-    LoginExceptionType(int errorCode, HttpStatus httpStatus, String errorMessage) {
+    MemberExceptionType(int errorCode, HttpStatus httpStatus, String errorMessage) {
         this.errorCode = errorCode;
         this.httpStatus = httpStatus;
         this.errorMessage = errorMessage;

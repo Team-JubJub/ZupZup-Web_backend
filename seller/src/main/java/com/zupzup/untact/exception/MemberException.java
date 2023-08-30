@@ -1,10 +1,10 @@
 package com.zupzup.untact.exception;
 
-public class LoginException extends BaseException{
+public class MemberException extends BaseException{
 
     private BaseExceptionType exType;
 
-    public LoginException(BaseExceptionType exType) {
+    public MemberException(BaseExceptionType exType) {
         this.exType = exType;
     }
 

@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter
-public class LoginRes {
+public class MemberRes {
 
     private Long id;
     private String loginId;

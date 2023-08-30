@@ -1,6 +1,7 @@
 package com.zupzup.untact.model;
 
 import com.zupzup.untact.domain.auth.Role;
+import com.zupzup.untact.model.request.MemberReq;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -11,6 +12,7 @@ import lombok.Setter;
 import org.hibernate.annotations.Where;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.Collection;
 
@@ -19,7 +21,7 @@ import java.util.Collection;
 @Setter
 @RequiredArgsConstructor
 @Where(clause = "is_deleted IS false")
-public class Login extends BaseEntity implements UserDetails {
+public class Member extends BaseEntity implements UserDetails {
 
     // 회원가입
     @Column(nullable = false) private String loginId; // 로그인 아이디
@@ -29,6 +31,13 @@ public class Login extends BaseEntity implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Role roles; // 권한
 
+    public void updateMember(MemberReq rq, PasswordEncoder encoder) {
+
+        this.loginId = rq.getLoginId();
+        this.loginPwd = encoder.encode(rq.getLoginPwd());
+        this.email = rq.getEmail();
+        this.roles = Role.ROLE_SELLER; // role_seller 로 지정
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

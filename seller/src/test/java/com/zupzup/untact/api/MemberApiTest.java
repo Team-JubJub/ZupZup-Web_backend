@@ -2,8 +2,7 @@ package com.zupzup.untact.api;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zupzup.untact.documents.utils.RestDocsConfig;
-import com.zupzup.untact.service.LoginService;
-import com.zupzup.untact.service.impl.LoginServiceImpl;
+import com.zupzup.untact.service.impl.MemberServiceImpl;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -24,6 +23,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
 
+import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 
 @SpringBootTest
@@ -32,7 +32,7 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 @ExtendWith({RestDocumentationExtension.class})
 @ContextConfiguration(classes = {TestConfiguration.class})
 @AutoConfigureMockMvc
-public class LoginApiTest {
+public class MemberApiTest {
 
     @Autowired
     private MockMvc mockMvc;
@@ -41,7 +41,7 @@ public class LoginApiTest {
     ObjectMapper objectMapper;
 
     @MockBean
-    private LoginServiceImpl loginService;
+    private MemberServiceImpl loginService;
 
     @BeforeEach
     public void setUp(WebApplicationContext webApplicationContext,
@@ -59,5 +59,11 @@ public class LoginApiTest {
     @DisplayName("아이디 중복 조회 - 600 에러(중복 아이디) 발생")
     public void err_600_check_loginId() throws Exception {
 
+        // given
+        String loginIdTest = "test";
+        given(loginService.checkLoginId(loginIdTest));
+
+        // when
+        // then
     }
 }
