@@ -39,7 +39,6 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, MemberReq, Member
             // 아이디가 존재하면 예외 발생
             throw new MemberException(MemberExceptionType.ALREADY_EXIST_USERNAME);
         }
-
         return "사용 가능한 아이디입니다.";
     }
 
