@@ -1,6 +1,6 @@
 package com.zupzup.untact.model;
 
-import com.zupzup.untact.model.dto.request.ManagerRequest;
+import com.zupzup.untact.model.dto.request.ManagerReq;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
@@ -31,7 +31,7 @@ public class Manager extends BaseEntity {
     @Getter
     private List<String> roles = new ArrayList<>();
 
-    public void updateManager(ManagerRequest rq, PasswordEncoder encoder) {
+    public void updateManager(ManagerReq rq, PasswordEncoder encoder) {
         this.name = rq.getName();
         this.loginId = rq.getLoginId();
         this.loginPwd = encoder.encode(rq.getLoginPwd());

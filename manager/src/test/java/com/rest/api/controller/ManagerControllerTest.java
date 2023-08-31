@@ -3,8 +3,8 @@ package com.rest.api.controller;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rest.api.TestConfiguration;
 import com.rest.api.documents.utils.RestDocsConfig;
-import com.zupzup.untact.model.dto.request.ManagerRequest;
-import com.zupzup.untact.model.dto.response.ManagerResponse;
+import com.zupzup.untact.model.dto.request.ManagerReq;
+import com.zupzup.untact.model.dto.response.ManagerRes;
 import com.zupzup.untact.service.ManagerService;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
@@ -84,11 +84,11 @@ public class ManagerControllerTest {
 
         // given
         // manager response 생성
-        ManagerResponse res = new ManagerResponse();
+        ManagerRes res = new ManagerRes();
         res.setName("name");
         res.setLoginId("test");
 
-        given(managerService.save(any(ManagerRequest.class))).will((Answer<ManagerResponse>) invocation -> {
+        given(managerService.save(any(ManagerReq.class))).will((Answer<ManagerRes>) invocation -> {
 
             // managerService 에서 save 메소드 통과시에 id 추가
             res.setId(1L);
@@ -139,20 +139,20 @@ public class ManagerControllerTest {
 
         // given
         // 더미 데이터 생성
-        List<ManagerResponse> resList = new ArrayList<>();
-        ManagerResponse res1 = new ManagerResponse();
+        List<ManagerRes> resList = new ArrayList<>();
+        ManagerRes res1 = new ManagerRes();
         res1.setId(1L);
         res1.setName("name1");
         res1.setLoginId("login1");
         resList.add(res1);
 
-        ManagerResponse res2 = new ManagerResponse();
+        ManagerRes res2 = new ManagerRes();
         res2.setId(2L);
         res2.setName("name2");
         res2.setLoginId("login2");
         resList.add(res2);
 
-        ManagerResponse res3 = new ManagerResponse();
+        ManagerRes res3 = new ManagerRes();
         res3.setId(3L);
         res3.setName("name3");
         res3.setLoginId("login3");
@@ -187,11 +187,11 @@ public class ManagerControllerTest {
 
         Long id = 1L;
         // given
-        ManagerResponse res = new ManagerResponse();
+        ManagerRes res = new ManagerRes();
         res.setLoginId("test22");
         res.setId(1L);
         res.setName("test");
-        given(managerService.update(eq(id), any(ManagerRequest.class))).willReturn(res);
+        given(managerService.update(eq(id), any(ManagerReq.class))).willReturn(res);
 
         // when
         mockMvc.perform(

@@ -4,7 +4,7 @@ import com.zupzup.untact.exception.CustomErrorCode;
 import com.zupzup.untact.exception.CustomException;
 import com.zupzup.untact.jwt.JwtTokenProvider;
 import com.zupzup.untact.model.Manager;
-import com.zupzup.untact.model.dto.request.LoginRequest;
+import com.zupzup.untact.model.dto.request.LoginReq;
 import com.zupzup.untact.repository.ManagerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -21,7 +21,7 @@ public class LoginService {
     private final PasswordEncoder passwordEncoder;
 
     @Transactional
-    public String login(LoginRequest loginReq) {
+    public String login(LoginReq loginReq) {
 
         // 로그인 시 member 찾을 수 있으면 정보 가져옴
         Manager manager = managerRepository.findByLoginId(loginReq.getLoginId())

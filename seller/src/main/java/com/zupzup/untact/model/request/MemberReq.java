@@ -1,13 +1,12 @@
-package com.zupzup.untact.model.dto.request;
+package com.zupzup.untact.model.request;
 
 import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter
-public class ManagerRequest {
+public class MemberReq {
 
-    private Long id;
-    private String name;
     private String loginId;
     private String loginPwd;
+    private String email;
 }

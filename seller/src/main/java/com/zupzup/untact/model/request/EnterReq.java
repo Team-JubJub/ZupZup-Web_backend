@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter
-public class EnterRequest {
+public class EnterReq {
 
     private String storeName;
     private String storeAddress;

@@ -1,6 +1,6 @@
 package com.zupzup.untact.api.impl;
 
-import com.zupzup.untact.model.dto.request.LoginRequest;
+import com.zupzup.untact.model.dto.request.LoginReq;
 import com.zupzup.untact.service.impl.LoginService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -16,7 +16,7 @@ public class LoginController {
     private final LoginService loginService;
 
     @PostMapping("/login")
-    public ResponseEntity login(@RequestBody LoginRequest loginReq) {
+    public ResponseEntity login(@RequestBody LoginReq loginReq) {
         return new ResponseEntity(loginService.login(loginReq), HttpStatus.OK);
     }
 }
