@@ -29,7 +29,7 @@ public class ManagerServiceImpl extends BaseServiceImpl<Manager, ManagerReq, Man
      * 매니저 아이디 생성 및 저장
      */
     @Override
-    public ManagerRes save(ManagerReq rq) throws Exception {
+    public ManagerRes save(ManagerReq rq) {
 
         Manager m = new Manager();
 
@@ -44,7 +44,7 @@ public class ManagerServiceImpl extends BaseServiceImpl<Manager, ManagerReq, Man
      * 매니저 관련 내용 수정
      */
     @Override
-    public ManagerRes update(Long id, ManagerReq rq) throws Exception {
+    public ManagerRes update(Long id, ManagerReq rq) {
 
         Manager m = managerRepository.findById(rq.getId())
                 .orElseThrow(() -> new IllegalArgumentException("해당 아이디를 가진 사용자는 존재하지 않습니다."));

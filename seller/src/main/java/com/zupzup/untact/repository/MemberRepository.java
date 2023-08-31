@@ -12,5 +12,5 @@ public interface MemberRepository extends BaseRepository<Member> {
 
     UserDetails findLoginSellerByLoginId(String loginId);
 
-    Optional<MemberReq> findByLoginId(String loginId);
+    Optional<Member> findByLoginId(String loginId);
 }

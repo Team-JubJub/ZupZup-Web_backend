@@ -1,5 +1,6 @@
-package com.zupzup.untact.exception;
+package com.zupzup.untact.exception.member;
 
+import com.zupzup.untact.exception.BaseExceptionType;
 import org.springframework.http.HttpStatus;
 
 public enum MemberExceptionType implements BaseExceptionType {

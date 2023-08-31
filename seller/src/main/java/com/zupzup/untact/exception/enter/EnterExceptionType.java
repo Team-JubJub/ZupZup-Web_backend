@@ -1,17 +1,17 @@
-package com.zupzup.untact.exception;
+package com.zupzup.untact.exception.enter;
 
+import com.zupzup.untact.exception.BaseExceptionType;
 import org.springframework.http.HttpStatus;
 
-public enum ManagerExceptionType implements BaseExceptionType {
+public enum EnterExceptionType implements BaseExceptionType {
 
-    MANAGER_NOT_FOUND(800, HttpStatus.OK, "사용자를 찾을 수 없습니다."),
-    PASSWORD_NOT_SAME(801, HttpStatus.OK, "비밀번호가 같지 않습니다.");
+    ;
 
     private int errorCode;
     private HttpStatus httpStatus;
     private String errorMessage;
 
-    ManagerExceptionType(int errorCode, HttpStatus httpStatus, String errorMessage) {
+    EnterExceptionType(int errorCode, HttpStatus httpStatus, String errorMessage) {
         this.errorCode = errorCode;
         this.httpStatus = httpStatus;
         this.errorMessage = errorMessage;
