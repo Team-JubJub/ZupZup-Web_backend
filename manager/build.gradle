@@ -34,6 +34,8 @@ bootJar {
 dependencies {
 
     implementation project(':spring-module-common')
+    implementation project(':spring-module-base')
+    implementation project(':seller')
 
     // model-mapper
     implementation 'org.modelmapper:modelmapper:3.1.1'

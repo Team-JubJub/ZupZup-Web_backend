@@ -1,7 +1,7 @@
 package com.zupzup.untact.service.impl;
 
-import com.zupzup.untact.exception.MemberException;
-import com.zupzup.untact.exception.MemberExceptionType;
+import com.zupzup.untact.exception.member.MemberException;
+import com.zupzup.untact.exception.member.MemberExceptionType;
 import com.zupzup.untact.model.Member;
 import com.zupzup.untact.model.request.MemberReq;
 import com.zupzup.untact.model.response.MemberRes;
@@ -12,6 +12,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import static com.zupzup.untact.exception.member.MemberExceptionType.ALREADY_EXIST_USERNAME;
 
 @Service
 public class MemberServiceImpl extends BaseServiceImpl<Member, MemberReq, MemberRes, MemberRepository> implements MemberService {
@@ -37,16 +39,16 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, MemberReq, Member
         if (memberRepository.findByLoginId(loginId).isPresent()) {
 
             // 아이디가 존재하면 예외 발생
-            throw new MemberException(MemberExceptionType.ALREADY_EXIST_USERNAME);
+            throw new MemberException(ALREADY_EXIST_USERNAME);
         }
-        return "사용 가능한 아이디입니다.";
+        return "Username is Available";
     }
 
     /**
      * 회원가입
      */
     @Override
-    public MemberRes save(MemberReq rq) throws Exception {
+    public MemberRes save(MemberReq rq) {
 
             // 패스워드 인코딩 후 저장
             Member m = new Member();

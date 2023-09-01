@@ -1,6 +1,9 @@
-package com.zupzup.untact.exception;
+package com.zupzup.untact.exception.member;
 
-public class MemberException extends BaseException{
+import com.zupzup.untact.exception.BaseException;
+import com.zupzup.untact.exception.BaseExceptionType;
+
+public class MemberException extends BaseException {
 
     private BaseExceptionType exType;
 
