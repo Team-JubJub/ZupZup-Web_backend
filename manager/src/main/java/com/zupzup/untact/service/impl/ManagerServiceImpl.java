@@ -1,28 +1,37 @@
 package com.zupzup.untact.service.impl;
 
+import com.zupzup.untact.exception.enter.EnterException;
+import com.zupzup.untact.model.Enter;
 import com.zupzup.untact.model.Manager;
 import com.zupzup.untact.model.dto.request.ManagerReq;
 import com.zupzup.untact.model.dto.response.ManagerRes;
+import com.zupzup.untact.model.response.EnterApprovalRes;
+import com.zupzup.untact.repository.EnterRepository;
 import com.zupzup.untact.repository.ManagerRepository;
-import com.zupzup.untact.service.ManagerService;
 import com.zupzup.untact.service.BaseServiceImpl;
+import com.zupzup.untact.service.ManagerService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import static com.zupzup.untact.exception.enter.EnterExceptionType.NO_MATCH_ENTER;
+
 @Service
 public class ManagerServiceImpl extends BaseServiceImpl<Manager, ManagerReq, ManagerRes, ManagerRepository> implements ManagerService {
 
-    @Autowired
-    ManagerRepository managerRepository;
     @Autowired
     ModelMapper modelMapper;
     @Autowired
     PasswordEncoder passwordEncoder;
 
-    public ManagerServiceImpl(ManagerRepository repository) {
+    private final ManagerRepository managerRepository;
+    private final EnterRepository enterRepository;
+
+    public ManagerServiceImpl(ManagerRepository repository, ManagerRepository managerRepository, EnterRepository enterRepository) {
         super(repository);
+        this.managerRepository = managerRepository;
+        this.enterRepository = enterRepository;
     }
 
     /**
@@ -54,5 +63,41 @@ public class ManagerServiceImpl extends BaseServiceImpl<Manager, ManagerReq, Man
         managerRepository.save(m);
 
         return modelMapper.map(m, ManagerRes.class);
+    }
+
+    @Override
+    public EnterApprovalRes managerApproval(Long id, Boolean approval) {
+
+        EnterApprovalRes apRes = new EnterApprovalRes();
+
+        try {
+            Enter e = enterRepository.findById(id)
+                    .orElseThrow(() -> new EnterException(NO_MATCH_ENTER));
+
+            if (approval) {
+
+                apRes.setId(id);
+                apRes.setApproval("승인 되었습니다.");
+                apRes.setStoreName(e.getStoreName());
+
+                e.setIsAccepted(true);
+
+            } else {
+
+                apRes.setId(id);
+                apRes.setApproval("승인이 거절 되었습니다.");
+                apRes.setStoreName(e.getStoreName());
+
+                e.setIsAccepted(false);
+            }
+
+            return apRes;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+
+        }
+
+        return apRes;
     }
 }
