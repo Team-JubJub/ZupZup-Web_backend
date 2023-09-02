@@ -7,6 +7,7 @@ import lombok.Setter;
 public class MemberReq {
 
     private String loginId;
-    private String loginPwd;
+    private String loginPwd1;
+    private String loginPwd2;
     private String email;
 }

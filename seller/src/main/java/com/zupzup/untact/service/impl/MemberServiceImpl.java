@@ -50,13 +50,23 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, MemberReq, Member
     @Override
     public MemberRes save(MemberReq rq) {
 
-            // 패스워드 인코딩 후 저장
-            Member m = new Member();
-            m.updateMember(rq, passwordEncoder);
-            memberRepository.save(m);
+        // 비밀번호 동일 여부 확인
+        if (rq.getLoginPwd1() != rq.getLoginPwd2()) {
 
-            // 저장후 response 형식에 맞춰 값 반환
-            return modelMapper.map(m, MemberRes.class);
+            // 같지 않으면 rs 보내기
+            MemberRes rs = new MemberRes();
+            rs.setLoginId("비밀번호가 같지 않습니다.");
+
+            return rs;
+        }
+
+        // 패스워드 인코딩 후 저장
+        Member m = new Member();
+        m.updateMember(rq, passwordEncoder);
+        memberRepository.save(m);
+
+        // 저장후 response 형식에 맞춰 값 반환
+        return modelMapper.map(m, MemberRes.class);
 
     }
 }

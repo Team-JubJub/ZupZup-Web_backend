@@ -58,13 +58,13 @@ public class ManagerControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @Autowired
-    ObjectMapper objectMapper;
+//    @Autowired
+//    ObjectMapper objectMapper;
 
     @MockBean
     private ManagerService managerService;
 
-    private final String url = "/manager";
+    private final String url = "http://localhost:8090/manager";
 
     @BeforeEach
     public void setUp(WebApplicationContext webApplicationContext,

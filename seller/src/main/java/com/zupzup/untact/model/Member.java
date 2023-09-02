@@ -34,7 +34,7 @@ public class Member extends BaseEntity implements UserDetails {
     public void updateMember(MemberReq rq, PasswordEncoder encoder) {
 
         this.loginId = rq.getLoginId();
-        this.loginPwd = encoder.encode(rq.getLoginPwd());
+        this.loginPwd = encoder.encode(rq.getLoginPwd2());
         this.email = rq.getEmail();
         this.roles = Role.ROLE_SELLER; // role_seller 로 지정
     }
