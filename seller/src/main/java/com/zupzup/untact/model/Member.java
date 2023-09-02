@@ -24,6 +24,8 @@ import java.util.Collection;
 public class Member extends BaseEntity implements UserDetails {
 
     // 회원가입
+    @Column(nullable = false) private String name; // 이름
+    @Column(nullable = false) private String phoneNum; // 전화번호
     @Column(nullable = false) private String loginId; // 로그인 아이디
     @Column(nullable = false) private String loginPwd; // 로그인 패스워드
     @Column(nullable = false) private String email; // 이메일 주소
@@ -33,6 +35,8 @@ public class Member extends BaseEntity implements UserDetails {
 
     public void updateMember(MemberReq rq, PasswordEncoder encoder) {
 
+        this.name = rq.getName();
+        this.name = rq.getPhoneNum();
         this.loginId = rq.getLoginId();
         this.loginPwd = encoder.encode(rq.getLoginPwd2());
         this.email = rq.getEmail();
