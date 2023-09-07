@@ -25,6 +25,8 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 
 import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @Transactional
@@ -37,11 +39,13 @@ public class MemberApiTest {
     @Autowired
     private MockMvc mockMvc;
 
-    @Autowired
-    ObjectMapper objectMapper;
+//    @Autowired
+//    ObjectMapper objectMapper;
 
     @MockBean
     private MemberServiceImpl loginService;
+
+    private final String url = "/member";
 
     @BeforeEach
     public void setUp(WebApplicationContext webApplicationContext,
@@ -56,14 +60,20 @@ public class MemberApiTest {
     }
 
     @Test
-    @DisplayName("아이디 중복 조회 - 600 에러(중복 아이디) 발생")
-    public void err_600_check_loginId() throws Exception {
+    @DisplayName("아이디 중복 조회 - 성공")
+    public void success_loginId() throws Exception {
 
         // given
         String loginIdTest = "test";
-        given(loginService.checkLoginId(loginIdTest));
+        given(loginService.checkLoginId(loginIdTest)).willReturn("Username is Available");
 
         // when
-        // then
+        mockMvc.perform(
+                post(url + "/check")
+                        .requestAttr("loginId", "test")
+        )
+                // then
+                .andExpect(status().isOk());
+
     }
 }
