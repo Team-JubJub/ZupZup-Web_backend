@@ -29,6 +29,7 @@ public class Member extends BaseEntity implements UserDetails {
     @Column(nullable = false) private String loginId; // 로그인 아이디
     @Column(nullable = false) private String loginPwd; // 로그인 패스워드
     @Column(nullable = false) private String email; // 이메일 주소
+    @Column(nullable = false) private Boolean ad; // 광고성 정보 수신 동의 여부
     @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Role roles; // 권한
@@ -36,11 +37,17 @@ public class Member extends BaseEntity implements UserDetails {
     public void updateMember(MemberReq rq, PasswordEncoder encoder) {
 
         this.name = rq.getName();
-        this.name = rq.getPhoneNum();
+        this.phoneNum = rq.getPhoneNum();
+        this.ad = rq.getAd();
         this.loginId = rq.getLoginId();
         this.loginPwd = encoder.encode(rq.getLoginPwd2());
         this.email = rq.getEmail();
         this.roles = Role.ROLE_SELLER; // role_seller 로 지정
+    }
+
+    public void changePwd(String loginPwd, PasswordEncoder encoder) {
+
+        this.loginPwd = encoder.encode(loginPwd);
     }
 
     @Override
