@@ -2,6 +2,7 @@ package com.zupzup.untact.service.impl;
 
 import com.zupzup.untact.exception.member.MemberException;
 import com.zupzup.untact.model.Member;
+import com.zupzup.untact.model.request.MemberFindReq;
 import com.zupzup.untact.model.request.MemberPwdReq;
 import com.zupzup.untact.model.request.MemberReq;
 import com.zupzup.untact.model.response.MemberRes;
@@ -64,6 +65,25 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, MemberReq, Member
         m.changePwd(rq.getLoginPwd2(), passwordEncoder);
 
         return "Password Changed";
+    }
+
+    /**
+     * 아이디 찾기
+     */
+    @Override
+    public MemberRes findLoginId(MemberFindReq rq) {
+
+        Member m = memberRepository.findByName(rq.getName())
+                // 회원을 찾지 못하면 에러 전송
+                .orElseThrow(() -> new MemberException(NOT_FOUND_MEMBER));
+
+        // rs 값 설정
+        MemberRes rs = new MemberRes();
+        rs.setId(m.getId());
+        rs.setLoginId(m.getLoginId());
+        rs.setCreated_at(m.getCreated_at());
+
+        return rs;
     }
 
     /**

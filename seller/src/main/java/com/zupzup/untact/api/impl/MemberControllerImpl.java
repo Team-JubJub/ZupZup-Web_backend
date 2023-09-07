@@ -3,6 +3,7 @@ package com.zupzup.untact.api.impl;
 import com.zupzup.untact.api.BaseControllerImpl;
 import com.zupzup.untact.api.MemberController;
 import com.zupzup.untact.model.Member;
+import com.zupzup.untact.model.request.MemberFindReq;
 import com.zupzup.untact.model.request.MemberPwdReq;
 import com.zupzup.untact.model.request.MemberReq;
 import com.zupzup.untact.model.response.MemberRes;
@@ -44,6 +45,17 @@ public class MemberControllerImpl extends BaseControllerImpl<Member, MemberReq, 
 
         String rs = memberService.changePwd(id, rq);
 
+        return new ResponseEntity(rs, HttpStatus.OK);
+    }
+
+    /**
+     * 아이디 찾기
+     */
+    @Override
+    @PostMapping("/find")
+    public ResponseEntity<MemberRes> findLoginId(@RequestBody MemberFindReq rq) {
+
+        MemberRes rs = memberService.findLoginId(rq);
         return new ResponseEntity(rs, HttpStatus.OK);
     }
 }
