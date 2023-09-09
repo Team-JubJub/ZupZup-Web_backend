@@ -1,4 +1,4 @@
-package com.zupzup.untact.documents.utils;
+package com.zupzup.untact.documents;
 
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;

@@ -29,11 +29,11 @@ public class SignController {
      * 비밀번호 변경
      */
     @PostMapping("/change/{id}")
-    public ResponseEntity changePwd(@PathVariable Long id, @RequestBody MemberPwdReq rq) {
+    public ResponseEntity<String> changePwd(@PathVariable Long id, @RequestBody MemberPwdReq rq) {
 
         String rs = signService.changePwd(id, rq);
 
-        return new ResponseEntity(rs, HttpStatus.OK);
+        return new ResponseEntity<>(rs, HttpStatus.OK);
     }
 
     /**
@@ -43,7 +43,7 @@ public class SignController {
     public ResponseEntity<MemberRes> findLoginId(@RequestBody MemberFindReq rq) {
 
         MemberRes rs = signService.findLoginId(rq);
-        return new ResponseEntity(rs, HttpStatus.OK);
+        return new ResponseEntity<>(rs, HttpStatus.OK);
     }
 
 }
