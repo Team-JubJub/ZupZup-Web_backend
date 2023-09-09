@@ -4,3 +4,15 @@
 :sectlinks:
 
 [[resources-post]]
+
+[[Login]]
+== Login
+operation::login-success[snippets='http-request,request-body,request-fields,response-body,response-fields']
+
+[[find-id]]
+== 아이디 찾기
+operation::find-id-success[snippets='http-request,request-body,request-fields,response-body,response-fields']
+
+[[Change-Pwd]]
+== 비밀번호 변경
+operation::change_pwd_success[snippets='http-request,path-parameters,request-body,request-fields,response-body']

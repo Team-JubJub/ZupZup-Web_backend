@@ -34,6 +34,8 @@ import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
+import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
@@ -98,6 +100,8 @@ public class SignApiTest {
                 // documentation 처리
                 .andDo(
                         document("find-id-success",
+                                preprocessRequest(prettyPrint()),
+                                preprocessResponse(prettyPrint()),
                                 requestFields(
                                         fieldWithPath("name").type(JsonFieldType.STRING).description("이름"),
                                         fieldWithPath("phoneNum").type(JsonFieldType.STRING).description("휴대폰 전화번호")
@@ -135,6 +139,8 @@ public class SignApiTest {
         // then
                 .andDo(document(
                         "change_pwd_success",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
                         pathParameters(
                                 parameterWithName("id").description("찾고자 하는 고객 unique id")
                         ),
@@ -174,6 +180,8 @@ public class SignApiTest {
         // then
                 .andDo(
                         document("login-success",
+                                preprocessRequest(prettyPrint()),
+                                preprocessResponse(prettyPrint()),
                                 requestFields(
                                         fieldWithPath("loginId").type(JsonFieldType.STRING).description("로그인 아이디"),
                                         fieldWithPath("loginPwd").type(JsonFieldType.STRING).description("로그인 비밀번호")
