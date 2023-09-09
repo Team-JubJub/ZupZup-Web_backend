@@ -1,9 +1,6 @@
 package com.zupzup.untact.service;
 
-import com.zupzup.untact.documents.utils.RestDocsConfig;
-import com.zupzup.untact.exception.member.MemberException;
-import com.zupzup.untact.exception.member.MemberExceptionType;
-import com.zupzup.untact.model.request.MemberReq;
+import com.zupzup.untact.documents.RestDocsConfig;
 import com.zupzup.untact.repository.MemberRepository;
 import com.zupzup.untact.service.impl.MemberServiceImpl;
 import jakarta.transaction.Transactional;
@@ -19,13 +16,10 @@ import org.springframework.context.annotation.Import;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.test.context.ContextConfiguration;
 
-import java.util.Optional;
-
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.BDDMockito.given;
 
 @SpringBootTest
 @Transactional
