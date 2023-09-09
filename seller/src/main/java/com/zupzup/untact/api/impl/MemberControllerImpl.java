@@ -35,27 +35,4 @@ public class MemberControllerImpl extends BaseControllerImpl<Member, MemberReq, 
 
         return new ResponseEntity(rs, HttpStatus.OK);
     }
-
-    /**
-     * 비밀번호 변경
-     */
-    @Override
-    @PostMapping("/change/{id}")
-    public ResponseEntity changePwd(@PathVariable Long id, @RequestBody MemberPwdReq rq) {
-
-        String rs = memberService.changePwd(id, rq);
-
-        return new ResponseEntity(rs, HttpStatus.OK);
-    }
-
-    /**
-     * 아이디 찾기
-     */
-    @Override
-    @PostMapping("/find")
-    public ResponseEntity<MemberRes> findLoginId(@RequestBody MemberFindReq rq) {
-
-        MemberRes rs = memberService.findLoginId(rq);
-        return new ResponseEntity(rs, HttpStatus.OK);
-    }
 }
