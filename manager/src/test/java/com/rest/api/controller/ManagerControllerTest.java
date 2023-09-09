@@ -1,12 +1,10 @@
 package com.rest.api.controller;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
 import com.rest.api.TestConfiguration;
 import com.rest.api.documents.utils.RestDocsConfig;
 import com.zupzup.untact.model.dto.request.ManagerReq;
 import com.zupzup.untact.model.dto.response.ManagerRes;
 import com.zupzup.untact.service.ManagerService;
-import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -42,13 +40,11 @@ import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
-@Transactional
 @Import(RestDocsConfig.class)
 @ExtendWith({RestDocumentationExtension.class})
 @ContextConfiguration(classes = {TestConfiguration.class})
@@ -64,7 +60,7 @@ public class ManagerControllerTest {
     @MockBean
     private ManagerService managerService;
 
-    private final String url = "http://localhost:8090/manager";
+    private final String url = "/manager";
 
     @BeforeEach
     public void setUp(WebApplicationContext webApplicationContext,

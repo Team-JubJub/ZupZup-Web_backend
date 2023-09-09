@@ -2,8 +2,7 @@ package com.zupzup.untact.service.impl;
 
 import com.zupzup.untact.exception.member.MemberException;
 import com.zupzup.untact.model.Member;
-import com.zupzup.untact.model.request.MemberFindReq;
-import com.zupzup.untact.model.request.MemberPwdReq;
+import com.zupzup.untact.model.auth.Authority;
 import com.zupzup.untact.model.request.MemberReq;
 import com.zupzup.untact.model.response.MemberRes;
 import com.zupzup.untact.repository.MemberRepository;
@@ -14,8 +13,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
+
 import static com.zupzup.untact.exception.member.MemberExceptionType.ALREADY_EXIST_USERNAME;
-import static com.zupzup.untact.exception.member.MemberExceptionType.NOT_FOUND_MEMBER;
 
 @Service
 public class MemberServiceImpl extends BaseServiceImpl<Member, MemberReq, MemberRes, MemberRepository> implements MemberService {
@@ -47,46 +47,6 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, MemberReq, Member
     }
 
     /**
-     * 비밀번호 수정
-     */
-    @Override
-    public String changePwd(Long id, MemberPwdReq rq) {
-
-        // 비밀번호 동일 여부 확인
-        if (!rq.getLoginPwd1().equals(rq.getLoginPwd2())) {
-
-            // 같지 않으면 rs 전송
-            return "Not same password";
-        }
-
-        Member m = memberRepository.findById(id)
-                // 회원을 찾지 못하면 에러 전송
-                .orElseThrow(() -> new MemberException(NOT_FOUND_MEMBER));
-        m.changePwd(rq.getLoginPwd2(), passwordEncoder);
-
-        return "Password Changed";
-    }
-
-    /**
-     * 아이디 찾기
-     */
-    @Override
-    public MemberRes findLoginId(MemberFindReq rq) {
-
-        Member m = memberRepository.findByName(rq.getName())
-                // 회원을 찾지 못하면 에러 전송
-                .orElseThrow(() -> new MemberException(NOT_FOUND_MEMBER));
-
-        // rs 값 설정
-        MemberRes rs = new MemberRes();
-        rs.setId(m.getId());
-        rs.setLoginId(m.getLoginId());
-        rs.setCreated_at(m.getCreated_at());
-
-        return rs;
-    }
-
-    /**
      * 회원가입
      */
     @Override
@@ -103,8 +63,22 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, MemberReq, Member
         }
 
         // 패스워드 인코딩 후 저장
-        Member m = new Member();
-        m.updateMember(rq, passwordEncoder);
+        Member m = Member.builder()
+                .name(rq.getName())
+                .phoneNum(rq.getPhoneNum())
+                .ad(rq.getAd())
+                .loginId(rq.getLoginId())
+                .loginPwd(passwordEncoder.encode(rq.getLoginPwd1()))
+                .email(rq.getEmail())
+                .build();
+
+        m.setRoles(
+                Collections.singletonList(Authority.builder()
+                        .name("ROLE_SELLER")
+                        .member(m)
+                        .build())
+
+        );
         memberRepository.save(m);
 
         // 저장후 response 형식에 맞춰 값 반환

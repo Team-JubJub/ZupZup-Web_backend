@@ -57,5 +57,5 @@ dependencies {
     asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor'
 
     // mockito
-    implementation 'org.mockito:mockito-core'
+    implementation 'org.mockito:mockito-all'
 }
