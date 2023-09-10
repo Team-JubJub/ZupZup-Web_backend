@@ -4,6 +4,7 @@ import com.zupzup.untact.api.BaseControllerImpl;
 import com.zupzup.untact.api.MemberController;
 import com.zupzup.untact.model.Member;
 import com.zupzup.untact.model.request.MemberFindReq;
+import com.zupzup.untact.model.request.MemberLoginIdReq;
 import com.zupzup.untact.model.request.MemberPwdReq;
 import com.zupzup.untact.model.request.MemberReq;
 import com.zupzup.untact.model.response.MemberRes;
@@ -30,8 +31,8 @@ public class MemberControllerImpl extends BaseControllerImpl<Member, MemberReq, 
      */
     @Override
     @PostMapping("/check")
-    public ResponseEntity checkLoginId(String loginId) {
-        String rs = memberService.checkLoginId(loginId);
+    public ResponseEntity checkLoginId(@RequestBody MemberLoginIdReq rq) {
+        String rs = memberService.checkLoginId(rq.getLoginId());
 
         return new ResponseEntity(rs, HttpStatus.OK);
     }

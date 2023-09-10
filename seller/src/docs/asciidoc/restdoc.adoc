@@ -6,6 +6,8 @@
 [[resources-post]]
 
 [[Login]]
+== 회원가입
+operation::create-seller[snippets='http-request,request-body,request-fields,response-body,response-fields']
 == Login
 operation::login-success[snippets='http-request,request-body,request-fields,response-body,response-fields']
 
@@ -16,3 +18,9 @@ operation::find-id-success[snippets='http-request,request-body,request-fields,re
 [[Change-Pwd]]
 == 비밀번호 변경
 operation::change_pwd_success[snippets='http-request,path-parameters,request-body,request-fields,response-body']
+
+[[Check-LoginId]]
+== 아이디 중복 확인 (아이디 X)
+operation::success-check-loginId[snippets='http-request,request-body,request-fields,response-body']
+== 아이디 중복 확인 (아이디 O)
+operation::error-find-loginId[snippets='http-request,request-body,request-fields,response-body,response-fields']
