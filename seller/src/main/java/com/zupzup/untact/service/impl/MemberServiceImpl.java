@@ -1,11 +1,14 @@
 package com.zupzup.untact.service.impl;
 
+import com.zupzup.untact.domain.auth.Role;
+import com.zupzup.untact.domain.auth.Seller.Seller;
 import com.zupzup.untact.exception.member.MemberException;
 import com.zupzup.untact.model.Member;
 import com.zupzup.untact.model.auth.Authority;
 import com.zupzup.untact.model.request.MemberReq;
 import com.zupzup.untact.model.response.MemberRes;
 import com.zupzup.untact.repository.MemberRepository;
+import com.zupzup.untact.repository.SellerRepository;
 import com.zupzup.untact.service.BaseServiceImpl;
 import com.zupzup.untact.service.MemberService;
 import org.modelmapper.ModelMapper;
@@ -20,12 +23,14 @@ import static com.zupzup.untact.exception.member.MemberExceptionType.ALREADY_EXI
 @Service
 public class MemberServiceImpl extends BaseServiceImpl<Member, MemberReq, MemberRes, MemberRepository> implements MemberService {
 
-    public MemberServiceImpl(MemberRepository repository, MemberRepository memberRepository) {
+    public MemberServiceImpl(MemberRepository repository, MemberRepository memberRepository, SellerRepository sellerRepository) {
         super(repository);
         this.memberRepository = memberRepository;
+        this.sellerRepository = sellerRepository;
     }
 
     private final MemberRepository memberRepository;
+    private final SellerRepository sellerRepository;
 
     @Autowired
     BCryptPasswordEncoder passwordEncoder;
@@ -80,6 +85,17 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, MemberReq, Member
 
         );
         memberRepository.save(m);
+
+        // Seller 엔티티에도 저장
+        Seller s = new Seller();
+        s.setName(rq.getName());
+        s.setLoginId(rq.getLoginId());
+        s.setLoginPwd(passwordEncoder.encode(rq.getLoginPwd1()));
+        s.setEmail(rq.getEmail());
+        s.setPhoneNumber(rq.getPhoneNum());
+        s.setRole(Role.ROLE_SELLER);
+
+        sellerRepository.save(s);
 
         // 저장후 response 형식에 맞춰 값 반환
         return modelMapper.map(m, MemberRes.class);
