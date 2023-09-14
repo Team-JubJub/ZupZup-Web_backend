@@ -2,10 +2,7 @@ package com.zupzup.untact.model;
 
 import com.zupzup.untact.model.auth.Authority;
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.Where;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -30,6 +27,7 @@ public class Member extends BaseEntity {
 //    @Column(nullable = false)
 //    @Enumerated(EnumType.STRING)
 //    private Role roles; // 권한
+    @Builder.Default
     @OneToMany(mappedBy = "member", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<Authority> roles = new ArrayList<>();
 
