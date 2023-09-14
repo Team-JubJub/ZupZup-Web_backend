@@ -1,22 +1,20 @@
 package com.zupzup.untact.model;
 
+import com.zupzup.untact.model.auth.ManagerAuthority;
 import com.zupzup.untact.model.dto.request.ManagerReq;
-import jakarta.persistence.Column;
-import jakarta.persistence.ElementCollection;
-import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import jakarta.persistence.*;
+import lombok.*;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.Where;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.ArrayList;
 import java.util.List;
 
-@Entity
 @Getter @Setter
-@RequiredArgsConstructor
+@Entity
+@SuperBuilder
+@NoArgsConstructor
 @Where(clause = "is_deleted IS false")
 public class Manager extends BaseEntity {
 
@@ -27,9 +25,12 @@ public class Manager extends BaseEntity {
     @Column(nullable = false)
     private String loginPwd;
 
-    @ElementCollection(fetch = FetchType.EAGER)
-    @Getter
-    private List<String> roles = new ArrayList<>();
+//    @ElementCollection(fetch = FetchType.EAGER)
+//    @Getter
+//    private List<String> roles = new ArrayList<>();
+    @Builder.Default
+    @OneToMany(mappedBy = "manager", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    private List<ManagerAuthority> roles = new ArrayList<>();
 
     public void updateManager(ManagerReq rq, PasswordEncoder encoder) {
         this.name = rq.getName();

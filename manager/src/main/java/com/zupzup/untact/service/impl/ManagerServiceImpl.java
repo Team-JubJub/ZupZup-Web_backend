@@ -3,6 +3,7 @@ package com.zupzup.untact.service.impl;
 import com.zupzup.untact.exception.enter.EnterException;
 import com.zupzup.untact.model.Enter;
 import com.zupzup.untact.model.Manager;
+import com.zupzup.untact.model.auth.ManagerAuthority;
 import com.zupzup.untact.model.dto.request.ManagerReq;
 import com.zupzup.untact.model.dto.response.ManagerRes;
 import com.zupzup.untact.model.response.EnterApprovalRes;
@@ -14,6 +15,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import java.util.Collections;
 
 import static com.zupzup.untact.exception.enter.EnterExceptionType.NO_MATCH_ENTER;
 
@@ -40,10 +43,20 @@ public class ManagerServiceImpl extends BaseServiceImpl<Manager, ManagerReq, Man
     @Override
     public ManagerRes save(ManagerReq rq) {
 
-        Manager m = new Manager();
+        // 패스워드 인코딩 후 저장
+        Manager m = Manager.builder()
+                .name(rq.getName())
+                .loginId(rq.getLoginId())
+                .loginPwd(passwordEncoder.encode(rq.getLoginPwd()))
+                .build();
 
-        // 비밀번호 암호화 후 저장
-        m.updateManager(rq, passwordEncoder);
+        m.setRoles(
+                Collections.singletonList(ManagerAuthority.builder()
+                        .name("ROLE_MANAGER")
+                        .manager(m)
+                        .build())
+
+        );
         managerRepository.save(m);
 
         return modelMapper.map(m, ManagerRes.class);

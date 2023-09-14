@@ -1,37 +1,41 @@
 package com.zupzup.untact.model.auth;
 
-import lombok.Getter;
+import com.zupzup.untact.model.Manager;
+import com.zupzup.untact.model.Member;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.ArrayList;
 import java.util.Collection;
+import java.util.stream.Collectors;
 
-@Getter
-public class PrincipalDetails implements UserDetails {
+public class ManagerUserDetails implements UserDetails {
 
-    private String name;
-    private String loginId;
-    private String loginPwd;
-    private String roles;
+    private final Manager manager;
 
-    // 권한 작업을 하기 위한 role return
+    public ManagerUserDetails(Manager manager) {
+        this.manager = manager;
+    }
+
+    public final Manager getManager() {
+        return manager;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        Collection<GrantedAuthority> collections = new ArrayList<>();
-        collections.add(new SimpleGrantedAuthority(roles));
-        return collections;
+        return manager.getRoles().stream().map(o -> new SimpleGrantedAuthority(
+                o.getName()
+        )).collect(Collectors.toList());
     }
 
     @Override
     public String getPassword() {
-        return loginPwd;
+        return manager.getLoginPwd();
     }
 
     @Override
     public String getUsername() {
-        return loginId;
+        return manager.getName();
     }
 
     @Override
