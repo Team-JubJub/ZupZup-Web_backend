@@ -19,14 +19,6 @@ public class Result extends BaseEntity {
     @Column
     private Boolean result;
 
-    // seller entity 용 로그인, 비밀번호 값
-    @Column
-    private String loginId;
-    @Column
-    private String loginPwd;
-    @Column
-    private String role;
-
     // store entity 용 값들
     @Column
     private String storeName; // 가게이름
@@ -59,9 +51,6 @@ public class Result extends BaseEntity {
 
     public void updateResult(ResultReq rq) {
         this.result = rq.getResult();
-        this.loginId = rq.getLoginId();
-        this.loginPwd = rq.getLoginPwd();
-        this.role = rq.getRole();
         this.storeName = rq.getStoreName();
         this.storeImageUrl = rq.getStoreImageUrl();
         this.storeAddress = rq.getStoreAddress();
