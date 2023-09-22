@@ -2,6 +2,7 @@ package com.zupzup.untact.service.impl;
 
 import com.zupzup.untact.model.Enter;
 import com.zupzup.untact.model.Member;
+import com.zupzup.untact.model.enums.EnterState;
 import com.zupzup.untact.model.request.EnterReq;
 import com.zupzup.untact.model.response.EnterRes;
 import com.zupzup.untact.repository.EnterRepository;
@@ -37,14 +38,23 @@ public class EnterServiceImpl extends BaseServiceImpl<Enter, EnterReq, EnterRes,
 
             Member m = memberRepository.findById(rq.getId()).get();
 
-            Enter e = new Enter();
-            e.saveEnter(rq, m);
+            // 사장님과 입점 신청은 1:N 관계
+            // 입점 신청에서 받은 내용들 저장 + 문의 상태는 NEW 로 설정 (관리자용)
+            Enter e = Enter.builder()
+                    .name(m.getName())
+                    .phoneNum(m.getPhoneNum())
+                    .storeName(rq.getStoreName())
+                    .storeAddress(rq.getStoreAddress())
+                    .crNumber(rq.getCrNumber())
+                    .state(EnterState.NEW)
+                    .build();
 
             enterRepository.save(e);
 
             return modelMapper.map(e, EnterRes.class);
         } catch (Exception e) {
 
+            // 사용자가 존재하지 않을 경우 에러 발생
             EnterRes rs = new EnterRes();
             rs.setId(rq.getId());
             rs.setStoreName("id 값에 해당하는 사용자는 존재하지 않습니다.");
