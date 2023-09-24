@@ -84,7 +84,6 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, MemberReq, Member
                         .build())
 
         );
-        memberRepository.save(m);
 
         // Seller 엔티티에도 저장
         Seller s = new Seller();
@@ -96,6 +95,9 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, MemberReq, Member
         s.setRole(Role.ROLE_SELLER);
 
         sellerRepository.save(s);
+
+        m.setSellerId(s.getSellerId());
+        memberRepository.save(m);
 
         // 저장후 response 형식에 맞춰 값 반환
         return modelMapper.map(m, MemberRes.class);

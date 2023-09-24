@@ -24,6 +24,8 @@ public class Member extends BaseEntity {
     @Column(nullable = false) private String loginPwd; // 로그인 패스워드
     @Column(nullable = false) private String email; // 이메일 주소
     @Column(nullable = false) private Boolean ad; // 광고성 정보 수신 동의 여부
+
+    @Column private Long sellerId; // seller 저장 후 sellerId 저장
 //    @Column(nullable = false)
 //    @Enumerated(EnumType.STRING)
 //    private Role roles; // 권한

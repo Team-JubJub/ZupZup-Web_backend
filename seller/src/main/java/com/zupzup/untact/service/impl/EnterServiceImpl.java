@@ -2,7 +2,7 @@ package com.zupzup.untact.service.impl;
 
 import com.zupzup.untact.model.Enter;
 import com.zupzup.untact.model.Member;
-import com.zupzup.untact.model.enums.EnterState;
+import com.zupzup.untact.domain.enums.EnterState;
 import com.zupzup.untact.model.request.EnterReq;
 import com.zupzup.untact.model.response.EnterRes;
 import com.zupzup.untact.repository.EnterRepository;
