@@ -183,7 +183,21 @@ public class ResultServiceImpl implements ResultService {
      */
     @Override
     public StoreRes confirmStoreDetail(Long id) {
-        return null;
+
+        Store s = storeRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 id와 일치하는 가게를 찾을 수 없습니다."));
+
+        // 입점된 매장이 아닐 경우
+        if (s.getEnterState() != EnterState.CONFIRM) {
+
+            StoreRes rs = new StoreRes();
+            rs.setSellerName("입점된 매장이 아닙니다.");
+            rs.setSellerLoginId(s.getEnterState().toString());
+
+            return rs;
+        }
+
+        return modelMapper.map(s, StoreRes.class);
     }
 
     /**
@@ -191,6 +205,18 @@ public class ResultServiceImpl implements ResultService {
      */
     @Override
     public String confirmToWait(StateReq rq) {
-        return null;
+
+        Store s = storeRepository.findById(rq.getId())
+                .orElseThrow(() -> new IllegalArgumentException("해당 id와 일치하는 가게를 찾을 수 없습니다."));
+
+        if (!rq.getIsAccepted()) {
+
+            // isAccepted 가 false 일 경우 원하는 로직 찾지 못함
+            return "Cannot find request";
+        }
+
+        s.setEnterState(EnterState.WAIT);
+
+        return "Enter state is changed into WAIT";
     }
 }
