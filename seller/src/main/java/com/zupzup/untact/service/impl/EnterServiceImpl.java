@@ -41,6 +41,7 @@ public class EnterServiceImpl extends BaseServiceImpl<Enter, EnterReq, EnterRes,
             // 사장님과 입점 신청은 1:N 관계
             // 입점 신청에서 받은 내용들 저장 + 문의 상태는 NEW 로 설정 (관리자용)
             Enter e = Enter.builder()
+                    .member(m)
                     .name(m.getName())
                     .phoneNum(m.getPhoneNum())
                     .storeName(rq.getStoreName())
