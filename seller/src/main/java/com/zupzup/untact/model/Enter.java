@@ -1,17 +1,17 @@
 package com.zupzup.untact.model;
 
-import com.zupzup.untact.model.request.EnterReq;
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
+import com.zupzup.untact.model.enums.EnterState;
+import jakarta.persistence.*;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.experimental.SuperBuilder;
 import org.hibernate.annotations.Where;
 
-@Entity
 @Getter @Setter
-@RequiredArgsConstructor
+@Entity
+@SuperBuilder
+@NoArgsConstructor
 @Where(clause = "is_deleted IS false")
 public class Enter extends BaseEntity {
 
@@ -19,18 +19,16 @@ public class Enter extends BaseEntity {
     private Member member;
 
     // 입점 신청
-    @Column private String name; // 대표자명
-    @Column private String phoneNum; // 휴대폰 번호
-    @Column private String storeName; // 가게 이름
-    @Column private String storeAddress; // 가게 주소
-    @Column private String crNumber;  // 사업자 등록 번호
+    @Column(nullable = false) private String name; // 대표자명
+    @Column(nullable = false) private String phoneNum; // 사장님 휴대폰 번호
+    @Column private String storeNum; // 가게 전화번호
+    @Column(nullable = false) private String storeName; // 가게 이름
+    @Column(nullable = false) private String storeAddress; // 가게 주소
+    @Column(nullable = false) private String crNumber;  // 사업자 등록 번호
     @Column private Boolean isAccepted; // 승인여부
 
-    public void saveEnter(EnterReq rq, Member m) {
+    // 상태 설정
+    @Enumerated(EnumType.STRING)
+    @Column private EnterState state; // 문의 상태(기본 신규 신청으로 설정)
 
-        this.member = m;
-        this.storeName = rq.getStoreName();
-        this.storeAddress = rq.getStoreAddress();
-        this.crNumber = rq.getCrNumber();
-    }
 }
