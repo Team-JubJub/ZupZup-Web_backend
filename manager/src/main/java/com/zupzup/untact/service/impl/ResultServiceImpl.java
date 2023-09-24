@@ -110,7 +110,21 @@ public class ResultServiceImpl implements ResultService {
      */
     @Override
     public StoreRes storeDetail(Long id) {
-        return null;
+
+        Store s = storeRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 id와 일치하는 가게를 찾을 수 없습니다."));
+
+        // 노출 대기 매장이 아닐 경우
+        if (s.getEnterState() != EnterState.WAIT) {
+
+            StoreRes rs = new StoreRes();
+            rs.setSellerName("노출 대기 매장이 아닙니다.");
+            rs.setSellerLoginId(s.getEnterState().toString());
+
+            return rs;
+        }
+
+        return modelMapper.map(s, StoreRes.class);
     }
 
     /**
@@ -118,7 +132,10 @@ public class ResultServiceImpl implements ResultService {
      */
     @Override
     public String deleteStore(Long id) {
-        return null;
+
+        storeRepository.deleteById(id);
+
+        return "Delete complete";
     }
 
     /**
@@ -126,15 +143,38 @@ public class ResultServiceImpl implements ResultService {
      */
     @Override
     public String waitToConfirm(StateReq rq) {
-        return null;
+
+        Store s = storeRepository.findById(rq.getId())
+                .orElseThrow(() -> new IllegalArgumentException("해당 id와 일치하는 가게를 찾을 수 없습니다."));
+
+        if (!rq.getIsAccepted()) {
+
+            // isAccepted 가 false 일 경우 원하는 로직 찾지 못함
+            return "Cannot find request";
+        }
+
+        s.setEnterState(EnterState.CONFIRM);
+
+        return "Enter state is changed into CONFIRM";
     }
 
     /**
      * 가게 내용 수정
      */
     @Override
-    public StoreRes updateStoreDetail(StoreUpdateReq rq) {
-        return null;
+    public StoreRes updateStoreDetail(Long id, StoreUpdateReq rq) {
+
+        Store s = storeRepository.findById(id)
+                .orElseThrow(() -> new IllegalArgumentException("해당 id와 일치하는 가게를 찾을 수 없습니다."));
+
+        s.setStoreContact(rq.getStoreContact());
+        s.setStoreName(rq.getStoreName());
+        s.setStoreAddress(rq.getStoreAddress());
+        s.setCategory(rq.getCategory());
+
+        storeRepository.save(s);
+
+        return modelMapper.map(s, StoreRes.class);
     }
 
     // --------- CONFIRM ---------
