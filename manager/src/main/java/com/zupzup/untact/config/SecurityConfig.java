@@ -59,7 +59,7 @@ public class SecurityConfig {
                 // 조건별로 요청 허용/제한 설정
                 .authorizeRequests()
                 // 로그인 승인
-                .requestMatchers("/login", "/manager/**").permitAll()
+                .requestMatchers("/login", "/manager/**", "/**").permitAll()
                 // 가게 등록 페이지는 회원만 가능
                 .requestMatchers("/").hasRole("MANAGER")
                 .anyRequest().denyAll()

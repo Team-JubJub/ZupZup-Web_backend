@@ -1,6 +1,7 @@
 package com.zupzup.untact.service.impl;
 
 import com.zupzup.untact.domain.enums.EnterState;
+import com.zupzup.untact.domain.enums.StoreCategory;
 import com.zupzup.untact.domain.store.Store;
 import com.zupzup.untact.model.Enter;
 import com.zupzup.untact.model.dto.request.EnterUpdateReq;
@@ -15,8 +16,10 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class ResultServiceImpl implements ResultService {
 
@@ -155,6 +158,8 @@ public class ResultServiceImpl implements ResultService {
 
         s.setEnterState(EnterState.CONFIRM);
 
+        storeRepository.save(s);
+
         return "Enter state is changed into CONFIRM";
     }
 
@@ -167,10 +172,13 @@ public class ResultServiceImpl implements ResultService {
         Store s = storeRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException("해당 id와 일치하는 가게를 찾을 수 없습니다."));
 
+        // 카테고리 enum 으로 바꾸는 작업
+        StoreCategory sc = StoreCategory.valueOf(rq.getCategory().toUpperCase());
+
         s.setStoreContact(rq.getStoreContact());
         s.setStoreName(rq.getStoreName());
         s.setStoreAddress(rq.getStoreAddress());
-        s.setCategory(rq.getCategory());
+        s.setCategory(sc);
 
         storeRepository.save(s);
 
@@ -216,6 +224,8 @@ public class ResultServiceImpl implements ResultService {
         }
 
         s.setEnterState(EnterState.WAIT);
+
+        storeRepository.save(s);
 
         return "Enter state is changed into WAIT";
     }

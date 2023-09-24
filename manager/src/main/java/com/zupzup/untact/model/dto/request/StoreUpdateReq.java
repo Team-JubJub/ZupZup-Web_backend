@@ -10,5 +10,5 @@ public class StoreUpdateReq {
     private String storeContact;
     private String storeName;
     private String storeAddress;
-    private StoreCategory category;
+    private String category;
 }

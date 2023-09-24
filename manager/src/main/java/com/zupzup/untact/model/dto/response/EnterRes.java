@@ -6,6 +6,7 @@ import lombok.Setter;
 @Getter @Setter
 public class EnterRes {
 
+    private Long id;
     private String name;
     private String memberLoginId;
     private String phoneNum;
