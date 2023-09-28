@@ -3,11 +3,8 @@ package com.zupzup.untact.api;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zupzup.untact.documents.RestDocsConfig;
 import com.zupzup.untact.model.request.EnterReq;
-import com.zupzup.untact.model.request.MemberReq;
 import com.zupzup.untact.model.response.EnterRes;
-import com.zupzup.untact.model.response.MemberRes;
 import com.zupzup.untact.service.impl.EnterServiceImpl;
-import com.zupzup.untact.service.impl.MemberServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -32,12 +29,11 @@ import static org.mockito.BDDMockito.given;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
-import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
-import static org.springframework.restdocs.payload.PayloadDocumentation.fieldWithPath;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @Import({RestDocsConfig.class})
