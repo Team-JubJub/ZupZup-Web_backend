@@ -28,3 +28,12 @@ operation::success-new-detail[snippets='http-request,response-body,response-fiel
 
 === 신규 신청 가게 확인(실패 - 신규 신청 매장이 아닌 경우)
 operation::fail-new-detail[snippets='http-request,response-body,response-fields']
+
+=== 신규 신청 가게 -> 노출 대기로 변경 (성공)
+operation::success-new-to-wait[snippets='http-request,request-body,request-fields,response-body']
+
+=== 신규 신청 가게 -> 노출 대기로 변경 (실패 - isAccepted=false)
+operation::fail-new-to-wait[snippets='http-request,request-body,request-fields,response-body']
+
+=== 신규 신청 가게 수정 (성공)
+operation::success-update-enter[snippets='http-request,request-body,request-fields,response-body,response-fields']

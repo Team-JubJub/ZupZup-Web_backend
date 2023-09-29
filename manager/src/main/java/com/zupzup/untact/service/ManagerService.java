@@ -8,5 +8,4 @@ import com.zupzup.untact.repository.ManagerRepository;
 
 public interface ManagerService extends BaseService<Manager, ManagerReq, ManagerRes, ManagerRepository> {
 
-    EnterApprovalRes managerApproval(Long id, Boolean approval);
 }
