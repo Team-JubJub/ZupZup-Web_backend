@@ -8,5 +8,4 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 public interface ManagerController extends BaseController<ManagerReq, ManagerRes> {
 
-    ResponseEntity<EnterApprovalRes> managerApproval(@PathVariable Long id, Boolean approval);
 }

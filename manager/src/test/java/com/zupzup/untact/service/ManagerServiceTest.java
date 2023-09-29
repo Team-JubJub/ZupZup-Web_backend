@@ -1,6 +1,6 @@
-package com.rest.api.service;
+package com.zupzup.untact.service;
 
-import com.rest.api.TestConfiguration;
+import com.zupzup.untact.TestApplication;
 import jakarta.transaction.Transactional;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
@@ -11,7 +11,7 @@ import org.springframework.test.context.ContextConfiguration;
 @SpringBootTest
 @Transactional
 @ExtendWith({RestDocumentationExtension.class})
-@ContextConfiguration(classes = TestConfiguration.class)
+@ContextConfiguration(classes = TestApplication.class)
 @AutoConfigureMockMvc
 public class ManagerServiceTest {
 }

@@ -77,40 +77,4 @@ public class ManagerServiceImpl extends BaseServiceImpl<Manager, ManagerReq, Man
 
         return modelMapper.map(m, ManagerRes.class);
     }
-
-    @Override
-    public EnterApprovalRes managerApproval(Long id, Boolean approval) {
-
-        EnterApprovalRes apRes = new EnterApprovalRes();
-
-        try {
-            Enter e = enterRepository.findById(id)
-                    .orElseThrow(() -> new EnterException(NO_MATCH_ENTER));
-
-            if (approval) {
-
-                apRes.setId(id);
-                apRes.setApproval("승인 되었습니다.");
-                apRes.setStoreName(e.getStoreName());
-
-                e.setIsAccepted(true);
-
-            } else {
-
-                apRes.setId(id);
-                apRes.setApproval("승인이 거절 되었습니다.");
-                apRes.setStoreName(e.getStoreName());
-
-                e.setIsAccepted(false);
-            }
-
-            return apRes;
-
-        } catch (Exception e) {
-            e.printStackTrace();
-
-        }
-
-        return apRes;
-    }
 }

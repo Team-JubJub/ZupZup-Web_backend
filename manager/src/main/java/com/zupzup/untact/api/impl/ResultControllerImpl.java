@@ -1,7 +1,6 @@
 package com.zupzup.untact.api.impl;
 
 import com.zupzup.untact.api.ResultController;
-import com.zupzup.untact.domain.enums.StoreCategory;
 import com.zupzup.untact.model.dto.request.EnterUpdateReq;
 import com.zupzup.untact.model.dto.request.StateReq;
 import com.zupzup.untact.model.dto.request.StoreUpdateReq;

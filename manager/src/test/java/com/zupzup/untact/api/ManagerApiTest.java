@@ -1,7 +1,7 @@
-package com.rest.api.controller;
+package com.zupzup.untact.api;
 
-import com.rest.api.TestConfiguration;
-import com.rest.api.documents.utils.RestDocsConfig;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.zupzup.untact.documents.RestDocsConfig;
 import com.zupzup.untact.model.dto.request.ManagerReq;
 import com.zupzup.untact.model.dto.response.ManagerRes;
 import com.zupzup.untact.service.ManagerService;
@@ -20,7 +20,6 @@ import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.payload.JsonFieldType;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
@@ -41,21 +40,21 @@ import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
-@Import(RestDocsConfig.class)
+@Import({RestDocsConfig.class})
 @ExtendWith({RestDocumentationExtension.class})
-@ContextConfiguration(classes = {TestConfiguration.class})
 @AutoConfigureMockMvc
-public class ManagerControllerTest {
+public class ManagerApiTest {
 
     @Autowired
     private MockMvc mockMvc;
 
-//    @Autowired
-//    ObjectMapper objectMapper;
+    @Autowired
+    ObjectMapper objectMapper;
 
     @MockBean
     private ManagerService managerService;
@@ -63,14 +62,11 @@ public class ManagerControllerTest {
     private final String url = "/manager";
 
     @BeforeEach
-    public void setUp(WebApplicationContext webApplicationContext,
-                      RestDocumentationContextProvider restDocumentation) {
-
-        this.mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext)
-                .apply(documentationConfiguration(restDocumentation))
-                .alwaysDo(MockMvcResultHandlers.print())
-//                .alwaysDo(resultHandler)
+    public void before(WebApplicationContext ctx, RestDocumentationContextProvider restDocumentationContextProvider) {
+        this.mockMvc = MockMvcBuilders.webAppContextSetup(ctx)
+                .apply(documentationConfiguration(restDocumentationContextProvider))
                 .addFilters(new CharacterEncodingFilter("UTF-8", true))
+                .alwaysDo(print())
                 .build();
     }
 

@@ -138,7 +138,7 @@ public class ResultServiceImpl implements ResultService {
 
         storeRepository.deleteById(id);
 
-        return "Delete complete";
+        return "Delete completed";
     }
 
     /**
