@@ -526,19 +526,81 @@ public class ResultApiTest {
     public void success_confirm_detail() throws Exception {
 
         // given
+        StoreRes rs = new StoreRes();
+        rs.setStoreId(1L);
+        rs.setSellerName("seller name");
+        rs.setSellerLoginId("seller Login Id");
+        rs.setStoreContact("store contact");
+        rs.setCrNumber("crNumber");
+        rs.setStoreName("store name");
+        rs.setStoreAddress("store address");
+        rs.setStoreImageUrl("store Image url");
+        rs.setCategory("CAFE");
+
+        when(resultService.confirmStoreDetail(anyLong())).thenReturn(rs);
+
         // when
-        // then
+        mockMvc.perform(
+                        get("/confirm/{id}", 1L)
+                                .header("Authorization", "Bearer " + bearerToken)
+                )// then
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("storeId").value(1L))
+                .andExpect(jsonPath("sellerName").value("seller name"))
+                .andDo(document(
+                        "success-confirm-detail",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        responseFields(
+                                fieldWithPath("storeId").type(JsonFieldType.NUMBER).description("Store unique Id"),
+                                fieldWithPath("sellerName").type(JsonFieldType.STRING).description("판매자 이름"),
+                                fieldWithPath("sellerLoginId").type(JsonFieldType.STRING).description("판매자 로그인 아이디"),
+                                fieldWithPath("storeContact").type(JsonFieldType.STRING).description("가게 전화번호"),
+                                fieldWithPath("crNumber").type(JsonFieldType.STRING).description("사업자 등록증 번호"),
+                                fieldWithPath("storeName").type(JsonFieldType.STRING).description("가게 이름"),
+                                fieldWithPath("storeAddress").type(JsonFieldType.STRING).description("가게 주소"),
+                                fieldWithPath("storeImageUrl").type(JsonFieldType.STRING).description("가게 이미지"),
+                                fieldWithPath("category").type(JsonFieldType.STRING).description("가게 카테고리")
+                        )
+                ));
     }
-
-
 
     @Test
     @DisplayName("노출 승인 매장 상세보기 - 실패")
     public void fail_confirm_detail() throws Exception {
 
         // given
+        // 입점된 매장이 아닐 경우
+        StoreRes rs = new StoreRes();
+        rs.setSellerName("입점된 매장이 아닙니다.");
+        rs.setSellerLoginId(EnterState.NEW.toString());
+
+        given(resultService.confirmStoreDetail(1L)).willReturn(rs);
+
         // when
-        // then
+        mockMvc.perform(
+                        get("/confirm/{id}", 1L)
+                                .header("Authorization", "Bearer " + bearerToken)
+                )// then
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("sellerLoginId").value(EnterState.NEW.toString()))
+                .andExpect(jsonPath("sellerName").value("입점된 매장이 아닙니다."))
+                .andDo(document(
+                        "fail-confirm-detail",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        responseFields(
+                                fieldWithPath("storeId").type(JsonFieldType.NULL).description("null 값으로 전달"),
+                                fieldWithPath("sellerName").type(JsonFieldType.STRING).description("실패 이유 설명"),
+                                fieldWithPath("sellerLoginId").type(JsonFieldType.STRING).description("어떤 state 에 있는지 확인"),
+                                fieldWithPath("storeContact").type(JsonFieldType.NULL).description("null 값으로 전달"),
+                                fieldWithPath("crNumber").type(JsonFieldType.NULL).description("null 값으로 전달"),
+                                fieldWithPath("storeName").type(JsonFieldType.NULL).description("null 값으로 전달"),
+                                fieldWithPath("storeAddress").type(JsonFieldType.NULL).description("null 값으로 전달"),
+                                fieldWithPath("storeImageUrl").type(JsonFieldType.NULL).description("null 값으로 전달"),
+                                fieldWithPath("category").type(JsonFieldType.NULL).description("null 값으로 전달")
+                        )
+                ));
     }
 
     @Test
@@ -546,8 +608,34 @@ public class ResultApiTest {
     public void success_confirm_to_wait() throws Exception {
 
         // given
+        StateReq rq = new StateReq();
+        rq.setId(1L);
+        rq.setIsAccepted(true);
+
+        when(resultService.confirmToWait(any(StateReq.class))).thenReturn("Enter state is changed into WAIT");
+
+        // json parse
+        String jsonRq = objectMapper.writeValueAsString(rq);
+
         // when
-        // then
+        mockMvc.perform(
+                        post("/confirm")
+                                .header("Authorization", "Bearer " + bearerToken)
+                                .content(jsonRq)
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                // then
+                .andExpect(content().string("Enter state is changed into WAIT"))
+                .andExpect(status().isOk())
+                .andDo(document(
+                        "success-confirm-to-wait",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        requestFields(
+                                fieldWithPath("id").type(JsonFieldType.NUMBER).description("상태 변경하고자 하는 신청서 unique Id"),
+                                fieldWithPath("isAccepted").type(JsonFieldType.BOOLEAN).description("True 값을 전달하여 상태 변경임을 전달")
+                        )
+                ));
     }
 
     @Test
@@ -555,7 +643,33 @@ public class ResultApiTest {
     public void fail_confirm_to_wait() throws Exception {
 
         // given
+        StateReq rq = new StateReq();
+        rq.setId(1L);
+        rq.setIsAccepted(false);
+
+        when(resultService.confirmToWait(any(StateReq.class))).thenReturn("Cannot find request");
+
+        // json parse
+        String jsonRq = objectMapper.writeValueAsString(rq);
+
         // when
-        // then
+        mockMvc.perform(
+                        post("/confirm")
+                                .header("Authorization", "Bearer " + bearerToken)
+                                .content(jsonRq)
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                // then
+                .andExpect(content().string("Cannot find request"))
+                .andExpect(status().isOk())
+                .andDo(document(
+                        "fail-confirm-to-wait",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        requestFields(
+                                fieldWithPath("id").type(JsonFieldType.NUMBER).description("상태 변경하고자 하는 신청서 unique Id"),
+                                fieldWithPath("isAccepted").type(JsonFieldType.BOOLEAN).description("True 값을 전달하여 상태 변경임을 전달")
+                        )
+                ));
     }
 }
