@@ -11,6 +11,7 @@ public class StoreRes {
     private String sellerLoginId;
     private String storeContact;
     private String crNumber;
+    private String storeName;
     private String storeAddress;
     private String storeImageUrl;
     private String category;

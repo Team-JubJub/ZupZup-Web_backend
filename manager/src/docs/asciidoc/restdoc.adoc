@@ -22,18 +22,37 @@ operation::manager-create[snippets='http-request,request-body,request-fields,res
 // === Manager 삭제
 // operation::manager-delete[snippets='httpie-request,request-body']
 
-== 가게 관련 API
-=== 신규 신청 가게 확인(성공)
+== 신규 가게 관련 API
+=== 신규 신청 매장 상세 확인 (성공)
 operation::success-new-detail[snippets='http-request,response-body,response-fields']
 
-=== 신규 신청 가게 확인(실패 - 신규 신청 매장이 아닌 경우)
+=== 신규 신청 매장 상세 확인 (실패 - 신규 신청 매장이 아닌 경우)
 operation::fail-new-detail[snippets='http-request,response-body,response-fields']
 
-=== 신규 신청 가게 -> 노출 대기로 변경 (성공)
+=== 신규 신청 매장 -> 노출 대기로 변경 (성공)
 operation::success-new-to-wait[snippets='http-request,request-body,request-fields,response-body']
 
-=== 신규 신청 가게 -> 노출 대기로 변경 (실패 - isAccepted=false)
+=== 신규 신청 매장 -> 노출 대기로 변경 (실패 - isAccepted=false)
 operation::fail-new-to-wait[snippets='http-request,request-body,request-fields,response-body']
 
-=== 신규 신청 가게 수정 (성공)
+=== 신규 신청 매장 수정 (성공)
 operation::success-update-enter[snippets='http-request,request-body,request-fields,response-body,response-fields']
+
+== 노출 대기 관련 API
+=== 노출 대기 매장 상세 확인 (성공)
+operation::success-wait-detail[snippets='http-request,response-body,response-fields']
+
+=== 노출 대기 매장 상세 확인 (실패 - 노출 대기 매장이 아닌 경우)
+operation::fail-new-detail[snippets='http-request,response-body,response-fields']
+
+=== 노출 대기 매장 삭제 (성공)
+operation::success-wait-delete[snippets='http-request,response-body']
+
+=== 노출 대기 매장 -> 노출 승인으로 변경 (성공)
+operation::success-wait-to-confirm[snippets='http-request,request-body,request-fields,response-body']
+
+=== 노출 대기 매장 -> 노출 승인으로 변경 (실패)
+operation::fail-wait-to-confirm[snippets='http-request,request-body,request-fields,response-body']
+
+=== 노출 대기 매장 수정 (성공)
+operation::success-update-store[snippets='http-request,request-body,request-fields,response-body,response-fields']
