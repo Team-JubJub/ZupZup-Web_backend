@@ -83,5 +83,6 @@ project(':manager') {	// 매니저 페이지 모듈
 	dependencies {
 		implementation(project(':spring-module-common'))
 		implementation(project(':spring-module-base'))
+		implementation(project(':seller'))
 	}
 }

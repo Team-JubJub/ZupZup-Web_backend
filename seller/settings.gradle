@@ -1,0 +1,4 @@
+rootProject.name = 'seller'
+include 'spring-module-common'
+include 'spring-module-base'
+
