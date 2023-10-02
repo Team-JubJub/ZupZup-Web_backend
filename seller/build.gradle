@@ -1,16 +1,8 @@
-buildscript {
-    ext {
-        queryDslVersion = "5.0.0"
-    }
-}
-
 plugins {
     id 'java'
     id 'org.springframework.boot' version '3.0.0'
     id 'io.spring.dependency-management' version '1.1.0'
     id "org.asciidoctor.jvm.convert" version "3.3.2"
-    // queryDSL
-    id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
 }
 
 configurations {
@@ -65,34 +57,4 @@ dependencies {
 
     // mockito
     implementation 'org.mockito:mockito-core'
-
-    // queryDSL
-    implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
-    implementation "com.querydsl:querydsl-apt:${queryDslVersion}"
-    annotationProcessor("com.querydsl:querydsl-apt:5.0.0:jakarta")
-    annotationProcessor("jakarta.persistence:jakarta.persistence-api")
-    annotationProcessor("jakarta.annotation:jakarta.annotation-api")
-}
-
-def querydslDir = "$buildDir/generated/querydsl/seller"
-
-querydsl {
-    jpa = true
-    querydslSourcesDir = querydslDir
-}
-
-sourceSets {
-    main.java.srcDir querydslDir
-}
-
-//  (gradle 5.0 이상부터는 옵션을 이렇게 넣어주어야 함)
-configurations {
-    compileOnly {
-        extendsFrom annotationProcessor
-    }
-    querydsl.extendsFrom compileClasspath
-}
-
-compileQuerydsl {
-    options.annotationProcessorPath = configurations.querydsl
 }

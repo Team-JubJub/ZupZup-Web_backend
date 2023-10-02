@@ -1,8 +1,8 @@
 package com.zupzup.untact.service.impl;
 
+import com.zupzup.untact.domain.enums.EnterState;
 import com.zupzup.untact.model.Enter;
 import com.zupzup.untact.model.Member;
-import com.zupzup.untact.domain.enums.EnterState;
 import com.zupzup.untact.model.request.EnterReq;
 import com.zupzup.untact.model.response.EnterRes;
 import com.zupzup.untact.repository.EnterRepository;
@@ -12,6 +12,10 @@ import com.zupzup.untact.service.EnterService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 
 @Service
 public class EnterServiceImpl extends BaseServiceImpl<Enter, EnterReq, EnterRes, EnterRepository> implements EnterService {
@@ -41,6 +45,7 @@ public class EnterServiceImpl extends BaseServiceImpl<Enter, EnterReq, EnterRes,
             // 사장님과 입점 신청은 1:N 관계
             // 입점 신청에서 받은 내용들 저장 + 문의 상태는 NEW 로 설정 (관리자용)
             Enter e = Enter.builder()
+                    .created_at(timeSetter())
                     .member(m)
                     .name(m.getName())
                     .phoneNum(m.getPhoneNum())
@@ -62,5 +67,17 @@ public class EnterServiceImpl extends BaseServiceImpl<Enter, EnterReq, EnterRes,
 
             return rs;
         }
+    }
+
+    /**
+     * 시간 포매팅
+     */
+    private String timeSetter() {
+
+        ZonedDateTime nowTime = ZonedDateTime.now(ZoneId.of("Asia/Seoul"));
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        String formattedOrderTime = nowTime.format(formatter);
+
+        return formattedOrderTime;
     }
 }

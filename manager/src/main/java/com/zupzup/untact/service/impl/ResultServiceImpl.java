@@ -3,12 +3,12 @@ package com.zupzup.untact.service.impl;
 import com.zupzup.untact.domain.enums.EnterState;
 import com.zupzup.untact.domain.enums.StoreCategory;
 import com.zupzup.untact.domain.store.Store;
+import com.zupzup.untact.exception.ManagerException;
 import com.zupzup.untact.model.Enter;
 import com.zupzup.untact.model.dto.request.EnterUpdateReq;
 import com.zupzup.untact.model.dto.request.StateReq;
 import com.zupzup.untact.model.dto.request.StoreUpdateReq;
-import com.zupzup.untact.model.dto.response.EnterRes;
-import com.zupzup.untact.model.dto.response.StoreRes;
+import com.zupzup.untact.model.dto.response.*;
 import com.zupzup.untact.repository.EnterRepository;
 import com.zupzup.untact.repository.StoreRepository;
 import com.zupzup.untact.service.ResultService;
@@ -17,6 +17,14 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
+
+import static com.zupzup.untact.exception.ManagerExceptionType.EMPTY_LIST;
 
 @Service
 @Transactional
@@ -30,6 +38,30 @@ public class ResultServiceImpl implements ResultService {
     private final StoreRepository storeRepository;
 
     // --------- NEW ---------
+
+    /**
+     * 신규 신청 매장 전체 보기
+     */
+    @Override
+    public List<EnterListRes> enterList() {
+
+        List<Enter> eList = enterRepository.findByState(EnterState.NEW);
+
+        // list 길이가 0일 경우 에러 발생
+        if (eList.size() == 0) {
+            throw new ManagerException(EMPTY_LIST);
+        }
+
+        List<EnterListRes> eListRes = new ArrayList<>();
+
+        for (Enter e : eList) {
+
+            eListRes.add(modelMapper.map(e, EnterListRes.class));
+        }
+
+        return eListRes;
+    }
+
     /**
      * 신규 신청 매장 상세
      */
@@ -78,6 +110,7 @@ public class ResultServiceImpl implements ResultService {
                 .storeAddress(e.getStoreAddress())
                 .crNumber(e.getCrNumber())
                 .enterState(EnterState.WAIT)
+                .waitStatusTimestamp(timeSetter())
                 .build();
 
         e.setIsAccepted(true);
@@ -108,8 +141,32 @@ public class ResultServiceImpl implements ResultService {
     }
 
     // --------- WAIT ---------
+
     /**
-     * 노출 대기 상태 가게 상세 보기
+     * 노출 대기 매장 전체 보기
+     */
+    @Override
+    public List<WaitStoreListRes> waitStoreList() {
+
+        List<Store> sList = storeRepository.findByEnterState(EnterState.WAIT);
+
+        // list 사이즈가 0일 경우 에러 발생
+        if (sList.size() == 0) {
+            throw new ManagerException(EMPTY_LIST);
+        }
+
+        List<WaitStoreListRes> wsList = new ArrayList<>();
+
+        for (Store s : sList) {
+
+            wsList.add(modelMapper.map(s, WaitStoreListRes.class));
+        }
+
+        return wsList;
+    }
+
+    /**
+     * 노출 대기 매장 상세 보기
      */
     @Override
     public StoreRes storeDetail(Long id) {
@@ -131,7 +188,7 @@ public class ResultServiceImpl implements ResultService {
     }
 
     /**
-     * 가게 삭제
+     * 매장 삭제
      */
     @Override
     public String deleteStore(Long id) {
@@ -157,6 +214,7 @@ public class ResultServiceImpl implements ResultService {
         }
 
         s.setEnterState(EnterState.CONFIRM);
+        s.setConfirmStatusTimestamp(timeSetter());
 
         storeRepository.save(s);
 
@@ -164,7 +222,7 @@ public class ResultServiceImpl implements ResultService {
     }
 
     /**
-     * 가게 내용 수정
+     * 매장 내용 수정
      */
     @Override
     public StoreRes updateStoreDetail(Long id, StoreUpdateReq rq) {
@@ -186,8 +244,32 @@ public class ResultServiceImpl implements ResultService {
     }
 
     // --------- CONFIRM ---------
+
     /**
-     * 노출 승인 된 가게 상세 보기
+     * 노출 승인 매장 전체 보기
+     */
+    @Override
+    public List<ConfirmStoreListRes> confirmStoreList() {
+
+        List<Store> sList = storeRepository.findByEnterState(EnterState.CONFIRM);
+
+        // list 사이즈가 0일 경우 에러 발생
+        if (sList.size() == 0) {
+            throw new ManagerException(EMPTY_LIST);
+        }
+
+        List<ConfirmStoreListRes> csList = new ArrayList<>();
+
+        for (Store s : sList) {
+
+            csList.add(modelMapper.map(s, ConfirmStoreListRes.class));
+        }
+
+        return csList;
+    }
+
+    /**
+     * 노출 승인 매장 상세 보기
      */
     @Override
     public StoreRes confirmStoreDetail(Long id) {
@@ -224,9 +306,22 @@ public class ResultServiceImpl implements ResultService {
         }
 
         s.setEnterState(EnterState.WAIT);
+        s.setWaitStatusTimestamp(timeSetter());
 
         storeRepository.save(s);
 
         return "Enter state is changed into WAIT";
+    }
+
+    /**
+     * 시간 포매팅
+     */
+    private String timeSetter() {
+
+        ZonedDateTime nowTime = ZonedDateTime.now(ZoneId.of("Asia/Seoul"));
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        String formattedOrderTime = nowTime.format(formatter);
+
+        return formattedOrderTime;
     }
 }

@@ -4,11 +4,12 @@ import com.zupzup.untact.api.ResultController;
 import com.zupzup.untact.model.dto.request.EnterUpdateReq;
 import com.zupzup.untact.model.dto.request.StateReq;
 import com.zupzup.untact.model.dto.request.StoreUpdateReq;
-import com.zupzup.untact.model.dto.response.EnterRes;
-import com.zupzup.untact.model.dto.response.StoreRes;
+import com.zupzup.untact.model.dto.response.*;
 import com.zupzup.untact.service.impl.ResultServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -17,6 +18,17 @@ public class ResultControllerImpl implements ResultController {
     private final ResultServiceImpl resultService;
 
     // --------- NEW ---------
+
+    /**
+     * 신규 매장 전체 리스트
+     */
+    @Override
+    @GetMapping("/new")
+    public List<EnterListRes> enterList() {
+
+        return resultService.enterList();
+    }
+
     /**
      * 신규 신청 매장 상세
      */
@@ -46,6 +58,16 @@ public class ResultControllerImpl implements ResultController {
     }
 
     // --------- WAIT ---------
+
+    /**
+     * 노출 대기 가게 전체 보기
+     */
+    @Override
+    @GetMapping("/wait")
+    public List<WaitStoreListRes> waitStoreList() {
+        return resultService.waitStoreList();
+    }
+
     /**
      * 노출 대기 상태 가게 상세 보기
      */
@@ -83,6 +105,16 @@ public class ResultControllerImpl implements ResultController {
     }
 
     // --------- CONFIRM ---------
+
+    /**
+     * 노출 승인 가게 전체 보기
+     */
+    @Override
+    @GetMapping("/confirm")
+    public List<ConfirmStoreListRes> confirmStoreList() {
+        return resultService.confirmStoreList();
+    }
+
     /**
      * 노출 승인 된 가게 상세 보기
      */
