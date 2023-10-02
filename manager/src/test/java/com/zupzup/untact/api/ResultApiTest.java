@@ -6,8 +6,7 @@ import com.zupzup.untact.domain.enums.EnterState;
 import com.zupzup.untact.model.dto.request.EnterUpdateReq;
 import com.zupzup.untact.model.dto.request.StateReq;
 import com.zupzup.untact.model.dto.request.StoreUpdateReq;
-import com.zupzup.untact.model.dto.response.EnterRes;
-import com.zupzup.untact.model.dto.response.StoreRes;
+import com.zupzup.untact.model.dto.response.*;
 import com.zupzup.untact.service.impl.ResultServiceImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -27,6 +26,12 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.filter.CharacterEncodingFilter;
+
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
@@ -55,7 +60,7 @@ public class ResultApiTest {
     @MockBean
     private ResultServiceImpl resultService;
 
-    private final String bearerToken = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MjIiLCJyb2xlIjpbeyJuYW1lIjoiUk9MRV9NQU5BR0VSIn1dLCJpYXQiOjE2OTU5OTc1ODcsImV4cCI6MTY5NjAwMTE4N30.9vk3ZX1PJOXVo-Hb85x4vF5w6DQzRnne5mMkEDxFkwk";
+    private final String bearerToken = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0MjIiLCJyb2xlIjpbeyJuYW1lIjoiUk9MRV9NQU5BR0VSIn1dLCJpYXQiOjE2OTYyMzM1MzAsImV4cCI6MTY5NjIzNzEzMH0.Hly-SbA4XPM9Z_wO30e9rThICqwdtZb-8x0pLh1AoyA";
 
     @BeforeEach
     public void before(WebApplicationContext ctx, RestDocumentationContextProvider restDocumentationContextProvider) {
@@ -69,6 +74,58 @@ public class ResultApiTest {
     /**
      * NEW
      */
+    @Test
+    @DisplayName("신규 신청 매장 전체 보기 - 성공")
+    public void success_new_list() throws Exception {
+
+        // given
+        List<EnterListRes> eList = new ArrayList<>();
+
+        EnterListRes eRes = new EnterListRes();
+        eRes.setName("test name 1");
+        eRes.setStoreName("test store name 1");
+        eRes.setCreated_at(timeSetter());
+        eList.add(eRes);
+
+        EnterListRes eRes1 = new EnterListRes();
+        eRes1.setName("test name 2");
+        eRes1.setStoreName("test store name 2");
+        eRes1.setCreated_at(timeSetter());
+        eList.add(eRes1);
+
+        EnterListRes eRes2 = new EnterListRes();
+        eRes2.setName("test name 3");
+        eRes2.setStoreName("test store name 3");
+        eRes2.setCreated_at(timeSetter());
+        eList.add(eRes2);
+
+        EnterListRes eRes3 = new EnterListRes();
+        eRes3.setName("test name 4");
+        eRes3.setStoreName("test store name 4");
+        eRes3.setCreated_at(timeSetter());
+        eList.add(eRes3);
+
+        when(resultService.enterList()).thenReturn(eList);
+
+        // when
+        mockMvc.perform(
+                get("/new")
+                        .header("Authorization", "Bearer " + bearerToken)
+        )
+        // then
+                .andExpect(status().isOk())
+                .andDo(document(
+                        "success-new-list",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        responseFields(
+                                fieldWithPath("[].name").type(JsonFieldType.STRING).description("판매자 이름"),
+                                fieldWithPath("[].storeName").type(JsonFieldType.STRING).description("가게 이름"),
+                                fieldWithPath("[].created_at").type(JsonFieldType.STRING).description("생성된 시간")
+                        ))
+                );
+    }
+
     @Test
     @DisplayName("신규 신청 매장 상세 - 성공")
     public void success_new_detail() throws Exception {
@@ -279,6 +336,57 @@ public class ResultApiTest {
     /**
      * wait
      */
+    @Test
+    @DisplayName("노출 대기 매장 전체 보기 - 성공")
+    public void success_wait_list() throws Exception {
+        // given
+        List<WaitStoreListRes> sList = new ArrayList<>();
+
+        WaitStoreListRes wRes = new WaitStoreListRes();
+        wRes.setSellerName("test name 1");
+        wRes.setStoreName("test store name 1");
+        wRes.setWaitStatusTimestamp(timeSetter());
+        sList.add(wRes);
+
+        WaitStoreListRes wRes1 = new WaitStoreListRes();
+        wRes1.setSellerName("test name 2");
+        wRes1.setStoreName("test store name 2");
+        wRes1.setWaitStatusTimestamp(timeSetter());
+        sList.add(wRes1);
+
+        WaitStoreListRes wRes2 = new WaitStoreListRes();
+        wRes2.setSellerName("test name 3");
+        wRes2.setStoreName("test store name 3");
+        wRes2.setWaitStatusTimestamp(timeSetter());
+        sList.add(wRes2);
+
+        WaitStoreListRes wRes3 = new WaitStoreListRes();
+        wRes3.setSellerName("test name 4");
+        wRes3.setStoreName("test store name 4");
+        wRes3.setWaitStatusTimestamp(timeSetter());
+        sList.add(wRes3);
+
+        when(resultService.waitStoreList()).thenReturn(sList);
+
+        // when
+        mockMvc.perform(
+                        get("/wait")
+                                .header("Authorization", "Bearer " + bearerToken)
+                )
+                // then
+                .andExpect(status().isOk())
+                .andDo(document(
+                        "success-wait-list",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        responseFields(
+                                fieldWithPath("[].sellerName").type(JsonFieldType.STRING).description("판매자 이름"),
+                                fieldWithPath("[].storeName").type(JsonFieldType.STRING).description("가게 이름"),
+                                fieldWithPath("[].waitStatusTimestamp").type(JsonFieldType.STRING).description("변경된 시간")
+                        ))
+                );
+    }
+
     @Test
     @DisplayName("노출 대기 매장 상세 - 성공")
     public void success_wait_detail() throws Exception {
@@ -522,6 +630,57 @@ public class ResultApiTest {
      * confirm
      */
     @Test
+    @DisplayName("노출 승인 매장 전체 보기 - 성공")
+    public void success_confirm_list() throws Exception {
+        // given
+        List<ConfirmStoreListRes> sList = new ArrayList<>();
+
+        ConfirmStoreListRes cRes = new ConfirmStoreListRes();
+        cRes.setSellerName("test name 1");
+        cRes.setStoreName("test store name 1");
+        cRes.setConfirmStatusTimestamp(timeSetter());
+        sList.add(cRes);
+
+        ConfirmStoreListRes cRes1 = new ConfirmStoreListRes();
+        cRes1.setSellerName("test name 2");
+        cRes1.setStoreName("test store name 2");
+        cRes1.setConfirmStatusTimestamp(timeSetter());
+        sList.add(cRes1);
+
+        ConfirmStoreListRes cRes2 = new ConfirmStoreListRes();
+        cRes2.setSellerName("test name 3");
+        cRes2.setStoreName("test store name 3");
+        cRes2.setConfirmStatusTimestamp(timeSetter());
+        sList.add(cRes2);
+
+        ConfirmStoreListRes cRes3 = new ConfirmStoreListRes();
+        cRes3.setSellerName("test name 4");
+        cRes3.setStoreName("test store name 4");
+        cRes3.setConfirmStatusTimestamp(timeSetter());
+        sList.add(cRes3);
+
+        when(resultService.confirmStoreList()).thenReturn(sList);
+
+        // when
+        mockMvc.perform(
+                        get("/confirm")
+                                .header("Authorization", "Bearer " + bearerToken)
+                )
+                // then
+                .andExpect(status().isOk())
+                .andDo(document(
+                        "success-confirm-list",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        responseFields(
+                                fieldWithPath("[].sellerName").type(JsonFieldType.STRING).description("판매자 이름"),
+                                fieldWithPath("[].storeName").type(JsonFieldType.STRING).description("가게 이름"),
+                                fieldWithPath("[].confirmStatusTimestamp").type(JsonFieldType.STRING).description("변경된 시간")
+                        ))
+                );
+    }
+
+    @Test
     @DisplayName("노출 승인 매장 상세보기 - 성공")
     public void success_confirm_detail() throws Exception {
 
@@ -671,5 +830,18 @@ public class ResultApiTest {
                                 fieldWithPath("isAccepted").type(JsonFieldType.BOOLEAN).description("True 값을 전달하여 상태 변경임을 전달")
                         )
                 ));
+    }
+
+    //--------------------
+    /**
+     * 시간 포매팅
+     */
+    private String timeSetter() {
+
+        ZonedDateTime nowTime = ZonedDateTime.now(ZoneId.of("Asia/Seoul"));
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        String formattedOrderTime = nowTime.format(formatter);
+
+        return formattedOrderTime;
     }
 }

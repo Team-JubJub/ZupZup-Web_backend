@@ -23,6 +23,9 @@ operation::manager-create[snippets='http-request,request-body,request-fields,res
 // operation::manager-delete[snippets='httpie-request,request-body']
 
 == 신규 가게 관련 API
+=== 신규 신청 매장 전체 보기 (성공)
+operation::success-new-list[snippets='http-request,response-body,response-fields']
+
 === 신규 신청 매장 상세 확인 (성공)
 operation::success-new-detail[snippets='http-request,response-body,response-fields']
 
@@ -39,6 +42,9 @@ operation::fail-new-to-wait[snippets='http-request,request-body,request-fields,r
 operation::success-update-enter[snippets='http-request,request-body,request-fields,response-body,response-fields']
 
 == 노출 대기 관련 API
+=== 노출 대기 매장 전체 보기 (성공)
+operation::success-wait-list[snippets='http-request,response-body,response-fields']
+
 === 노출 대기 매장 상세 확인 (성공)
 operation::success-wait-detail[snippets='http-request,response-body,response-fields']
 
@@ -58,6 +64,9 @@ operation::fail-wait-to-confirm[snippets='http-request,request-body,request-fiel
 operation::success-update-store[snippets='http-request,request-body,request-fields,response-body,response-fields']
 
 == 노출 승인 관련 API
+=== 노출 승인 매장 전체 보기 (성공)
+operation::success-confirm-list[snippets='http-request,response-body,response-fields']
+
 === 노출 승인 매장 상세 확인 (성공)
 operation::success-confirm-detail[snippets='http-request,response-body,response-fields']
 
