@@ -4,11 +4,17 @@ import com.zupzup.untact.api.ResultController;
 import com.zupzup.untact.model.dto.request.EnterUpdateReq;
 import com.zupzup.untact.model.dto.request.StateReq;
 import com.zupzup.untact.model.dto.request.StoreUpdateReq;
+import com.zupzup.untact.model.dto.response.EnterListRes;
 import com.zupzup.untact.model.dto.response.EnterRes;
 import com.zupzup.untact.model.dto.response.StoreRes;
 import com.zupzup.untact.service.impl.ResultServiceImpl;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.web.bind.annotation.*;
+
+import java.awt.print.Pageable;
 
 @RestController
 @RequiredArgsConstructor
@@ -17,6 +23,11 @@ public class ResultControllerImpl implements ResultController {
     private final ResultServiceImpl resultService;
 
     // --------- NEW ---------
+
+    /**
+     * 신규 매장 전체 리스트
+     */
+
     /**
      * 신규 신청 매장 상세
      */
