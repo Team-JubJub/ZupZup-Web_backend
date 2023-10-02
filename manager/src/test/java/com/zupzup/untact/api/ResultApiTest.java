@@ -3,6 +3,7 @@ package com.zupzup.untact.api;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.zupzup.untact.documents.RestDocsConfig;
 import com.zupzup.untact.domain.enums.EnterState;
+import com.zupzup.untact.exception.ManagerException;
 import com.zupzup.untact.model.dto.request.EnterUpdateReq;
 import com.zupzup.untact.model.dto.request.StateReq;
 import com.zupzup.untact.model.dto.request.StoreUpdateReq;
@@ -33,6 +34,7 @@ import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.zupzup.untact.exception.ManagerExceptionType.EMPTY_LIST;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.BDDMockito.given;
@@ -124,6 +126,35 @@ public class ResultApiTest {
                                 fieldWithPath("[].created_at").type(JsonFieldType.STRING).description("생성된 시간")
                         ))
                 );
+    }
+
+    @Test
+    @DisplayName("신규 신청 매장 전체 보기 - 실패")
+    public void fail_new_list() throws Exception {
+
+        // given
+        TestExceptionRes rs = new TestExceptionRes(802, "관련된 매장 정보를 찾을 수 없습니다.");
+
+        when(resultService.enterList()).thenThrow(new ManagerException(EMPTY_LIST));
+
+        // when
+        mockMvc.perform(
+                get("/new")
+                        .header("Authorization", "Bearer " + bearerToken)
+        )
+                // then
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("errCode").value(802))
+                .andExpect(jsonPath("errMsg").value("관련된 매장 정보를 찾을 수 없습니다."))
+                .andDo(document(
+                        "fail-new-list",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        responseFields(
+                                fieldWithPath("errCode").description("에러 코드"),
+                                fieldWithPath("errMsg").description("에러 메세지")
+                        )
+                        ));
     }
 
     @Test
@@ -385,6 +416,35 @@ public class ResultApiTest {
                                 fieldWithPath("[].waitStatusTimestamp").type(JsonFieldType.STRING).description("변경된 시간")
                         ))
                 );
+    }
+
+    @Test
+    @DisplayName("노출 대기 매장 전체 보기 - 실패")
+    public void fail_wait_list() throws Exception {
+
+        // given
+        TestExceptionRes rs = new TestExceptionRes(802, "관련된 매장 정보를 찾을 수 없습니다.");
+
+        when(resultService.waitStoreList()).thenThrow(new ManagerException(EMPTY_LIST));
+
+        // when
+        mockMvc.perform(
+                        get("/wait")
+                                .header("Authorization", "Bearer " + bearerToken)
+                )
+                // then
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("errCode").value(802))
+                .andExpect(jsonPath("errMsg").value("관련된 매장 정보를 찾을 수 없습니다."))
+                .andDo(document(
+                        "fail-wait-list",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        responseFields(
+                                fieldWithPath("errCode").description("에러 코드"),
+                                fieldWithPath("errMsg").description("에러 메세지")
+                        )
+                ));
     }
 
     @Test
@@ -681,6 +741,35 @@ public class ResultApiTest {
     }
 
     @Test
+    @DisplayName("노출 승인 매장 전체 보기 - 실패")
+    public void fail_confirm_list() throws Exception {
+
+        // given
+        TestExceptionRes rs = new TestExceptionRes(802, "관련된 매장 정보를 찾을 수 없습니다.");
+
+        when(resultService.confirmStoreList()).thenThrow(new ManagerException(EMPTY_LIST));
+
+        // when
+        mockMvc.perform(
+                        get("/confirm")
+                                .header("Authorization", "Bearer " + bearerToken)
+                )
+                // then
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("errCode").value(802))
+                .andExpect(jsonPath("errMsg").value("관련된 매장 정보를 찾을 수 없습니다."))
+                .andDo(document(
+                        "fail-confirm-list",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        responseFields(
+                                fieldWithPath("errCode").description("에러 코드"),
+                                fieldWithPath("errMsg").description("에러 메세지")
+                        )
+                ));
+    }
+
+    @Test
     @DisplayName("노출 승인 매장 상세보기 - 성공")
     public void success_confirm_detail() throws Exception {
 
@@ -843,5 +932,27 @@ public class ResultApiTest {
         String formattedOrderTime = nowTime.format(formatter);
 
         return formattedOrderTime;
+    }
+
+    /**
+     * 테스트시 쓰기 위한 에러 Response
+     */
+    static class TestExceptionRes {
+
+        private Integer errCode;
+        private String errMsg;
+
+        public TestExceptionRes(Integer errCode, String errMsg) {
+            this.errCode = errCode;
+            this.errMsg = errMsg;
+        }
+
+        public Integer getErrCode() {
+            return errCode;
+        }
+
+        public String getErrMsg() {
+            return errMsg;
+        }
     }
 }
