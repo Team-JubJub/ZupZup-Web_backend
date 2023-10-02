@@ -140,6 +140,29 @@ public class ResultServiceImpl implements ResultService {
         return modelMapper.map(e, EnterRes.class);
     }
 
+    /**
+     * 신규 신청 매장 검색
+     */
+    @Override
+    public List<EnterListRes> searchEnterList(String keyword) {
+
+        List<Enter> eList = enterRepository.searchByStoreNameContainingAndState(keyword, EnterState.NEW);
+
+        // 비어 있을 경우 에러 발생
+        if (eList.isEmpty()) {
+            throw new ManagerException(EMPTY_LIST);
+        }
+
+        List<EnterListRes> eListRes = new ArrayList<>();
+
+        for (Enter e : eList) {
+
+            eListRes.add(modelMapper.map(e, EnterListRes.class));
+        }
+
+        return eListRes;
+    }
+
     // --------- WAIT ---------
 
     /**
@@ -243,6 +266,30 @@ public class ResultServiceImpl implements ResultService {
         return modelMapper.map(s, StoreRes.class);
     }
 
+    /**
+     * 노츨 대기 매장 검색
+     */
+    @Override
+    public List<WaitStoreListRes> searchWaitStoreList(String keyword) {
+
+        List<Store> sList = storeRepository.searchByStoreNameContainingAndEnterState(keyword, EnterState.WAIT);
+
+        // 리스트가 비어있을 경우
+        if (sList.isEmpty()) {
+
+            throw new ManagerException(EMPTY_LIST);
+        }
+
+        List<WaitStoreListRes> wsList = new ArrayList<>();
+
+        for (Store s : sList) {
+
+            wsList.add(modelMapper.map(s, WaitStoreListRes.class));
+        }
+
+        return wsList;
+    }
+
     // --------- CONFIRM ---------
 
     /**
@@ -313,6 +360,31 @@ public class ResultServiceImpl implements ResultService {
         return "Enter state is changed into WAIT";
     }
 
+    /**
+     * 노출 승인 매장 검색
+     */
+    @Override
+    public List<ConfirmStoreListRes> searchConfirmStoreList(String keyword) {
+
+        List<Store> sList = storeRepository.searchByStoreNameContainingAndEnterState(keyword, EnterState.CONFIRM);
+
+        // 리스트가 비어있을 경우
+        if (sList.isEmpty()) {
+
+            throw new ManagerException(EMPTY_LIST);
+        }
+
+        List<ConfirmStoreListRes> csList = new ArrayList<>();
+
+        for (Store s : sList) {
+
+            csList.add(modelMapper.map(s, ConfirmStoreListRes.class));
+        }
+
+        return csList;
+    }
+
+    //-----------------------------
     /**
      * 시간 포매팅
      */
