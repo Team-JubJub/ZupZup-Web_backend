@@ -9,5 +9,5 @@ import java.util.List;
 @Repository
 public interface EnterRepository extends BaseRepository<Enter> {
 
-    List<Enter> findByEnterState(EnterState enterState);
+    List<Enter> findByState(EnterState enterState);
 }

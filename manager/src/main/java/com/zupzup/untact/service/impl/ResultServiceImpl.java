@@ -18,7 +18,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -43,7 +45,7 @@ public class ResultServiceImpl implements ResultService {
     @Override
     public List<EnterListRes> enterList() {
 
-        List<Enter> eList = enterRepository.findByEnterState(EnterState.NEW);
+        List<Enter> eList = enterRepository.findByState(EnterState.NEW);
 
         // list 길이가 0일 경우 에러 발생
         if (eList.size() == 0) {
@@ -108,7 +110,7 @@ public class ResultServiceImpl implements ResultService {
                 .storeAddress(e.getStoreAddress())
                 .crNumber(e.getCrNumber())
                 .enterState(EnterState.WAIT)
-                .waitStatusTimestamp(LocalDateTime.now())
+                .waitStatusTimestamp(timeSetter())
                 .build();
 
         e.setIsAccepted(true);
@@ -212,7 +214,7 @@ public class ResultServiceImpl implements ResultService {
         }
 
         s.setEnterState(EnterState.CONFIRM);
-        s.setConfirmStatusTimestamp(LocalDateTime.now());
+        s.setConfirmStatusTimestamp(timeSetter());
 
         storeRepository.save(s);
 
@@ -304,10 +306,22 @@ public class ResultServiceImpl implements ResultService {
         }
 
         s.setEnterState(EnterState.WAIT);
-        s.setWaitStatusTimestamp(LocalDateTime.now());
+        s.setWaitStatusTimestamp(timeSetter());
 
         storeRepository.save(s);
 
         return "Enter state is changed into WAIT";
+    }
+
+    /**
+     * 시간 포매팅
+     */
+    private String timeSetter() {
+
+        ZonedDateTime nowTime = ZonedDateTime.now(ZoneId.of("Asia/Seoul"));
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        String formattedOrderTime = nowTime.format(formatter);
+
+        return formattedOrderTime;
     }
 }
