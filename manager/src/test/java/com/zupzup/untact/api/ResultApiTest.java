@@ -23,6 +23,7 @@ import org.springframework.restdocs.RestDocumentationContextProvider;
 import org.springframework.restdocs.RestDocumentationExtension;
 import org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders;
 import org.springframework.restdocs.payload.JsonFieldType;
+import org.springframework.restdocs.request.RequestDocumentation;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
@@ -84,24 +85,28 @@ public class ResultApiTest {
         List<EnterListRes> eList = new ArrayList<>();
 
         EnterListRes eRes = new EnterListRes();
+        eRes.setId(1L);
         eRes.setName("test name 1");
         eRes.setStoreName("test store name 1");
         eRes.setCreated_at(timeSetter());
         eList.add(eRes);
 
         EnterListRes eRes1 = new EnterListRes();
+        eRes1.setId(2L);
         eRes1.setName("test name 2");
         eRes1.setStoreName("test store name 2");
         eRes1.setCreated_at(timeSetter());
         eList.add(eRes1);
 
         EnterListRes eRes2 = new EnterListRes();
+        eRes2.setId(3L);
         eRes2.setName("test name 3");
         eRes2.setStoreName("test store name 3");
         eRes2.setCreated_at(timeSetter());
         eList.add(eRes2);
 
         EnterListRes eRes3 = new EnterListRes();
+        eRes3.setId(4L);
         eRes3.setName("test name 4");
         eRes3.setStoreName("test store name 4");
         eRes3.setCreated_at(timeSetter());
@@ -121,6 +126,7 @@ public class ResultApiTest {
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
                         responseFields(
+                                fieldWithPath("[].id").type(JsonFieldType.NUMBER).description("enter unique ID"),
                                 fieldWithPath("[].name").type(JsonFieldType.STRING).description("판매자 이름"),
                                 fieldWithPath("[].storeName").type(JsonFieldType.STRING).description("가게 이름"),
                                 fieldWithPath("[].created_at").type(JsonFieldType.STRING).description("생성된 시간")
@@ -364,6 +370,53 @@ public class ResultApiTest {
                 ));
     }
 
+    @Test
+    @DisplayName("신규 신청 매장 검색 - 성공")
+    public void success_new_search() throws Exception {
+
+        // given
+        List<EnterListRes> eList = new ArrayList<>();
+
+        EnterListRes eRes = new EnterListRes();
+        eRes.setId(1L);
+        eRes.setName("test name 1");
+        eRes.setStoreName("test store name 1");
+        eRes.setCreated_at(timeSetter());
+        eList.add(eRes);
+
+        EnterListRes eRes1 = new EnterListRes();
+        eRes1.setId(2L);
+        eRes1.setName("test name 2");
+        eRes1.setStoreName("test store name 2");
+        eRes1.setCreated_at(timeSetter());
+        eList.add(eRes1);
+
+        when(resultService.searchEnterList(any(String.class))).thenReturn(eList);
+
+        // when
+        mockMvc.perform(
+                get("/new/search")
+                        .header("Authorization", "Bearer " + bearerToken)
+                        .param("keyword", "test")
+        )
+        // then
+                .andExpect(status().isOk())
+                .andDo(document(
+                        "success-new-search",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        RequestDocumentation.queryParameters(
+                                RequestDocumentation.parameterWithName("keyword").description("검색 키워드")
+                        ),
+                        responseFields(
+                                fieldWithPath("[].id").type(JsonFieldType.NUMBER).description("store unique ID"),
+                                fieldWithPath("[].name").type(JsonFieldType.STRING).description("판매자 이름"),
+                                fieldWithPath("[].storeName").type(JsonFieldType.STRING).description("가게 이름"),
+                                fieldWithPath("[].created_at").type(JsonFieldType.STRING).description("변경된 시간")
+                        ))
+                );
+    }
+
     /**
      * wait
      */
@@ -374,24 +427,28 @@ public class ResultApiTest {
         List<WaitStoreListRes> sList = new ArrayList<>();
 
         WaitStoreListRes wRes = new WaitStoreListRes();
+        wRes.setStoreId(1L);
         wRes.setSellerName("test name 1");
         wRes.setStoreName("test store name 1");
         wRes.setWaitStatusTimestamp(timeSetter());
         sList.add(wRes);
 
         WaitStoreListRes wRes1 = new WaitStoreListRes();
+        wRes1.setStoreId(2L);
         wRes1.setSellerName("test name 2");
         wRes1.setStoreName("test store name 2");
         wRes1.setWaitStatusTimestamp(timeSetter());
         sList.add(wRes1);
 
         WaitStoreListRes wRes2 = new WaitStoreListRes();
+        wRes2.setStoreId(3L);
         wRes2.setSellerName("test name 3");
         wRes2.setStoreName("test store name 3");
         wRes2.setWaitStatusTimestamp(timeSetter());
         sList.add(wRes2);
 
         WaitStoreListRes wRes3 = new WaitStoreListRes();
+        wRes3.setStoreId(4L);
         wRes3.setSellerName("test name 4");
         wRes3.setStoreName("test store name 4");
         wRes3.setWaitStatusTimestamp(timeSetter());
@@ -411,6 +468,7 @@ public class ResultApiTest {
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
                         responseFields(
+                                fieldWithPath("[].storeId").type(JsonFieldType.NUMBER).description("store unique ID"),
                                 fieldWithPath("[].sellerName").type(JsonFieldType.STRING).description("판매자 이름"),
                                 fieldWithPath("[].storeName").type(JsonFieldType.STRING).description("가게 이름"),
                                 fieldWithPath("[].waitStatusTimestamp").type(JsonFieldType.STRING).description("변경된 시간")
@@ -686,6 +744,53 @@ public class ResultApiTest {
                 ));
     }
 
+    @Test
+    @DisplayName("노출 대기 매장 검색 - 성공")
+    public void success_wait_search() throws Exception {
+
+        // given
+        List<WaitStoreListRes> sList = new ArrayList<>();
+
+        WaitStoreListRes wRes = new WaitStoreListRes();
+        wRes.setStoreId(1L);
+        wRes.setSellerName("test name 1");
+        wRes.setStoreName("test store name 1");
+        wRes.setWaitStatusTimestamp(timeSetter());
+        sList.add(wRes);
+
+        WaitStoreListRes wRes1 = new WaitStoreListRes();
+        wRes1.setStoreId(2L);
+        wRes1.setSellerName("test name 2");
+        wRes1.setStoreName("test store name 2");
+        wRes1.setWaitStatusTimestamp(timeSetter());
+        sList.add(wRes1);
+
+        when(resultService.searchWaitStoreList(any(String.class))).thenReturn(sList);
+
+        // when
+        mockMvc.perform(
+                        get("/wait/search")
+                                .header("Authorization", "Bearer " + bearerToken)
+                                .param("keyword", "test")
+                )
+                // then
+                .andExpect(status().isOk())
+                .andDo(document(
+                        "success-wait-search",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        RequestDocumentation.queryParameters(
+                                RequestDocumentation.parameterWithName("keyword").description("검색 키워드")
+                        ),
+                        responseFields(
+                                fieldWithPath("[].storeId").type(JsonFieldType.NUMBER).description("store unique ID"),
+                                fieldWithPath("[].sellerName").type(JsonFieldType.STRING).description("판매자 이름"),
+                                fieldWithPath("[].storeName").type(JsonFieldType.STRING).description("가게 이름"),
+                                fieldWithPath("[].waitStatusTimestamp").type(JsonFieldType.STRING).description("변경된 시간")
+                        ))
+                );
+    }
+
     /**
      * confirm
      */
@@ -696,24 +801,28 @@ public class ResultApiTest {
         List<ConfirmStoreListRes> sList = new ArrayList<>();
 
         ConfirmStoreListRes cRes = new ConfirmStoreListRes();
+        cRes.setStoreId(1L);
         cRes.setSellerName("test name 1");
         cRes.setStoreName("test store name 1");
         cRes.setConfirmStatusTimestamp(timeSetter());
         sList.add(cRes);
 
         ConfirmStoreListRes cRes1 = new ConfirmStoreListRes();
+        cRes1.setStoreId(2L);
         cRes1.setSellerName("test name 2");
         cRes1.setStoreName("test store name 2");
         cRes1.setConfirmStatusTimestamp(timeSetter());
         sList.add(cRes1);
 
         ConfirmStoreListRes cRes2 = new ConfirmStoreListRes();
+        cRes2.setStoreId(3L);
         cRes2.setSellerName("test name 3");
         cRes2.setStoreName("test store name 3");
         cRes2.setConfirmStatusTimestamp(timeSetter());
         sList.add(cRes2);
 
         ConfirmStoreListRes cRes3 = new ConfirmStoreListRes();
+        cRes3.setStoreId(4L);
         cRes3.setSellerName("test name 4");
         cRes3.setStoreName("test store name 4");
         cRes3.setConfirmStatusTimestamp(timeSetter());
@@ -733,6 +842,7 @@ public class ResultApiTest {
                         preprocessRequest(prettyPrint()),
                         preprocessResponse(prettyPrint()),
                         responseFields(
+                                fieldWithPath("[].storeId").type(JsonFieldType.NUMBER).description("store unique ID"),
                                 fieldWithPath("[].sellerName").type(JsonFieldType.STRING).description("판매자 이름"),
                                 fieldWithPath("[].storeName").type(JsonFieldType.STRING).description("가게 이름"),
                                 fieldWithPath("[].confirmStatusTimestamp").type(JsonFieldType.STRING).description("변경된 시간")
@@ -919,6 +1029,53 @@ public class ResultApiTest {
                                 fieldWithPath("isAccepted").type(JsonFieldType.BOOLEAN).description("True 값을 전달하여 상태 변경임을 전달")
                         )
                 ));
+    }
+
+    @Test
+    @DisplayName("노출 대기 매장 검색 - 성공")
+    public void success_confirm_search() throws Exception {
+
+        // given
+        List<ConfirmStoreListRes> sList = new ArrayList<>();
+
+        ConfirmStoreListRes cRes = new ConfirmStoreListRes();
+        cRes.setStoreId(1L);
+        cRes.setSellerName("test name 1");
+        cRes.setStoreName("test store name 1");
+        cRes.setConfirmStatusTimestamp(timeSetter());
+        sList.add(cRes);
+
+        ConfirmStoreListRes cRes1 = new ConfirmStoreListRes();
+        cRes1.setStoreId(2L);
+        cRes1.setSellerName("test name 2");
+        cRes1.setStoreName("test store name 2");
+        cRes1.setConfirmStatusTimestamp(timeSetter());
+        sList.add(cRes1);
+
+        when(resultService.searchConfirmStoreList(any(String.class))).thenReturn(sList);
+
+        // when
+        mockMvc.perform(
+                        get("/confirm/search")
+                                .header("Authorization", "Bearer " + bearerToken)
+                                .param("keyword", "test")
+                )
+                // then
+                .andExpect(status().isOk())
+                .andDo(document(
+                        "success-confirm-search",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        RequestDocumentation.queryParameters(
+                                RequestDocumentation.parameterWithName("keyword").description("검색 키워드")
+                        ),
+                        responseFields(
+                                fieldWithPath("[].storeId").type(JsonFieldType.NUMBER).description("store unique ID"),
+                                fieldWithPath("[].sellerName").type(JsonFieldType.STRING).description("판매자 이름"),
+                                fieldWithPath("[].storeName").type(JsonFieldType.STRING).description("가게 이름"),
+                                fieldWithPath("[].confirmStatusTimestamp").type(JsonFieldType.STRING).description("변경된 시간")
+                        ))
+                );
     }
 
     //--------------------

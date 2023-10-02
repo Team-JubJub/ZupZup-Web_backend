@@ -44,6 +44,9 @@ operation::fail-new-to-wait[snippets='http-request,request-body,request-fields,r
 === 신규 신청 매장 수정 (성공)
 operation::success-update-enter[snippets='http-request,request-body,request-fields,response-body,response-fields']
 
+=== 신규 신청 매장 검색 (성공)
+operation::success-new-search[snippets='http-request,query-parameters,response-body,response-fields']
+
 == 노출 대기 관련 API
 === 노출 대기 매장 전체 보기 (성공)
 operation::success-wait-list[snippets='http-request,response-body,response-fields']
@@ -69,6 +72,9 @@ operation::fail-wait-to-confirm[snippets='http-request,request-body,request-fiel
 === 노출 대기 매장 수정 (성공)
 operation::success-update-store[snippets='http-request,request-body,request-fields,response-body,response-fields']
 
+=== 노출 대기 매장 검색 (성공)
+operation::success-wait-search[snippets='http-request,query-parameters,response-body,response-fields']
+
 == 노출 승인 관련 API
 === 노출 승인 매장 전체 보기 (성공)
 operation::success-confirm-list[snippets='http-request,response-body,response-fields']
@@ -87,3 +93,6 @@ operation::success-confirm-to-wait[snippets='http-request,request-body,request-f
 
 === 노출 승인 매장 -> 노출 대기로 변경 (실패)
 operation::fail-confirm-to-wait[snippets='http-request,request-body,request-fields,response-body']
+
+=== 노출 대기 매장 검색 (성공)
+operation::success-confirm-search[snippets='http-request,query-parameters,response-body,response-fields']
