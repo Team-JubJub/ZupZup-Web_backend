@@ -25,7 +25,6 @@ public class ResultControllerImpl implements ResultController {
     @Override
     @GetMapping("/new")
     public List<EnterListRes> enterList() {
-
         return resultService.enterList();
     }
 
@@ -55,6 +54,15 @@ public class ResultControllerImpl implements ResultController {
     @PostMapping("/new/{id}")
     public EnterRes updateEnterDetail(@PathVariable Long id, @RequestBody EnterUpdateReq rq) {
         return resultService.updateEnterDetail(id, rq);
+    }
+
+    /**
+     * 매장 검색
+     */
+    @Override
+    @GetMapping("/new/search")
+    public List<EnterListRes> searchEnterList(@RequestParam String keyword) {
+        return resultService.searchEnterList(keyword);
     }
 
     // --------- WAIT ---------
@@ -104,6 +112,15 @@ public class ResultControllerImpl implements ResultController {
         return resultService.updateStoreDetail(id, rq);
     }
 
+    /**
+     * 매장 검색
+     */
+    @Override
+    @GetMapping("/wait/search")
+    public List<WaitStoreListRes> searchWaitStoreList(@RequestParam String keyword) {
+        return resultService.searchWaitStoreList(keyword);
+    }
+
     // --------- CONFIRM ---------
 
     /**
@@ -131,5 +148,14 @@ public class ResultControllerImpl implements ResultController {
     @PostMapping("/confirm")
     public String confirmToWait(@RequestBody StateReq rq) {
         return resultService.confirmToWait(rq);
+    }
+
+    /**
+     * 매장 검색
+     */
+    @Override
+    @GetMapping("/confirm/search")
+    public List<ConfirmStoreListRes> searchConfirmStoreList(@RequestParam String keyword) {
+        return resultService.searchConfirmStoreList(keyword);
     }
 }
