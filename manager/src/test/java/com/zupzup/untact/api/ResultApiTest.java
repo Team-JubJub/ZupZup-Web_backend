@@ -44,6 +44,8 @@ import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.docu
 import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 import static org.springframework.restdocs.payload.PayloadDocumentation.*;
+import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
+import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -308,6 +310,31 @@ public class ResultApiTest {
                         requestFields(
                                 fieldWithPath("id").type(JsonFieldType.NUMBER).description("상태 변경하고자 하는 신청서 unique Id"),
                                 fieldWithPath("isAccepted").type(JsonFieldType.BOOLEAN).description("True 값을 전달하여 상태 변경임을 전달")
+                        )
+                ));
+    }
+
+    @Test
+    @DisplayName("신청서 삭제 - 성공")
+    public void success_delete_enter() throws Exception {
+
+        // given
+        when(resultService.deleteEnter(anyLong())).thenReturn("Enter is deleted");
+
+        // when
+        mockMvc.perform(
+                        RestDocumentationRequestBuilders.put("/new/{id}", 1L)
+                        .header("Authorization", "Bearer " + bearerToken)
+        )
+        // then
+                .andExpect(status().isOk())
+                .andExpect(content().string("Enter is deleted"))
+                .andDo(document(
+                        "success-delete-enter",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint()),
+                        pathParameters(
+                                parameterWithName("id").description("Enter unique id")
                         )
                 ));
     }

@@ -12,6 +12,7 @@ public interface ResultService {
     List<EnterListRes> enterList(); // 매장 전체보기 (신규 신청)
     EnterRes enterDetail(Long id); // 매장 상세
     String newToWait(StateReq rq); // 매장 노출 대기로 변경 = store 엔티티에 저장
+    String deleteEnter(Long id); // 매장 삭제
     EnterRes updateEnterDetail(Long id, EnterUpdateReq rq); // 매장 관련 내용 수정
     List<EnterListRes> searchEnterList(String keyword); // 매장 검색
 

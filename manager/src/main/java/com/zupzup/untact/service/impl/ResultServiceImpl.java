@@ -122,6 +122,18 @@ public class ResultServiceImpl implements ResultService {
     }
 
     /**
+     * 신청서 삭제
+     */
+    @Override
+    public String deleteEnter(Long id) {
+
+        Enter e = enterRepository.findById(id).get();
+        e.setDeleted(true);
+
+        return "Enter is deleted";
+    }
+
+    /**
      * 신청서 수정
      */
     @Override
