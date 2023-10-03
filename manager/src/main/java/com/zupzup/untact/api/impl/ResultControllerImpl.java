@@ -47,6 +47,12 @@ public class ResultControllerImpl implements ResultController {
         return resultService.newToWait(rq);
     }
 
+    @Override
+    @PutMapping("/new/{id}")
+    public String deleteEnter(@PathVariable Long id) {
+        return resultService.deleteEnter(id);
+    }
+
     /**
      * 신청서 수정
      */
