@@ -10,5 +10,5 @@ public class MemberRes {
 
     private Long id;
     private String loginId;
-    private LocalDateTime created_at;
+    private String created_at;
 }
