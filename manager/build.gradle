@@ -3,34 +3,34 @@ plugins {
     id 'org.springframework.boot' version '3.0.0'
     id 'io.spring.dependency-management' version '1.1.0'
     // springDocs
-    id "org.asciidoctor.jvm.convert" version "3.3.2"
+//    id "org.asciidoctor.jvm.convert" version "3.3.2"
 }
 
-configurations {
-    asciidoctorExt
-}
-
-ext {
-    snippetsDir = file('build/generated-snippets')
-}
-
-test {
-    useJUnitPlatform()
-    outputs.dir snippetsDir
-}
-
-asciidoctor {
-    inputs.dir snippetsDir
-    configurations 'asciidoctorExt'
-    dependsOn test
-}
-
-bootJar {
-    dependsOn asciidoctor // (1)
-    from("${asciidoctor.outputDir}") { // (2)
-        into 'static/docs'
-    }
-}
+//configurations {
+//    asciidoctorExt
+//}
+//
+//ext {
+//    snippetsDir = file('build/generated-snippets')
+//}
+//
+//test {
+//    useJUnitPlatform()
+//    outputs.dir snippetsDir
+//}
+//
+//asciidoctor {
+//    inputs.dir snippetsDir
+//    configurations 'asciidoctorExt'
+//    dependsOn test
+//}
+//
+//bootJar {
+//    dependsOn asciidoctor // (1)
+//    from("${asciidoctor.outputDir}") { // (2)
+//        into 'static/docs'
+//    }
+//}
 
 dependencies {
 
@@ -55,7 +55,7 @@ dependencies {
 
     // test
     implementation 'org.springframework.restdocs:spring-restdocs-mockmvc'
-    asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor'
+//    asciidoctorExt 'org.springframework.restdocs:spring-restdocs-asciidoctor'
 
     // mockito
     implementation 'org.mockito:mockito-core'
