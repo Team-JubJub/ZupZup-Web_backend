@@ -14,7 +14,7 @@ import java.util.List;
 @Entity
 @SuperBuilder
 @NoArgsConstructor
-@Where(clause = "is_deleted IS false")
+@Where(clause = "is_deleted = 0")
 public class Member extends BaseEntity {
 
     // 회원가입
