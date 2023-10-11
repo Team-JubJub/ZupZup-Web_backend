@@ -1,5 +1,5 @@
 rootProject.name = 'zup'
-include 'seller'
+include 'member'
 include 'manager'
 include 'spring-module-common'
 include 'spring-module-base'
