@@ -16,10 +16,10 @@ import org.springframework.web.filter.HiddenHttpMethodFilter;
 @EnableAsync
 @EnableScheduling
 @EnableJpaAuditing
-public class SellerApplication {
+public class MemberApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(SellerApplication.class, args);
+        SpringApplication.run(MemberApplication.class, args);
     }
 
     @Bean
