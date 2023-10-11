@@ -18,13 +18,8 @@ import org.springframework.security.web.AuthenticationEntryPoint;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.access.AccessDeniedHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
 
 import java.io.IOException;
-import java.util.List;
-
-import static org.springframework.security.web.util.matcher.AntPathRequestMatcher.antMatcher;
 
 @RequiredArgsConstructor
 @Configuration
@@ -41,20 +36,8 @@ public class SecurityConfig {
                 .httpBasic().disable()
                 // 쿠키 기반이 아닌 JWT 기반이므로 사용하지 않음
                 .csrf().disable()
-                .cors(c -> {
-                    CorsConfigurationSource source = request -> {
-                        // CORS 설정
-                        CorsConfiguration config = new CorsConfiguration();
-                        config.setAllowedOrigins(
-                                List.of("*")
-                        );
-                        config.setAllowedMethods(
-                                List.of("*")
-                        );
-                        return config;
-                    };
-                    c.configurationSource(source);
-                })
+                .cors()
+                .and()
                 // Spring Security 세션 정책 : 세션을 생성 및 허용하지 않음
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
