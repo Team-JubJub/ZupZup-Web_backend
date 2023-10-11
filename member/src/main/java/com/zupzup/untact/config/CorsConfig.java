@@ -14,7 +14,7 @@ public class CorsConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-                .allowedOrigins("https://zupzuptest.com:8095");
+                .allowedOrigins("https://zupzuptest.com:8085");
     }
 
     // 정보 얻어오는 corsFilter
