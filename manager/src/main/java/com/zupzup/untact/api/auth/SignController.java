@@ -19,7 +19,9 @@ public class SignController {
     @PostMapping("/login")
     public ResponseEntity<ManagerLoginRes> signIn(@RequestBody ManagerLoginReq rq) throws Exception {
 
-        return new ResponseEntity<>(signService.login(rq), HttpStatus.OK);
+        ManagerLoginRes rs = signService.login(rq);
+
+        return new ResponseEntity<>(rs, HttpStatus.OK);
     }
 
 }
