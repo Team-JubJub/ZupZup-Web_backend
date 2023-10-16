@@ -17,7 +17,7 @@ import static com.zupzup.untact.exception.ManagerExceptionType.PASSWORD_NOT_SAME
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class SignService {
+public class ManagerSignService {
 
     private final ManagerRepository managerRepository;
     private final PasswordEncoder passwordEncoder;
