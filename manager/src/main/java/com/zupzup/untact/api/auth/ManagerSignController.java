@@ -16,7 +16,7 @@ public class ManagerSignController {
 
     private final ManagerSignService managerSignService;
 
-    @PostMapping("/login")
+    @PostMapping("/manager/login")
     public ResponseEntity<ManagerLoginRes> signIn(@RequestBody ManagerLoginReq rq) throws Exception {
 
         ManagerLoginRes rs = managerSignService.login(rq);

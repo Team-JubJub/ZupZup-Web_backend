@@ -54,7 +54,7 @@ public class ManagerServiceImpl extends BaseServiceImpl<Manager, ManagerReq, Man
                 .loginPwd(passwordEncoder.encode(rq.getLoginPwd()))
                 .build();
 
-        m.setRoles(
+        m.setManagerRoles(
                 Collections.singletonList(ManagerAuthority.builder()
                         .name("ROLE_MANAGER")
                         .manager(m)
