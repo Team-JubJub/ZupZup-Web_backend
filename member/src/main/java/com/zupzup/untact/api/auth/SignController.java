@@ -28,10 +28,10 @@ public class SignController {
     /**
      * 비밀번호 변경
      */
-    @PostMapping("/change/{id}")
-    public ResponseEntity<String> changePwd(@PathVariable Long id, @RequestBody MemberPwdReq rq) {
+    @PostMapping("/change")
+    public ResponseEntity<String> changePwd(@RequestBody MemberPwdReq rq) {
 
-        String rs = signService.changePwd(id, rq);
+        String rs = signService.changePwd(rq);
 
         return new ResponseEntity<>(rs, HttpStatus.OK);
     }

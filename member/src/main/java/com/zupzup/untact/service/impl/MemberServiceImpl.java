@@ -16,6 +16,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 
 import static com.zupzup.untact.exception.member.MemberExceptionType.ALREADY_EXIST_USERNAME;
@@ -69,6 +72,7 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, MemberReq, Member
 
         // 패스워드 인코딩 후 저장
         Member m = Member.builder()
+                .created_at(timeSetter())
                 .name(rq.getName())
                 .phoneNum(rq.getPhoneNum())
                 .ad(rq.getAd())
@@ -102,5 +106,18 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, MemberReq, Member
         // 저장후 response 형식에 맞춰 값 반환
         return modelMapper.map(m, MemberRes.class);
 
+    }
+
+    //-----------------------------
+    /**
+     * 시간 포매팅
+     */
+    private String timeSetter() {
+
+        ZonedDateTime nowTime = ZonedDateTime.now(ZoneId.of("Asia/Seoul"));
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        String formattedOrderTime = nowTime.format(formatter);
+
+        return formattedOrderTime;
     }
 }

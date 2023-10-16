@@ -14,8 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.zupzup.untact.exception.member.MemberExceptionType.NOT_FOUND_MEMBER;
-import static com.zupzup.untact.exception.member.MemberExceptionType.WRONG_PASSWORD;
+import static com.zupzup.untact.exception.member.MemberExceptionType.*;
 
 @Service
 @Transactional
@@ -51,7 +50,11 @@ public class SignService {
     /**
      * 비밀번호 수정
      */
-    public String changePwd(Long id, MemberPwdReq rq) {
+    public String changePwd(MemberPwdReq rq) {
+
+        // 해당 정보를 가진 유저가 있는지 확인
+        Member m = memberRepository.findByNameAndPhoneNum(rq.getName(), rq.getPhoneNum())
+                .orElseThrow(() -> new MemberException(NOT_FOUND_MEMBER));
 
         // 비밀번호 동일 여부 확인
         if (!rq.getLoginPwd1().equals(rq.getLoginPwd2())) {
@@ -60,9 +63,6 @@ public class SignService {
             return "Not same password";
         }
 
-        Member m = memberRepository.findById(id)
-                // 회원을 찾지 못하면 에러 전송
-                .orElseThrow(() -> new MemberException(NOT_FOUND_MEMBER));
         m.changePwd(rq.getLoginPwd2(), passwordEncoder);
 
         return "Password Changed";
@@ -73,7 +73,7 @@ public class SignService {
      */
     public MemberRes findLoginId(MemberFindReq rq) {
 
-        Member m = memberRepository.findByName(rq.getName())
+        Member m = memberRepository.findByNameAndPhoneNum(rq.getName(), rq.getPhoneNum())
                 // 회원을 찾지 못하면 에러 전송
                 .orElseThrow(() -> new MemberException(NOT_FOUND_MEMBER));
 

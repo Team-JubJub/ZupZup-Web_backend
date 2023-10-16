@@ -16,6 +16,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 
 import static com.zupzup.untact.exception.enter.EnterExceptionType.NO_MATCH_ENTER;
@@ -45,6 +48,7 @@ public class ManagerServiceImpl extends BaseServiceImpl<Manager, ManagerReq, Man
 
         // 패스워드 인코딩 후 저장
         Manager m = Manager.builder()
+                .created_at(timeSetter())
                 .name(rq.getName())
                 .loginId(rq.getLoginId())
                 .loginPwd(passwordEncoder.encode(rq.getLoginPwd()))
@@ -76,5 +80,18 @@ public class ManagerServiceImpl extends BaseServiceImpl<Manager, ManagerReq, Man
         managerRepository.save(m);
 
         return modelMapper.map(m, ManagerRes.class);
+    }
+
+    //-----------------------------
+    /**
+     * 시간 포매팅
+     */
+    private String timeSetter() {
+
+        ZonedDateTime nowTime = ZonedDateTime.now(ZoneId.of("Asia/Seoul"));
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        String formattedOrderTime = nowTime.format(formatter);
+
+        return formattedOrderTime;
     }
 }

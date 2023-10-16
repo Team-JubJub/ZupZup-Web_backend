@@ -6,6 +6,8 @@ import lombok.Setter;
 @Getter @Setter
 public class MemberPwdReq {
 
+    private String name;
+    private String phoneNum;
     private String loginPwd1;
     private String loginPwd2;
 }
