@@ -23,7 +23,7 @@ public class ManagerUserDetails implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return manager.getRoles().stream().map(o -> new SimpleGrantedAuthority(
+        return manager.getManagerRoles().stream().map(o -> new SimpleGrantedAuthority(
                 o.getName()
         )).collect(Collectors.toList());
     }

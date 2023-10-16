@@ -33,7 +33,7 @@ public class Manager extends BaseEntity {
 //    private List<String> roles = new ArrayList<>();
     @Builder.Default
     @OneToMany(mappedBy = "manager", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-    private List<ManagerAuthority> roles = new ArrayList<>();
+    private List<ManagerAuthority> ManagerRoles = new ArrayList<>();
 
     public void updateManager(ManagerReq rq, PasswordEncoder encoder) {
         this.name = rq.getName();
