@@ -5,7 +5,6 @@ import com.zupzup.untact.exception.member.MemberException;
 import com.zupzup.untact.model.Manager;
 import com.zupzup.untact.model.dto.request.ManagerLoginReq;
 import com.zupzup.untact.model.dto.response.ManagerLoginRes;
-import com.zupzup.untact.model.request.MemberLoginReq;
 import com.zupzup.untact.repository.ManagerRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
