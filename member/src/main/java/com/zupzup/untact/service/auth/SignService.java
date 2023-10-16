@@ -42,6 +42,7 @@ public class SignService {
         MemberLoginRes res = new MemberLoginRes();
         res.setLoginId(member.getLoginId());
         res.setToken(jwtProvider.createToken(member.getLoginId(), member.getRoles()));
+        res.setCnt(member.getCnt());
 
         return res;
 
