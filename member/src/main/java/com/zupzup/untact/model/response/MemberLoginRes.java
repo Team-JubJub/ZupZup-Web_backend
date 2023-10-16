@@ -7,4 +7,5 @@ public class MemberLoginRes {
 
     private String loginId;
     private String token;
+    private int cnt;
 }
