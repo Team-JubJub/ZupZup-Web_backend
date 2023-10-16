@@ -60,6 +60,16 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, MemberReq, Member
     @Override
     public MemberRes save(MemberReq rq) {
 
+        // 이름과 전화번호가 같은 사람이 있는지 확인
+        if (memberRepository.existsByNameAndPhoneNum(rq.getName(), rq.getPhoneNum())) {
+
+            // 존재하면 rs 전송
+            MemberRes rs = new MemberRes();
+            rs.setLoginId("이미 존재하는 회원입니다.");
+
+            return rs;
+        }
+
         // 비밀번호 동일 여부 확인
         if (!rq.getLoginPwd1().equals(rq.getLoginPwd2())) {
 
