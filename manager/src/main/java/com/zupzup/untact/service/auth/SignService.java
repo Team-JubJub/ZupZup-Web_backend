@@ -1,7 +1,7 @@
 package com.zupzup.untact.service.auth;
 
 import com.zupzup.untact.config.auth.JwtProvider;
-import com.zupzup.untact.exception.member.MemberException;
+import com.zupzup.untact.exception.ManagerException;
 import com.zupzup.untact.model.Manager;
 import com.zupzup.untact.model.dto.request.ManagerLoginReq;
 import com.zupzup.untact.model.dto.response.ManagerLoginRes;
@@ -11,8 +11,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import static com.zupzup.untact.exception.member.MemberExceptionType.NOT_FOUND_MEMBER;
-import static com.zupzup.untact.exception.member.MemberExceptionType.WRONG_PASSWORD;
+import static com.zupzup.untact.exception.ManagerExceptionType.MANAGER_NOT_FOUND;
+import static com.zupzup.untact.exception.ManagerExceptionType.PASSWORD_NOT_SAME;
 
 @Service
 @Transactional
@@ -29,11 +29,11 @@ public class SignService {
     public ManagerLoginRes login(ManagerLoginReq rq) throws Exception {
 
         Manager manager = managerRepository.findByLoginId(rq.getLoginId())
-                .orElseThrow(() -> new MemberException(NOT_FOUND_MEMBER));
+                .orElseThrow(() -> new ManagerException(MANAGER_NOT_FOUND));
 
         if (!passwordEncoder.matches(rq.getLoginPwd(), manager.getLoginPwd())) {
 
-            throw new MemberException(WRONG_PASSWORD);
+            throw new ManagerException(PASSWORD_NOT_SAME);
         }
 
         //res 생성
