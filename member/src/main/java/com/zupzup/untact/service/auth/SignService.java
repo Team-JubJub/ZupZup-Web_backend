@@ -73,7 +73,7 @@ public class SignService {
      */
     public MemberRes findLoginId(MemberFindReq rq) {
 
-        Member m = memberRepository.findByName(rq.getName())
+        Member m = memberRepository.findByNameAndPhoneNum(rq.getName(), rq.getPhoneNum())
                 // 회원을 찾지 못하면 에러 전송
                 .orElseThrow(() -> new MemberException(NOT_FOUND_MEMBER));
 

@@ -11,5 +11,5 @@ import java.util.Optional;
 public interface MemberRepository extends BaseRepository<Member> {
 
     Optional<Member> findByLoginId(String loginId);
-    Optional<Member> findByName(String name);
+    Optional<Member> findByNameAndPhoneNum(String name, String phoneNum);
 }
