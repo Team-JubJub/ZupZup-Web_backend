@@ -39,7 +39,7 @@ public class ManagerSignService {
         //res 생성
         ManagerLoginRes res = new ManagerLoginRes();
         res.setLoginId(manager.getLoginId());
-        res.setToken(jwtProvider.createToken(manager.getLoginId(), manager.getRoles()));
+        res.setToken(jwtProvider.createToken(manager.getLoginId(), manager.getManagerRoles()));
 
         return res;
 
