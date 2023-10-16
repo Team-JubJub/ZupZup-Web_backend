@@ -42,6 +42,14 @@ public class EnterServiceImpl extends BaseServiceImpl<Enter, EnterReq, EnterRes,
 
             Member m = memberRepository.findById(rq.getId()).get();
 
+            if (m.getCnt() == 1) {
+
+                EnterRes rs = new EnterRes();
+                rs.setStoreName("입점 신청은 한 번만 가능합니다.");
+
+                return rs;
+            }
+
             // 사장님과 입점 신청은 1:N 관계
             // 입점 신청에서 받은 내용들 저장 + 문의 상태는 NEW 로 설정 (관리자용)
             Enter e = Enter.builder()
@@ -57,7 +65,11 @@ public class EnterServiceImpl extends BaseServiceImpl<Enter, EnterReq, EnterRes,
 
             enterRepository.save(e);
 
+            m.setCnt(1);
+            memberRepository.save(m);
+
             return modelMapper.map(e, EnterRes.class);
+
         } catch (Exception e) {
 
             // 사용자가 존재하지 않을 경우 에러 발생

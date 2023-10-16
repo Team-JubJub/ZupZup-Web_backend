@@ -89,6 +89,7 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, MemberReq, Member
                 .loginId(rq.getLoginId())
                 .loginPwd(passwordEncoder.encode(rq.getLoginPwd1()))
                 .email(rq.getEmail())
+                .cnt(0)
                 .build();
 
         m.setRoles(
