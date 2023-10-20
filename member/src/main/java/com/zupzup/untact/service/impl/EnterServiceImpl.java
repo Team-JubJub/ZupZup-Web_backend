@@ -42,6 +42,7 @@ public class EnterServiceImpl extends BaseServiceImpl<Enter, EnterReq, EnterRes,
 
             Member m = memberRepository.findById(rq.getId()).get();
 
+            // 입점 신청 횟수 확인
             if (m.getCnt() == 1) {
 
                 EnterRes rs = new EnterRes();
@@ -55,8 +56,8 @@ public class EnterServiceImpl extends BaseServiceImpl<Enter, EnterReq, EnterRes,
             Enter e = Enter.builder()
                     .created_at(timeSetter())
                     .member(m)
-                    .name(m.getName())
-                    .phoneNum(m.getPhoneNum())
+                    .name(rq.getName())
+                    .phoneNum(rq.getPhoneNum())
                     .storeName(rq.getStoreName())
                     .storeAddress(rq.getStoreAddress())
                     .crNumber(rq.getCrNumber())

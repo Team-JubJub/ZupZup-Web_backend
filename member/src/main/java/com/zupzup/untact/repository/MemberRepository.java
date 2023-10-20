@@ -15,4 +15,7 @@ public interface MemberRepository extends BaseRepository<Member> {
     // 이름과 전화번호 검색했을 때 존재하는지
     Optional<Member> findByNameAndPhoneNum(String name, String phoneNum);
     boolean existsByNameAndPhoneNum(String name, String phoneNum);
+
+    // 아이디와 전화번호로 검증
+    Optional<Member> findByLoginIdAndPhoneNum(String loginId, String phoneNum);
 }

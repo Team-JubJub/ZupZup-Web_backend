@@ -43,6 +43,7 @@ public class SignService {
         res.setLoginId(member.getLoginId());
         res.setToken(jwtProvider.createToken(member.getLoginId(), member.getRoles()));
         res.setCnt(member.getCnt());
+        res.setId(member.getId());
 
         return res;
 
@@ -54,7 +55,7 @@ public class SignService {
     public String changePwd(MemberPwdReq rq) {
 
         // 해당 정보를 가진 유저가 있는지 확인
-        Member m = memberRepository.findByNameAndPhoneNum(rq.getName(), rq.getPhoneNum())
+        Member m = memberRepository.findByLoginIdAndPhoneNum(rq.getLoginId(), rq.getPhoneNum())
                 .orElseThrow(() -> new MemberException(NOT_FOUND_MEMBER));
 
         // 비밀번호 동일 여부 확인
