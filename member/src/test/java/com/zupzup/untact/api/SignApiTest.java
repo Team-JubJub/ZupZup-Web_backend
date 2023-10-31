@@ -27,15 +27,11 @@
 //import org.springframework.web.context.WebApplicationContext;
 //import org.springframework.web.filter.CharacterEncodingFilter;
 //
-//import java.time.LocalDateTime;
-//
 //import static org.mockito.ArgumentMatchers.any;
-//import static org.mockito.ArgumentMatchers.anyLong;
 //import static org.mockito.Mockito.when;
 //import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 //import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 //import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
-//import static org.springframework.restdocs.operation.preprocess.Preprocessors.prettyPrint;
 //import static org.springframework.restdocs.payload.PayloadDocumentation.*;
 //import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 //import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
@@ -73,7 +69,7 @@
 //        MemberRes rs = new MemberRes();
 //        rs.setId(1L);
 //        rs.setLoginId("test");
-//        rs.setCreated_at(LocalDateTime.now());
+//        rs.setCreated_at("2023-10-31 15:05");
 //
 //        // request 생성
 //        MemberFindReq rq = new MemberFindReq();
@@ -120,17 +116,19 @@
 //
 //        // given
 //        MemberPwdReq rq = new MemberPwdReq();
+//        rq.setLoginId("loginId");
+//        rq.setPhoneNum("010-1111-1111");
 //        rq.setLoginPwd1("test");
 //        rq.setLoginPwd2("test");
 //
-//        when(signService.changePwd(anyLong(), any(MemberPwdReq.class))).thenReturn("Password Changed");
+//        when(signService.changePwd(any(MemberPwdReq.class))).thenReturn("Password Changed");
 //
 //        ObjectMapper objectMapper = new ObjectMapper();
 //        String json = objectMapper.writeValueAsString(rq);
 //
 //        // when
 //        mockMvc.perform(
-//                RestDocumentationRequestBuilders.post("/change/{id}", 1L)
+//                RestDocumentationRequestBuilders.post("/change", 1L)
 //                        .content(json)
 //                        .contentType(MediaType.APPLICATION_JSON)
 //        )
@@ -141,10 +139,9 @@
 //                        "change_pwd_success",
 //                        preprocessRequest(prettyPrint()),
 //                        preprocessResponse(prettyPrint()),
-//                        pathParameters(
-//                                parameterWithName("id").description("찾고자 하는 고객 unique id")
-//                        ),
 //                        requestFields(
+//                                fieldWithPath("loginId").type(JsonFieldType.STRING).description("변경할 유저 로그인 아이디"),
+//                                fieldWithPath("phoneNum").type(JsonFieldType.STRING).description("변경할 유저 전화번호"),
 //                                fieldWithPath("loginPwd1").type(JsonFieldType.STRING).description("수정된 비밀번호 1"),
 //                                fieldWithPath("loginPwd2").type(JsonFieldType.STRING).description("수정된 비밀번호 2")
 //                        )
@@ -168,6 +165,8 @@
 //        MemberLoginRes rs = new MemberLoginRes();
 //        rs.setLoginId("test");
 //        rs.setToken("test token");
+//        rs.setId(1L);
+//        rs.setCnt(0);
 //        when(signService.login(any(MemberLoginReq.class))).thenReturn(rs);
 //
 //        // when
@@ -188,7 +187,9 @@
 //                                ),
 //                                responseFields(
 //                                        fieldWithPath("loginId").type(JsonFieldType.STRING).description("로그인 아이디"),
-//                                        fieldWithPath("token").type(JsonFieldType.STRING).description("BEARER 토큰")
+//                                        fieldWithPath("token").type(JsonFieldType.STRING).description("BEARER 토큰"),
+//                                        fieldWithPath("id").type(JsonFieldType.NUMBER).description("Long 타입 유저 unique Id"),
+//                                        fieldWithPath("cnt").type(JsonFieldType.NUMBER).description("int 타입 유저 가게 신청 횟수")
 //                                )
 //                        ));
 //    }

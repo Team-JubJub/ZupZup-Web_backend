@@ -2,6 +2,7 @@
 //
 //import com.fasterxml.jackson.databind.ObjectMapper;
 //import com.zupzup.untact.documents.RestDocsConfig;
+//import com.zupzup.untact.model.Member;
 //import com.zupzup.untact.model.request.EnterReq;
 //import com.zupzup.untact.model.response.EnterRes;
 //import com.zupzup.untact.service.impl.EnterServiceImpl;
@@ -23,6 +24,8 @@
 //import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 //import org.springframework.web.context.WebApplicationContext;
 //import org.springframework.web.filter.CharacterEncodingFilter;
+//
+//import java.util.Optional;
 //
 //import static org.mockito.ArgumentMatchers.any;
 //import static org.mockito.BDDMockito.given;
@@ -50,6 +53,8 @@
 //    @MockBean
 //    private EnterServiceImpl enterService;
 //
+//    String bearerToken = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0Iiwicm9sZSI6W3sibmFtZSI6IlJPTEVfU0VMTEVSIn1dLCJpYXQiOjE2OTQzNDQ3MDAsImV4cCI6MTY5NDM0ODMwMH0.sLm_sw3uhWH1CbuC8MHyY1f1fAWKw6u22nynkOTzNTk";
+//
 //    @BeforeEach
 //    public void before(WebApplicationContext ctx, RestDocumentationContextProvider restDocumentationContextProvider) {
 //        this.mockMvc = MockMvcBuilders.webAppContextSetup(ctx)
@@ -67,9 +72,11 @@
 //        // Request 설정
 //        EnterReq rq = new EnterReq();
 //        rq.setId(1L);
-//        rq.setCrNumber("test cr Num");
-//        rq.setStoreAddress("test address");
+//        rq.setName("사장님 이름");
+//        rq.setPhoneNum("010-1111-1111");
 //        rq.setStoreName("test storeName");
+//        rq.setStoreAddress("test address");
+//        rq.setCrNumber("test cr Num");
 //
 //        // Response 설정
 //        EnterRes rs = new EnterRes();
@@ -83,8 +90,6 @@
 //            rs.setId(1L);
 //            return rs;
 //        });
-//
-//        String bearerToken = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ0ZXN0Iiwicm9sZSI6W3sibmFtZSI6IlJPTEVfU0VMTEVSIn1dLCJpYXQiOjE2OTQzNDQ3MDAsImV4cCI6MTY5NDM0ODMwMH0.sLm_sw3uhWH1CbuC8MHyY1f1fAWKw6u22nynkOTzNTk";
 //
 //        // when
 //        mockMvc.perform(
@@ -104,6 +109,8 @@
 //                                preprocessResponse(prettyPrint()),
 //                                requestFields(
 //                                        fieldWithPath("id").type(JsonFieldType.NUMBER).description("사장님 unique Id"),
+//                                        fieldWithPath("name").type(JsonFieldType.STRING).description("사장님 이름"),
+//                                        fieldWithPath("phoneNum").type(JsonFieldType.STRING).description("사장님 전화번호"),
 //                                        fieldWithPath("storeName").type(JsonFieldType.STRING).description("가게 이름"),
 //                                        fieldWithPath("storeAddress").type(JsonFieldType.STRING).description("가게 주소"),
 //                                        fieldWithPath("crNumber").type(JsonFieldType.STRING).description("사업자 등록 번호")
@@ -115,4 +122,55 @@
 //                        )
 //                );
 //    }
+//
+//    @Test
+//    @DisplayName("입점 신청 - 실패 (1번 이상 신청)")
+//    public void fail_enter_twice() throws Exception {
+//
+//        // given
+//        EnterReq rq = new EnterReq();
+//        rq.setId(1L);
+//        rq.setName("사장님 이름");
+//        rq.setPhoneNum("010-1111-1111");
+//        rq.setStoreName("test storeName");
+//        rq.setStoreAddress("test address");
+//        rq.setCrNumber("test cr Num");
+//
+//        String jsonRq = objectMapper.writeValueAsString(rq);
+//
+//        EnterRes rs = new EnterRes();
+//        rs.setStoreName("입점 신청은 한 번만 가능합니다.");
+//
+//        given(enterService.save(any(EnterReq.class))).willReturn(rs); // 서비스에서 예외 발생 모방
+//
+//        // when & then
+//        mockMvc.perform(
+//                        post("/enter")
+//                                .header("Authorization", "Bearer " + bearerToken)
+//                                .contentType(MediaType.APPLICATION_JSON)
+//                                .content(jsonRq)
+//                )
+//                .andExpect(status().isCreated())
+//                .andExpect(jsonPath("storeName").value("입점 신청은 한 번만 가능합니다."))
+//                .andDo(
+//                        document(
+//                                "fail-save-enter",
+//                                preprocessRequest(prettyPrint()),
+//                                preprocessResponse(prettyPrint()),
+//                                requestFields(
+//                                        fieldWithPath("id").type(JsonFieldType.NUMBER).description("사장님 unique Id"),
+//                                        fieldWithPath("name").type(JsonFieldType.STRING).description("사장님 이름"),
+//                                        fieldWithPath("phoneNum").type(JsonFieldType.STRING).description("사장님 전화번호"),
+//                                        fieldWithPath("storeName").type(JsonFieldType.STRING).description("가게 이름"),
+//                                        fieldWithPath("storeAddress").type(JsonFieldType.STRING).description("가게 주소"),
+//                                        fieldWithPath("crNumber").type(JsonFieldType.STRING).description("사업자 등록 번호")
+//                                ),
+//                                responseFields(
+//                                        fieldWithPath("id").type(JsonFieldType.NULL).description(""),
+//                                        fieldWithPath("storeName").type(JsonFieldType.STRING).description("실패 이유")
+//                                )
+//                        )
+//                );
+//    }
+//
 //}
