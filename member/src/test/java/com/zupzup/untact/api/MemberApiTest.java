@@ -26,8 +26,6 @@
 //import org.springframework.web.context.WebApplicationContext;
 //import org.springframework.web.filter.CharacterEncodingFilter;
 //
-//import java.time.LocalDateTime;
-//
 //import static com.zupzup.untact.exception.member.MemberExceptionType.ALREADY_EXIST_USERNAME;
 //import static org.mockito.ArgumentMatchers.any;
 //import static org.mockito.BDDMockito.given;
@@ -94,7 +92,7 @@
 //        MemberRes rs = new MemberRes();
 //        rs.setId(1L);
 //        rs.setLoginId("test");
-//        rs.setCreated_at(LocalDateTime.now());
+//        rs.setCreated_at("2023-10-03 15:05");
 //
 //        given(memberService.save(any(MemberReq.class))).will((Answer<MemberRes>) invocation -> {
 //
