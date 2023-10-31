@@ -60,6 +60,8 @@ public class EnterServiceImpl extends BaseServiceImpl<Enter, EnterReq, EnterRes,
                     .phoneNum(rq.getPhoneNum())
                     .storeName(rq.getStoreName())
                     .storeAddress(rq.getStoreAddress())
+                    .longitude(rq.getLongitude())
+                    .latitude(rq.getLatitude())
                     .crNumber(rq.getCrNumber())
                     .state(EnterState.NEW)
                     .build();

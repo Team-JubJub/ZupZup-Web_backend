@@ -9,6 +9,7 @@ public class StoreRes {
     private Long storeId;
     private String sellerName;
     private String sellerLoginId;
+    private String sellerContact;
     private String storeContact;
     private String crNumber;
     private String storeName;

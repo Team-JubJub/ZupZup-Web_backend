@@ -108,6 +108,8 @@ public class ResultServiceImpl implements ResultService {
                 .storeContact(e.getStoreNum())
                 .storeName(e.getStoreName())
                 .storeAddress(e.getStoreAddress())
+                .longitude(e.getLongitude())
+                .latitude(e.getLatitude())
                 .crNumber(e.getCrNumber())
                 .enterState(EnterState.WAIT)
                 .waitStatusTimestamp(timeSetter())

@@ -11,5 +11,7 @@ public class EnterReq {
     private String phoneNum;
     private String storeName;
     private String storeAddress;
+    private Double longitude;
+    private Double latitude;
     private String crNumber;
 }
