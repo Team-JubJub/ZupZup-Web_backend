@@ -1,15 +1,20 @@
 package com.zupzup.untact.service.impl;
 
+import com.zupzup.untact.domain.auth.Seller.Seller;
 import com.zupzup.untact.domain.enums.EnterState;
 import com.zupzup.untact.domain.enums.StoreCategory;
 import com.zupzup.untact.domain.store.Store;
 import com.zupzup.untact.exception.ManagerException;
+import com.zupzup.untact.exception.member.MemberException;
+import com.zupzup.untact.exception.store.StoreException;
 import com.zupzup.untact.model.Enter;
+import com.zupzup.untact.model.Member;
 import com.zupzup.untact.model.dto.request.EnterUpdateReq;
 import com.zupzup.untact.model.dto.request.StateReq;
 import com.zupzup.untact.model.dto.request.StoreUpdateReq;
 import com.zupzup.untact.model.dto.response.*;
 import com.zupzup.untact.repository.EnterRepository;
+import com.zupzup.untact.repository.SellerRepository;
 import com.zupzup.untact.repository.StoreRepository;
 import com.zupzup.untact.service.ResultService;
 import lombok.RequiredArgsConstructor;
@@ -25,6 +30,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.zupzup.untact.exception.ManagerExceptionType.EMPTY_LIST;
+import static com.zupzup.untact.exception.member.MemberExceptionType.NOT_FOUND_MEMBER;
+import static com.zupzup.untact.exception.store.StoreExceptionType.NO_MATCH_STORE;
 
 @Service
 @Transactional
@@ -36,6 +43,7 @@ public class ResultServiceImpl implements ResultService {
 
     private final EnterRepository enterRepository;
     private final StoreRepository storeRepository;
+    private final SellerRepository sellerRepository;
 
     // --------- NEW ---------
 
@@ -221,7 +229,14 @@ public class ResultServiceImpl implements ResultService {
             return rs;
         }
 
-        return modelMapper.map(s, StoreRes.class);
+        // 판매자 로그인 아이디 가져오기
+        Seller seller = sellerRepository.findById(s.getSellerId())
+                .orElseThrow(() -> new MemberException(NOT_FOUND_MEMBER));
+
+        StoreRes rs = modelMapper.map(s, StoreRes.class);
+        rs.setSellerLoginId(seller.getLoginId());
+
+        return rs;
     }
 
     /**
