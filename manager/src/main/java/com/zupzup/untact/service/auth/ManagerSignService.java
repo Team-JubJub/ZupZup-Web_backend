@@ -1,6 +1,6 @@
 package com.zupzup.untact.service.auth;
 
-import com.zupzup.untact.config.auth.JwtProvider;
+import com.zupzup.untact.config.auth.ManagerJwtProvider;
 import com.zupzup.untact.exception.ManagerException;
 import com.zupzup.untact.model.Manager;
 import com.zupzup.untact.model.dto.request.ManagerLoginReq;
@@ -21,7 +21,7 @@ public class ManagerSignService {
 
     private final ManagerRepository managerRepository;
     private final PasswordEncoder passwordEncoder;
-    private final JwtProvider jwtProvider;
+    private final ManagerJwtProvider managerJwtProvider;
 
     /**
      * 로그인
@@ -39,7 +39,7 @@ public class ManagerSignService {
         //res 생성
         ManagerLoginRes res = new ManagerLoginRes();
         res.setLoginId(manager.getLoginId());
-        res.setToken(jwtProvider.createToken(manager.getLoginId(), manager.getManagerRoles()));
+        res.setToken(managerJwtProvider.createToken(manager.getLoginId(), manager.getManagerRoles()));
 
         return res;
 

@@ -1,4 +1,0 @@
-rootProject.name = 'member'
-include 'spring-module-common'
-include 'spring-module-base'
-

@@ -1,7 +1,7 @@
 package com.zupzup.untact.service.impl;
 
 import com.zupzup.untact.domain.auth.Role;
-import com.zupzup.untact.domain.auth.Seller.Seller;
+import com.zupzup.untact.domain.auth.seller.Seller;
 import com.zupzup.untact.exception.member.MemberException;
 import com.zupzup.untact.model.Member;
 import com.zupzup.untact.model.auth.Authority;

@@ -1,7 +1,7 @@
 package com.zupzup.untact.config;
 
-import com.zupzup.untact.config.auth.JwtAuthenticationFilter;
-import com.zupzup.untact.config.auth.JwtProvider;
+import com.zupzup.untact.config.auth.ManagerJwtAuthenticationFilter;
+import com.zupzup.untact.config.auth.ManagerJwtProvider;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -26,7 +26,7 @@ import java.io.IOException;
 @EnableWebSecurity
 public class SecurityConfig {
 
-    private final JwtProvider jwtProvider;
+    private final ManagerJwtProvider managerJwtProvider;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -48,7 +48,7 @@ public class SecurityConfig {
                 .requestMatchers("/new/**", "/wait/**", "/confirm/**").hasRole("MANAGER")
                 .anyRequest().denyAll()
                 .and()
-                .addFilterBefore(new JwtAuthenticationFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new ManagerJwtAuthenticationFilter(managerJwtProvider), UsernamePasswordAuthenticationFilter.class)
                 // 에러 핸들링
                 .exceptionHandling()
                 .accessDeniedHandler(new AccessDeniedHandler() {

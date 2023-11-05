@@ -54,8 +54,6 @@ subprojects {
 
 		implementation 'com.mysql:mysql-connector-j' // For prod, dev / 원래는 'mysql:mysql-connector-java'였는데 스프링 부트 버전 업데이트돼서 바뀌었다고 함.
 
-		annotationProcessor 'org.projectlombok:lombok'
-		testImplementation 'org.springframework.boot:spring-boot-starter-test'
 		testImplementation 'junit:junit:4.13.2'
 	}
 
@@ -63,6 +61,28 @@ subprojects {
 		useJUnitPlatform()
 	}
 }
+
+project(':spring-module-base') {
+	bootJar {	// 단독으로 실행되지 않으므로, 해당 모듈 라이브러리화 필요
+		enabled = false
+	}
+	jar {	// 단독으로 실행되지 않으므로, 해당 모듈 라이브러리화 필요
+		enabled = true
+	}
+}
+
+project(':spring-module-common') {
+	dependencies {
+		implementation(project(":spring-module-base"))
+	}
+	bootJar {	// 단독으로 실행되지 않으므로, 해당 모듈 라이브러리화 필요
+		enabled = false
+	}
+	jar {	// 단독으로 실행되지 않으므로, 해당 모듈 라이브러리화 필요
+		enabled = true
+	}
+}
+
 project(':member') {	// 사장님 페이지 모듈
 
 	dependencies {
