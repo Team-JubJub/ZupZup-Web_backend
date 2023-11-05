@@ -1,6 +1,6 @@
 rootProject.name = 'zup'
-include 'member'
-include 'manager'
-include 'spring-module-common'
-include 'spring-module-base'
+include ':member'
+include ':manager'
+include ':spring-module-common'
+include ':spring-module-base'
 

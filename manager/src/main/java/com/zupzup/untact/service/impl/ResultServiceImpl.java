@@ -1,14 +1,12 @@
 package com.zupzup.untact.service.impl;
 
-import com.zupzup.untact.domain.auth.Seller.Seller;
+import com.zupzup.untact.domain.auth.seller.Seller;
 import com.zupzup.untact.domain.enums.EnterState;
 import com.zupzup.untact.domain.enums.StoreCategory;
 import com.zupzup.untact.domain.store.Store;
 import com.zupzup.untact.exception.ManagerException;
 import com.zupzup.untact.exception.member.MemberException;
-import com.zupzup.untact.exception.store.StoreException;
 import com.zupzup.untact.model.Enter;
-import com.zupzup.untact.model.Member;
 import com.zupzup.untact.model.dto.request.EnterUpdateReq;
 import com.zupzup.untact.model.dto.request.StateReq;
 import com.zupzup.untact.model.dto.request.StoreUpdateReq;
@@ -31,7 +29,6 @@ import java.util.List;
 
 import static com.zupzup.untact.exception.ManagerExceptionType.EMPTY_LIST;
 import static com.zupzup.untact.exception.member.MemberExceptionType.NOT_FOUND_MEMBER;
-import static com.zupzup.untact.exception.store.StoreExceptionType.NO_MATCH_STORE;
 
 @Service
 @Transactional

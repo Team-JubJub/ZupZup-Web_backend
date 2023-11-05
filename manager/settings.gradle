@@ -1,5 +1,0 @@
-rootProject.name = 'manager'
-include 'spring-module-common'
-include 'spring-module-base'
-include 'member'
-

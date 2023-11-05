@@ -23,7 +23,7 @@ import java.util.List;
 
 @RequiredArgsConstructor
 @Component
-public class JwtProvider {
+public class ManagerJwtProvider {
 
     @Value("${jwt.secret}")
     private String secret;

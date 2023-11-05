@@ -10,12 +10,12 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
-public class JwtAuthenticationFilter extends OncePerRequestFilter {
+public class ManagerJwtAuthenticationFilter extends OncePerRequestFilter {
 
-    private final JwtProvider jwtProvider;
+    private final ManagerJwtProvider managerJwtProvider;
 
-    public JwtAuthenticationFilter(JwtProvider jwtProvider) {
-        this.jwtProvider = jwtProvider;
+    public ManagerJwtAuthenticationFilter(ManagerJwtProvider managerJwtProvider) {
+        this.managerJwtProvider = managerJwtProvider;
     }
 
     /**
@@ -24,12 +24,12 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
 
-        String token = jwtProvider.resolveToken(request);
+        String token = managerJwtProvider.resolveToken(request);
 
-        if (token != null && jwtProvider.validateToken(token)) {
+        if (token != null && managerJwtProvider.validateToken(token)) {
             // check access token
             token = token.split(" ")[1].trim();
-            Authentication auth = jwtProvider.getAuthentication(token);
+            Authentication auth = managerJwtProvider.getAuthentication(token);
             SecurityContextHolder.getContext().setAuthentication(auth);
         }
 
