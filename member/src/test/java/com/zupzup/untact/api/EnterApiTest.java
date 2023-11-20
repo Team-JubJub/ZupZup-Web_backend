@@ -76,6 +76,8 @@
 //        rq.setPhoneNum("010-1111-1111");
 //        rq.setStoreName("test storeName");
 //        rq.setStoreAddress("test address");
+//        rq.setLatitude(12.1111);
+//        rq.setLongitude(13.1111);
 //        rq.setCrNumber("test cr Num");
 //
 //        // Response 설정
@@ -113,6 +115,8 @@
 //                                        fieldWithPath("phoneNum").type(JsonFieldType.STRING).description("사장님 전화번호"),
 //                                        fieldWithPath("storeName").type(JsonFieldType.STRING).description("가게 이름"),
 //                                        fieldWithPath("storeAddress").type(JsonFieldType.STRING).description("가게 주소"),
+//                                        fieldWithPath("longitude").type(JsonFieldType.NUMBER).description("경도 (double)"),
+//                                        fieldWithPath("latitude").type(JsonFieldType.NUMBER).description("위도 (double)"),
 //                                        fieldWithPath("crNumber").type(JsonFieldType.STRING).description("사업자 등록 번호")
 //                                ),
 //                                responseFields(
