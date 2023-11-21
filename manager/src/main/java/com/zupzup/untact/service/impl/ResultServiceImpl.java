@@ -74,7 +74,7 @@ public class ResultServiceImpl implements ResultService {
     public EnterRes enterDetail(Long id) {
 
         Enter e = enterRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("id와 일치하는 신청서를 찾을 수 없습니다."));
+                .orElseThrow(() -> new ManagerException(EMPTY_LIST));
 
         // 신규 신청 매장이 아닐 경우
         if (e.getState() != EnterState.NEW) {
@@ -134,7 +134,8 @@ public class ResultServiceImpl implements ResultService {
     @Override
     public String deleteEnter(Long id) {
 
-        Enter e = enterRepository.findById(id).get();
+        Enter e = enterRepository.findById(id)
+                        .orElseThrow(() -> new ManagerException(EMPTY_LIST));
         e.setDeleted(true);
 
         return "Enter is deleted";
@@ -147,7 +148,7 @@ public class ResultServiceImpl implements ResultService {
     public EnterRes updateEnterDetail(Long id, EnterUpdateReq rq) {
 
         Enter e = enterRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("id와 일치하는 신청서를 찾을 수 없습니다."));
+                .orElseThrow(() -> new ManagerException(EMPTY_LIST));
 
         // 관련 내용 수정
         e.setStoreNum(rq.getStoreNum());
@@ -214,7 +215,7 @@ public class ResultServiceImpl implements ResultService {
     public StoreRes storeDetail(Long id) {
 
         Store s = storeRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("해당 id와 일치하는 가게를 찾을 수 없습니다."));
+                .orElseThrow(() -> new ManagerException(EMPTY_LIST));
 
         // 노출 대기 매장이 아닐 경우
         if (s.getEnterState() != EnterState.WAIT) {
