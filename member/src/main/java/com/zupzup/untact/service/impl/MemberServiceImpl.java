@@ -13,7 +13,7 @@ import com.zupzup.untact.service.BaseServiceImpl;
 import com.zupzup.untact.service.MemberService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.time.ZoneId;
@@ -36,7 +36,7 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, MemberReq, Member
     private final SellerRepository sellerRepository;
 
     @Autowired
-    BCryptPasswordEncoder passwordEncoder;
+    PasswordEncoder passwordEncoder;
     @Autowired
     ModelMapper modelMapper;
 

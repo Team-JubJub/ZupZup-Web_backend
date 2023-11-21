@@ -1,12 +1,9 @@
 package com.zupzup.untact.service.impl;
 
-import com.zupzup.untact.exception.enter.EnterException;
-import com.zupzup.untact.model.Enter;
 import com.zupzup.untact.model.Manager;
 import com.zupzup.untact.model.auth.ManagerAuthority;
 import com.zupzup.untact.model.dto.request.ManagerReq;
 import com.zupzup.untact.model.dto.response.ManagerRes;
-import com.zupzup.untact.model.response.EnterApprovalRes;
 import com.zupzup.untact.repository.EnterRepository;
 import com.zupzup.untact.repository.ManagerRepository;
 import com.zupzup.untact.service.BaseServiceImpl;
@@ -20,8 +17,6 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Collections;
-
-import static com.zupzup.untact.exception.enter.EnterExceptionType.NO_MATCH_ENTER;
 
 @Service
 public class ManagerServiceImpl extends BaseServiceImpl<Manager, ManagerReq, ManagerRes, ManagerRepository> implements ManagerService {
