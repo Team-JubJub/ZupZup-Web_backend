@@ -360,7 +360,15 @@ public class ResultServiceImpl implements ResultService {
             return rs;
         }
 
-        return modelMapper.map(s, StoreRes.class);
+        // 판매자 로그인 아이디 가져오기
+        Seller seller = sellerRepository.findById(s.getSellerId())
+                .orElseThrow(() -> new MemberException(NOT_FOUND_MEMBER));
+
+        StoreRes rs = modelMapper.map(s, StoreRes.class);
+        rs.setSellerLoginId(seller.getLoginId());
+
+        return rs;
+
     }
 
     /**
