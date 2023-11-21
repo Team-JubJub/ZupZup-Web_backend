@@ -242,6 +242,10 @@ public class ResultServiceImpl implements ResultService {
     @Override
     public String deleteStore(Long id) {
 
+        // Store 존재 여부 확인
+        storeRepository.findById(id)
+                .orElseThrow(() -> new ManagerException(EMPTY_LIST));
+
         storeRepository.deleteById(id);
 
         return "Delete completed";
