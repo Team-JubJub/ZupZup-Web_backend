@@ -97,7 +97,7 @@ public class ResultServiceImpl implements ResultService {
     public String newToWait(StateReq rq) {
 
         Enter e = enterRepository.findById(rq.getId())
-                .orElseThrow(() -> new IllegalArgumentException("id와 일치하는 신청서를 찾을 수 없습니다."));
+                .orElseThrow(() -> new ManagerException(EMPTY_LIST));
 
         if (!rq.getIsAccepted()) {
 
@@ -254,7 +254,7 @@ public class ResultServiceImpl implements ResultService {
     public String waitToConfirm(StateReq rq) {
 
         Store s = storeRepository.findById(rq.getId())
-                .orElseThrow(() -> new IllegalArgumentException("해당 id와 일치하는 가게를 찾을 수 없습니다."));
+                .orElseThrow(() -> new ManagerException(EMPTY_LIST));
 
         if (!rq.getIsAccepted()) {
 
@@ -277,7 +277,7 @@ public class ResultServiceImpl implements ResultService {
     public StoreRes updateStoreDetail(Long id, StoreUpdateReq rq) {
 
         Store s = storeRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("해당 id와 일치하는 가게를 찾을 수 없습니다."));
+                .orElseThrow(() -> new ManagerException(EMPTY_LIST));
 
         // 카테고리 enum 으로 바꾸는 작업
         StoreCategory sc = StoreCategory.valueOf(rq.getCategory().toUpperCase());
@@ -348,7 +348,7 @@ public class ResultServiceImpl implements ResultService {
     public StoreRes confirmStoreDetail(Long id) {
 
         Store s = storeRepository.findById(id)
-                .orElseThrow(() -> new IllegalArgumentException("해당 id와 일치하는 가게를 찾을 수 없습니다."));
+                .orElseThrow(() -> new ManagerException(EMPTY_LIST));
 
         // 입점된 매장이 아닐 경우
         if (s.getEnterState() != EnterState.CONFIRM) {
@@ -378,7 +378,7 @@ public class ResultServiceImpl implements ResultService {
     public String confirmToWait(StateReq rq) {
 
         Store s = storeRepository.findById(rq.getId())
-                .orElseThrow(() -> new IllegalArgumentException("해당 id와 일치하는 가게를 찾을 수 없습니다."));
+                .orElseThrow(() -> new ManagerException(EMPTY_LIST));
 
         if (!rq.getIsAccepted()) {
 
