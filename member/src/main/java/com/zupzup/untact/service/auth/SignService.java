@@ -62,7 +62,13 @@ public class SignService {
         if (!rq.getLoginPwd1().equals(rq.getLoginPwd2())) {
 
             // 같지 않으면 rs 전송
-            return "Not same password";
+            throw new MemberException(NOT_SAME_PASSWORD);
+        }
+
+        // 이전 비밀번호와 동일한지 확인
+        if (passwordEncoder.matches(rq.getLoginPwd1(), m.getLoginPwd())) {
+
+            throw new MemberException(CANNOT_USE_SAME_PASSWORD);
         }
 
         m.changePwd(rq.getLoginPwd2(), passwordEncoder);
