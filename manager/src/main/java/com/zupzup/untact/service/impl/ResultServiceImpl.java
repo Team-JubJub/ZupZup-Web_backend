@@ -112,7 +112,7 @@ public class ResultServiceImpl implements ResultService {
                 .storeName(e.getStoreName())
                 .storeImageUrl("")
                 .storeAddress(e.getStoreAddress())
-                .category(StoreCategory.NONE) // 기본 세팅 값으로 값 미정 설정
+                .category(StoreCategory.OTHERS) // 기본 세팅 값으로 값 미정 설정
                 .sellerName(e.getName())
                 .sellerContact(e.getPhoneNum())
                 .storeContact(e.getStoreNum())
