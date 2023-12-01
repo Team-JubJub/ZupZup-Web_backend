@@ -1,6 +1,7 @@
 package com.zupzup.untact.service.impl;
 
 import com.zupzup.untact.domain.enums.EnterState;
+import com.zupzup.untact.exception.member.MemberException;
 import com.zupzup.untact.model.Enter;
 import com.zupzup.untact.model.Member;
 import com.zupzup.untact.model.request.EnterReq;
@@ -16,6 +17,8 @@ import org.springframework.stereotype.Service;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+
+import static com.zupzup.untact.exception.member.MemberExceptionType.NOT_FOUND_MEMBER;
 
 @Service
 public class EnterServiceImpl extends BaseServiceImpl<Enter, EnterReq, EnterRes, EnterRepository> implements EnterService {
@@ -40,7 +43,9 @@ public class EnterServiceImpl extends BaseServiceImpl<Enter, EnterReq, EnterRes,
 
         try {
 
-            Member m = memberRepository.findById(rq.getId()).get();
+            // 멤버 찾지 못하면 에러 발생
+            Member m = memberRepository.findById(rq.getId())
+                    .orElseThrow(() -> new MemberException(NOT_FOUND_MEMBER));
 
             // 입점 신청 횟수 확인
             if (m.getCnt() == 1) {
@@ -58,16 +63,18 @@ public class EnterServiceImpl extends BaseServiceImpl<Enter, EnterReq, EnterRes,
                     .member(m)
                     .name(rq.getName())
                     .phoneNum(rq.getPhoneNum())
+                    .storeNum("")
                     .storeName(rq.getStoreName())
                     .storeAddress(rq.getStoreAddress())
+                    .crNumber(rq.getCrNumber())
                     .longitude(rq.getLongitude())
                     .latitude(rq.getLatitude())
-                    .crNumber(rq.getCrNumber())
                     .state(EnterState.NEW)
                     .build();
 
             enterRepository.save(e);
 
+            // 신청 횟수 한 번 올리기
             m.setCnt(1);
             memberRepository.save(m);
 
