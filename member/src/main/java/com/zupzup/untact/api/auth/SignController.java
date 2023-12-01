@@ -25,6 +25,7 @@ public class SignController {
 
         return new ResponseEntity<>(signService.login(rq), HttpStatus.OK);
     }
+
     /**
      * 비밀번호 변경
      */

@@ -52,9 +52,9 @@ public class ResultServiceImpl implements ResultService {
 
         List<Enter> eList = enterRepository.findByState(EnterState.NEW);
 
-        // list 길이가 0일 경우 에러 발생
+        // list 길이가 0일 빈 리스트값 전달
         if (eList.size() == 0) {
-            throw new ManagerException(EMPTY_LIST);
+            return new ArrayList<>();
         }
 
         List<EnterListRes> eListRes = new ArrayList<>();
@@ -106,15 +106,26 @@ public class ResultServiceImpl implements ResultService {
         }
 
         // Store 엔티티로 정보 이전 및 저장
+        // "" 값은 null 방지용 값으로 전달
         Store s = Store.StoreBuilder()
-                .sellerName(e.getName())
                 .sellerId(e.getMember().getSellerId())
+                .storeName(e.getStoreName())
+                .storeImageUrl("")
+                .storeAddress(e.getStoreAddress())
+                .category(StoreCategory.NONE) // 기본 세팅 값으로 값 미정 설정
+                .sellerName(e.getName())
                 .sellerContact(e.getPhoneNum())
                 .storeContact(e.getStoreNum())
-                .storeName(e.getStoreName())
-                .storeAddress(e.getStoreAddress())
                 .longitude(e.getLongitude())
                 .latitude(e.getLatitude())
+                .openTime("")
+                .closeTime("")
+                .saleTimeStart("")
+                .saleTimeEnd("")
+                .saleMatters("")
+                .promotion("")
+                .isOpen(Boolean.TRUE)
+                .closedDay("")
                 .crNumber(e.getCrNumber())
                 .enterState(EnterState.WAIT)
                 .waitStatusTimestamp(timeSetter())
@@ -168,9 +179,9 @@ public class ResultServiceImpl implements ResultService {
 
         List<Enter> eList = enterRepository.searchByStoreNameContainingAndState(keyword, EnterState.NEW);
 
-        // 비어 있을 경우 에러 발생
+        // 비어 있을 경우 빈 리스트 전달
         if (eList.isEmpty()) {
-            throw new ManagerException(EMPTY_LIST);
+            return new ArrayList<>();
         }
 
         List<EnterListRes> eListRes = new ArrayList<>();
@@ -193,9 +204,9 @@ public class ResultServiceImpl implements ResultService {
 
         List<Store> sList = storeRepository.findByEnterState(EnterState.WAIT);
 
-        // list 사이즈가 0일 경우 에러 발생
+        // list 사이즈가 0일 경우 빈 배열 리턴
         if (sList.size() == 0) {
-            throw new ManagerException(EMPTY_LIST);
+            return new ArrayList<>();
         }
 
         List<WaitStoreListRes> wsList = new ArrayList<>();
@@ -308,7 +319,7 @@ public class ResultServiceImpl implements ResultService {
         // 리스트가 비어있을 경우
         if (sList.isEmpty()) {
 
-            throw new ManagerException(EMPTY_LIST);
+            return new ArrayList<>();
         }
 
         List<WaitStoreListRes> wsList = new ArrayList<>();
@@ -331,9 +342,9 @@ public class ResultServiceImpl implements ResultService {
 
         List<Store> sList = storeRepository.findByEnterState(EnterState.CONFIRM);
 
-        // list 사이즈가 0일 경우 에러 발생
+        // list 사이즈가 0일 경우 빈 배열 리턴
         if (sList.size() == 0) {
-            throw new ManagerException(EMPTY_LIST);
+            return new ArrayList<>();
         }
 
         List<ConfirmStoreListRes> csList = new ArrayList<>();
@@ -410,7 +421,7 @@ public class ResultServiceImpl implements ResultService {
         // 리스트가 비어있을 경우
         if (sList.isEmpty()) {
 
-            throw new ManagerException(EMPTY_LIST);
+            return new ArrayList<>();
         }
 
         List<ConfirmStoreListRes> csList = new ArrayList<>();
