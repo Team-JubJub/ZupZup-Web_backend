@@ -137,13 +137,11 @@
 //    }
 //
 //    @Test
-//    @DisplayName("신규 신청 매장 전체 보기 - 실패")
+//    @DisplayName("신규 신청 매장 전체 보기 - 값이 없는 경우")
 //    public void fail_new_list() throws Exception {
 //
 //        // given
-//        TestExceptionRes rs = new TestExceptionRes(802, "관련된 매장 정보를 찾을 수 없습니다.");
-//
-//        when(resultService.enterList()).thenThrow(new ManagerException(EMPTY_LIST));
+//        when(resultService.enterList()).thenReturn(new ArrayList<>());
 //
 //        // when
 //        mockMvc.perform(
@@ -152,17 +150,15 @@
 //        )
 //                // then
 //                .andExpect(status().isOk())
-//                .andExpect(jsonPath("errCode").value(802))
-//                .andExpect(jsonPath("errMsg").value("관련된 매장 정보를 찾을 수 없습니다."))
+//                .andExpect(content().string("[]"))
 //                .andDo(document(
-//                        "fail-new-list",
+//                        "none-data-new-list",
 //                        preprocessRequest(prettyPrint()),
 //                        preprocessResponse(prettyPrint()),
 //                        responseFields(
-//                                fieldWithPath("errCode").description("에러 코드"),
-//                                fieldWithPath("errMsg").description("에러 메세지")
-//                        )
-//                        ));
+//                                fieldWithPath("[]").description("빈 리스트 전달")
+//                        ))
+//                );
 //    }
 //
 //    @Test
@@ -541,6 +537,7 @@
 //        rs.setStoreId(1L);
 //        rs.setSellerName("seller name");
 //        rs.setSellerLoginId("seller Login Id");
+//        rs.setSellerContact("010-1111-1111");
 //        rs.setStoreContact("store contact");
 //        rs.setCrNumber("crNumber");
 //        rs.setStoreName("store name");
@@ -566,6 +563,7 @@
 //                                fieldWithPath("storeId").type(JsonFieldType.NUMBER).description("Store unique Id"),
 //                                fieldWithPath("sellerName").type(JsonFieldType.STRING).description("판매자 이름"),
 //                                fieldWithPath("sellerLoginId").type(JsonFieldType.STRING).description("판매자 로그인 아이디"),
+//                                fieldWithPath("sellerContact").type(JsonFieldType.STRING).description("판매자 전화번호"),
 //                                fieldWithPath("storeContact").type(JsonFieldType.STRING).description("가게 전화번호"),
 //                                fieldWithPath("crNumber").type(JsonFieldType.STRING).description("사업자 등록증 번호"),
 //                                fieldWithPath("storeName").type(JsonFieldType.STRING).description("가게 이름"),
@@ -604,6 +602,7 @@
 //                                fieldWithPath("storeId").type(JsonFieldType.NULL).description("null 값으로 전달"),
 //                                fieldWithPath("sellerName").type(JsonFieldType.STRING).description("실패 이유 설명"),
 //                                fieldWithPath("sellerLoginId").type(JsonFieldType.STRING).description("어떤 state 에 있는지 확인"),
+//                                fieldWithPath("sellerContact").type(JsonFieldType.NULL).description("null 값으로 전달"),
 //                                fieldWithPath("storeContact").type(JsonFieldType.NULL).description("null 값으로 전달"),
 //                                fieldWithPath("crNumber").type(JsonFieldType.NULL).description("null 값으로 전달"),
 //                                fieldWithPath("storeName").type(JsonFieldType.NULL).description("null 값으로 전달"),
@@ -728,6 +727,7 @@
 //        rs.setStoreId(1L);
 //        rs.setSellerName("seller name");
 //        rs.setSellerLoginId("seller Login Id");
+//        rs.setSellerContact("010-1111-1111");
 //        rs.setStoreContact("051-000-0000");
 //        rs.setCrNumber("crNumber");
 //        rs.setStoreName("test update store name");
@@ -761,6 +761,7 @@
 //                                fieldWithPath("storeId").type(JsonFieldType.NUMBER).description("store unique id"),
 //                                fieldWithPath("sellerName").type(JsonFieldType.STRING).description("판매자 이름"),
 //                                fieldWithPath("sellerLoginId").type(JsonFieldType.STRING).description("판매자 로그인 id"),
+//                                fieldWithPath("sellerContact").type(JsonFieldType.STRING).description("판매자 전화번호"),
 //                                fieldWithPath("storeContact").type(JsonFieldType.STRING).description("가게 전화번호"),
 //                                fieldWithPath("crNumber").type(JsonFieldType.STRING).description("사업자 등록증 번호"),
 //                                fieldWithPath("storeName").type(JsonFieldType.STRING).description("가게 이름"),
@@ -915,6 +916,7 @@
 //        rs.setStoreId(1L);
 //        rs.setSellerName("seller name");
 //        rs.setSellerLoginId("seller Login Id");
+//        rs.setSellerContact("010-1111-1111");
 //        rs.setStoreContact("store contact");
 //        rs.setCrNumber("crNumber");
 //        rs.setStoreName("store name");
@@ -940,6 +942,7 @@
 //                                fieldWithPath("storeId").type(JsonFieldType.NUMBER).description("Store unique Id"),
 //                                fieldWithPath("sellerName").type(JsonFieldType.STRING).description("판매자 이름"),
 //                                fieldWithPath("sellerLoginId").type(JsonFieldType.STRING).description("판매자 로그인 아이디"),
+//                                fieldWithPath("sellerContact").type(JsonFieldType.STRING).description("판매자 전화번호"),
 //                                fieldWithPath("storeContact").type(JsonFieldType.STRING).description("가게 전화번호"),
 //                                fieldWithPath("crNumber").type(JsonFieldType.STRING).description("사업자 등록증 번호"),
 //                                fieldWithPath("storeName").type(JsonFieldType.STRING).description("가게 이름"),
@@ -978,6 +981,7 @@
 //                                fieldWithPath("storeId").type(JsonFieldType.NULL).description("null 값으로 전달"),
 //                                fieldWithPath("sellerName").type(JsonFieldType.STRING).description("실패 이유 설명"),
 //                                fieldWithPath("sellerLoginId").type(JsonFieldType.STRING).description("어떤 state 에 있는지 확인"),
+//                                fieldWithPath("sellerContact").type(JsonFieldType.NULL).description("null 값으로 전달"),
 //                                fieldWithPath("storeContact").type(JsonFieldType.NULL).description("null 값으로 전달"),
 //                                fieldWithPath("crNumber").type(JsonFieldType.NULL).description("null 값으로 전달"),
 //                                fieldWithPath("storeName").type(JsonFieldType.NULL).description("null 값으로 전달"),
