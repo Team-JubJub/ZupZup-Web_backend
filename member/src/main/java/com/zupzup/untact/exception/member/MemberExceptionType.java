@@ -10,6 +10,7 @@ public enum MemberExceptionType implements BaseExceptionType {
     NOT_FOUND_MEMBER(602, HttpStatus.OK, "회원 정보가 없습니다."),
     NOT_SAME_PASSWORD(603, HttpStatus.OK, "비밀번호가 같지 않습니다."),
     CANNOT_USE_SAME_PASSWORD(604, HttpStatus.OK, "이전 비밀번호와 같은 비밀번호를 사용할 수 없습니다."),
+    APPLE_CANNOT_FIND_MEMBER(605, HttpStatus.BAD_REQUEST, "회원 정보를 찾을 수 없습니다."),
     SERVER_ERR(666, HttpStatus.EXPECTATION_FAILED, "저장에 실패하였습니다. 다시 시도해주세요.");
 
     private int errorCode;

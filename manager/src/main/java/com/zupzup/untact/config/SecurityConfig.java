@@ -46,7 +46,7 @@ public class SecurityConfig {
                 .authorizeRequests()
                 // 로그인 승인
                 .requestMatchers("/login", "/manager/**").permitAll()
-                .requestMatchers("/new/**", "/wait/**", "/confirm/**").hasRole("MANAGER")
+                .requestMatchers("/new/**", "/wait/**", "/confirm/**", "/delete/**").hasRole("MANAGER")
                 .anyRequest().denyAll()
                 .and()
                 .addFilterBefore(new ManagerJwtAuthenticationFilter(managerJwtProvider), UsernamePasswordAuthenticationFilter.class)

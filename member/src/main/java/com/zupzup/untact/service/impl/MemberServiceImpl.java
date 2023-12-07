@@ -108,6 +108,7 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, MemberReq, Member
         s.setEmail(rq.getEmail());
         s.setPhoneNumber(rq.getPhoneNum());
         s.setRole(Role.ROLE_SELLER);
+        s.setWantDeletion(false);
 
         sellerRepository.save(s);
 
