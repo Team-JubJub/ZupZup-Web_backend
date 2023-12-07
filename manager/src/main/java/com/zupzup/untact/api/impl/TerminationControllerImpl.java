@@ -1,6 +1,7 @@
 package com.zupzup.untact.api.impl;
 
 import com.zupzup.untact.api.TerminationController;
+import com.zupzup.untact.model.dto.response.DeleteStoreListRes;
 import com.zupzup.untact.model.dto.response.StoreRes;
 import com.zupzup.untact.service.impl.TerminationServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -22,9 +23,9 @@ public class TerminationControllerImpl implements TerminationController {
      */
     @Override
     @GetMapping("")
-    public ResponseEntity<List<StoreRes>> gatherDeletionRequests() {
+    public ResponseEntity<List<DeleteStoreListRes>> gatherDeletionRequests() {
 
-        List<StoreRes> resList = terminationService.gatherDeletionRequests();
+        List<DeleteStoreListRes> resList = terminationService.gatherDeletionRequests();
         return new ResponseEntity<>(resList, HttpStatus.OK);
     }
 

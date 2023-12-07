@@ -10,6 +10,10 @@ import com.zupzup.untact.service.CancelService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
+
 import static com.zupzup.untact.exception.apple.AppleExceptionType.NO_MEMBER;
 
 @Service
@@ -18,7 +22,6 @@ public class CancelServiceImpl implements CancelService {
 
     private final StoreRepository storeRepository;
     private final SellerRepository sellerRepository;
-    private final String errMsg = "Cannot find member";
 
     /**
      * 회원탈퇴 요청
@@ -35,6 +38,7 @@ public class CancelServiceImpl implements CancelService {
         // 삭제 요청 상태 변경
         s.setWantDeletion(true);
         store.setEnterState(EnterState.DELETE);
+        store.setDeleteStatusTimestamp(timeSetter());
 
         sellerRepository.save(s);
         storeRepository.save(store);
@@ -42,5 +46,17 @@ public class CancelServiceImpl implements CancelService {
         String res = "ID: " + id + " is deleted";
 
         return res;
+    }
+
+    /**
+     * 시간 포매팅
+     */
+    private String timeSetter() {
+
+        ZonedDateTime nowTime = ZonedDateTime.now(ZoneId.of("Asia/Seoul"));
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        String formattedOrderTime = nowTime.format(formatter);
+
+        return formattedOrderTime;
     }
 }
