@@ -1,6 +1,7 @@
 package com.zupzup.untact.api.impl;
 
 import com.zupzup.untact.api.CancelController;
+import com.zupzup.untact.exception.apple.AppleException;
 import com.zupzup.untact.service.impl.CancelServiceImpl;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -19,7 +20,7 @@ public class CancelControllerImpl implements CancelController {
 
     @Override
     @PatchMapping("/{id}")
-    public ResponseEntity<String> wantDelete(@PathVariable Long id) {
+    public ResponseEntity<String> wantDelete(@PathVariable Long id) throws AppleException {
 
         String res = cancelService.wantDelete(id);
 
