@@ -78,7 +78,7 @@ public class TerminationServiceImpl implements TerminationService {
     }
 
     /**
-     * 탈퇴 -> 노출 승인
+     * 탈퇴 -> 노출 대기
      */
     @Override
     public String deleteToConfirm(Long id) {
@@ -100,7 +100,7 @@ public class TerminationServiceImpl implements TerminationService {
         storeRepository.save(s);
         sellerRepository.save(seller);
 
-        return "Enter state is changed into CONFIRM";
+        return "Enter state is changed into WAIT";
     }
 
     /**
