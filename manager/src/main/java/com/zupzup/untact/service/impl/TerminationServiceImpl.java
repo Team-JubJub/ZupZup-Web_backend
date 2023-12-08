@@ -1,6 +1,7 @@
 package com.zupzup.untact.service.impl;
 
 import com.zupzup.untact.domain.auth.seller.Seller;
+import com.zupzup.untact.domain.auth.user.User;
 import com.zupzup.untact.domain.enums.EnterState;
 import com.zupzup.untact.domain.store.Store;
 import com.zupzup.untact.exception.member.MemberException;
@@ -9,6 +10,7 @@ import com.zupzup.untact.model.dto.response.DeleteStoreListRes;
 import com.zupzup.untact.model.dto.response.StoreRes;
 import com.zupzup.untact.repository.SellerRepository;
 import com.zupzup.untact.repository.StoreRepository;
+import com.zupzup.untact.repository.UserRepository;
 import com.zupzup.untact.service.TerminationService;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
@@ -30,6 +32,7 @@ public class TerminationServiceImpl implements TerminationService {
 
     private final StoreRepository storeRepository;
     private final SellerRepository sellerRepository;
+    private final UserRepository userRepository;
 
     @Autowired
     ModelMapper modelMapper;
@@ -109,6 +112,25 @@ public class TerminationServiceImpl implements TerminationService {
     @Override
     public String confirmDelete(Long id) {
 
+        // 가게를 찜한 사용자 목록 조회
+        List<User> usersWithStarredStore = userRepository.findByStarredStoresContains(id);
+
+        // 찜 목록에서 가게 ID 제거
+        for (User user : usersWithStarredStore) {
+            user.getStarredStores().remove(id);
+            userRepository.save(user);
+        }
+
+        // 가게에 알림 설정한 사용자 목록 조회
+        List<User> usersWithAlertStore = userRepository.findByAlertStoresContains(id);
+
+        // 알림 목록에서 가게 ID 제거
+        for (User user : usersWithAlertStore) {
+            user.getAlertStores().remove(id);
+            userRepository.save(user);
+        }
+
+        // 가게 삭제
         storeRepository.deleteById(id);
 
         return "delete completed";
