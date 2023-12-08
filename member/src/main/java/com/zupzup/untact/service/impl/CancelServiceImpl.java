@@ -14,6 +14,7 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
+import static com.zupzup.untact.exception.apple.AppleExceptionType.ALREADY_WANTED_DELETE;
 import static com.zupzup.untact.exception.apple.AppleExceptionType.NO_MEMBER;
 
 @Service
@@ -36,7 +37,7 @@ public class CancelServiceImpl implements CancelService {
         Store store = storeRepository.findBySellerId(id);
 
         if (s.getWantDeletion()) {
-            return "이미 탈퇴 신청된 회원입니다.";
+            throw new AppleException(ALREADY_WANTED_DELETE);
         }
 
         // 삭제 요청 상태 변경
