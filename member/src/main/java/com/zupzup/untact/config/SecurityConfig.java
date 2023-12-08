@@ -45,9 +45,9 @@ public class SecurityConfig {
                 // 조건별로 요청 허용/제한 설정
                 .authorizeRequests()
                 // 회원가입과 로그인, 메인 페이지, 아이디.비밀번호 찾기 모두 승인
-                .requestMatchers("/login", "/member/**", "/change/**", "/find").permitAll()
+                .requestMatchers("/login", "/member/**", "/change/**", "/find", "/cancel/**").permitAll()
                 // 가게 등록 페이지는 회원만 가능
-                .requestMatchers("/enter/**", "/cancel/**").hasRole("SELLER")
+                .requestMatchers("/enter/**").hasRole("SELLER")
                 .anyRequest().denyAll()
                 .and()
                 .addFilterBefore(new JwtAuthenticationFilter(jwtProvider), UsernamePasswordAuthenticationFilter.class)
