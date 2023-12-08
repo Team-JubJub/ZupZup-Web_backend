@@ -31,3 +31,10 @@ operation::error-find-loginId[snippets='http-request,request-body,request-fields
 operation::success-save-enter[snippets='http-request,request-body,request-fields,response-body,response-fields']
 == 입점 신청 실패
 operation::fail-save-enter[snippets='http-request,request-body,request-fields,response-body,response-fields']
+
+[[회원탈퇴]]
+== 회원 탈퇴 요청
+operation::success-wantDelete[snippets='http-request,path-parameters,response-body']
+
+== 회원 탈퇴 요청 (사장님 id 없을 때)
+operation::fail-wantDelete-seller-err[snippets='http-request,path-parameters,response-body']

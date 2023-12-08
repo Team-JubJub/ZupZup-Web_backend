@@ -99,3 +99,31 @@ operation::fail-confirm-to-wait[snippets='http-request,request-body,request-fiel
 
 === 노출 대기 매장 검색 (성공)
 operation::success-confirm-search[snippets='http-request,query-parameters,response-body,response-fields']
+
+== 탈퇴 매장
+=== 탈퇴 신청 매장 리스트 (0개 일때)
+operation::zero_list_gatherDeletionRequest[snippets='http-request,response-body,response-fields']
+
+=== 탈퇴 신청 매장 리스트
+operation::list_gatherDeletionRequests[snippets='http-request,response-body,response-fields']
+
+=== 탈퇴 신청 매장 상세
+operation::success-deletionDetail[snippets='http-request,path-parameters,response-body,response-fields']
+
+=== 탈퇴 신청 매장 상세 (가게가 없는 경우)
+operation::fail-deletionDetail-store-err[snippets='http-request,path-parameters,response-body,response-fields']
+
+=== 탈퇴 신청 매장 상세 (사장님이 없는 경우)
+operation::fail-deletionDetail-member-err[snippets='http-request,path-parameters,response-body,response-fields']
+
+=== 탈퇴 -> 노출대기 성공
+operation::success-deleteToConfirm[snippets='http-request,path-parameters,response-body']
+
+=== 탈퇴 -> 노출대기 (가게가 없는 경우)
+operation::fail-deleteToConfirm-store-err[snippets='http-request,path-parameters,response-body,response-fields']
+
+=== 탈퇴 -> 노출대기 (사장님이 없는 경우)
+operation::fail-deleteToConfirm-member-err[snippets='http-request,path-parameters,response-body,response-fields']
+
+=== 탈퇴 성공
+operation::success-confirmDelete[snippets='http-request,path-parameters,response-body']
