@@ -35,6 +35,10 @@ public class CancelServiceImpl implements CancelService {
         // 가게 찾기
         Store store = storeRepository.findBySellerId(id);
 
+        if (s.getWantDeletion()) {
+            return "이미 탈퇴 신청된 회원입니다.";
+        }
+
         // 삭제 요청 상태 변경
         s.setWantDeletion(true);
         store.setEnterState(EnterState.DELETE);
