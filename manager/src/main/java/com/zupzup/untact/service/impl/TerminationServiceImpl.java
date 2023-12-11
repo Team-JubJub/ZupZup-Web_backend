@@ -6,16 +6,16 @@ import com.zupzup.untact.domain.enums.EnterState;
 import com.zupzup.untact.domain.store.Store;
 import com.zupzup.untact.exception.member.MemberException;
 import com.zupzup.untact.exception.store.StoreException;
+import com.zupzup.untact.model.Member;
 import com.zupzup.untact.model.dto.response.DeleteStoreListRes;
 import com.zupzup.untact.model.dto.response.StoreRes;
-import com.zupzup.untact.repository.SellerRepository;
-import com.zupzup.untact.repository.StoreRepository;
-import com.zupzup.untact.repository.UserRepository;
+import com.zupzup.untact.repository.*;
 import com.zupzup.untact.service.TerminationService;
 import lombok.AllArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -33,6 +33,8 @@ public class TerminationServiceImpl implements TerminationService {
     private final StoreRepository storeRepository;
     private final SellerRepository sellerRepository;
     private final UserRepository userRepository;
+    private final MemberRepository memberRepository;
+    private final EnterRepository enterRepository;
 
     @Autowired
     ModelMapper modelMapper;
@@ -110,28 +112,43 @@ public class TerminationServiceImpl implements TerminationService {
      * 탈퇴 승인
      */
     @Override
-    public String confirmDelete(Long id) {
+    @Transactional
+    public String confirmDelete(Long storeId) {
+
+        Store store = storeRepository.findById(storeId)
+                .orElseThrow(() -> new StoreException(NO_MATCH_STORE));
+        // seller unique ID 가져오기
+        Long sellerId = store.getSellerId();
+        // Member 찾기
+        Member member = memberRepository.findBySellerId(sellerId)
+                .orElseThrow(() -> new MemberException(NOT_FOUND_MEMBER));
 
         // 가게를 찜한 사용자 목록 조회
-        List<User> usersWithStarredStore = userRepository.findByStarredStoresContains(id);
+        List<User> usersWithStarredStore = userRepository.findByStarredStoresContains(storeId);
 
         // 찜 목록에서 가게 ID 제거
         for (User user : usersWithStarredStore) {
-            user.getStarredStores().remove(id);
+            user.getStarredStores().remove(storeId);
             userRepository.save(user);
         }
 
         // 가게에 알림 설정한 사용자 목록 조회
-        List<User> usersWithAlertStore = userRepository.findByAlertStoresContains(id);
+        List<User> usersWithAlertStore = userRepository.findByAlertStoresContains(storeId);
 
         // 알림 목록에서 가게 ID 제거
         for (User user : usersWithAlertStore) {
-            user.getAlertStores().remove(id);
+            user.getAlertStores().remove(storeId);
             userRepository.save(user);
         }
 
         // 가게 삭제
-        storeRepository.deleteById(id);
+        storeRepository.deleteById(storeId);
+        // 유저 삭제
+        sellerRepository.deleteById(sellerId);
+        // 웹 신청서 삭제
+        enterRepository.deleteByMember(member);
+        // 웹 멤버 삭제
+        memberRepository.deleteById(member.getId());
 
         return "delete completed";
     }

@@ -9,6 +9,7 @@ import com.zupzup.untact.repository.StoreRepository;
 import com.zupzup.untact.service.CancelService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
@@ -27,6 +28,7 @@ public class CancelServiceImpl implements CancelService {
      * 회원탈퇴 요청
      */
     @Override
+    @Transactional
     public String wantDelete(Long storeId) throws AppleException {
 
         // 가게 찾기
