@@ -14,8 +14,7 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
-import static com.zupzup.untact.exception.apple.AppleExceptionType.ALREADY_WANTED_DELETE;
-import static com.zupzup.untact.exception.apple.AppleExceptionType.NO_MEMBER;
+import static com.zupzup.untact.exception.apple.AppleExceptionType.*;
 
 @Service
 @AllArgsConstructor
@@ -28,13 +27,14 @@ public class CancelServiceImpl implements CancelService {
      * 회원탈퇴 요청
      */
     @Override
-    public String wantDelete(Long id) throws AppleException {
+    public String wantDelete(Long storeId) throws AppleException {
 
-        // 회원 찾기
-        Seller s = sellerRepository.findById(id)
-                .orElseThrow(() -> new AppleException(NO_MEMBER));
         // 가게 찾기
-        Store store = storeRepository.findBySellerId(id);
+        Store store = storeRepository.findById(storeId)
+                .orElseThrow(() -> new AppleException(NO_STORE));
+        // 회원 찾기
+        Seller s = sellerRepository.findById(store.getSellerId())
+                .orElseThrow(() -> new AppleException(NO_MEMBER));
 
         if (s.getWantDeletion()) {
             throw new AppleException(ALREADY_WANTED_DELETE);
@@ -48,7 +48,7 @@ public class CancelServiceImpl implements CancelService {
         sellerRepository.save(s);
         storeRepository.save(store);
 
-        String res = "ID: " + id + " is deleted";
+        String res = "ID: " + storeId + " is deleted";
 
         return res;
     }
