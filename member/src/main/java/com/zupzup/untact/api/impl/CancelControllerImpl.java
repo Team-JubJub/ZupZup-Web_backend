@@ -19,10 +19,10 @@ public class CancelControllerImpl implements CancelController {
     private final CancelServiceImpl cancelService;
 
     @Override
-    @PatchMapping("/{id}")
-    public ResponseEntity<String> wantDelete(@PathVariable Long id) throws AppleException {
+    @PatchMapping("/{storeId}")
+    public ResponseEntity<String> wantDelete(@PathVariable Long storeId) throws AppleException {
 
-        String res = cancelService.wantDelete(id);
+        String res = cancelService.wantDelete(storeId);
 
         return new ResponseEntity<>(res, HttpStatus.OK);
     }
