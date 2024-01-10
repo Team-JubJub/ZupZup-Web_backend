@@ -18,4 +18,9 @@ public interface MemberRepository extends BaseRepository<Member> {
 
     // 아이디와 전화번호로 검증
     Optional<Member> findByLoginIdAndPhoneNum(String loginId, String phoneNum);
+
+    // Seller unique ID로 삭제
+    void deleteBySellerId(Long sellerId);
+    // Seller unique ID로 찾기
+    Optional<Member> findBySellerId(Long sellerId);
 }

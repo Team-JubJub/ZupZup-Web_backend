@@ -105,6 +105,12 @@ public class ResultServiceImpl implements ResultService {
             return "Cannot find request";
         }
 
+        if (e.getState() != EnterState.NEW) {
+
+            // 신규 신청(NEW) 상태인지 확인
+            return "This store is not in a NEW state";
+        }
+
         // Store 엔티티로 정보 이전 및 저장
         // "" 값은 null 방지용 값으로 전달
         Store s = Store.StoreBuilder()
@@ -278,6 +284,12 @@ public class ResultServiceImpl implements ResultService {
             return "Cannot find request";
         }
 
+        if (s.getEnterState() != EnterState.WAIT) {
+
+            // 노출 대기(WAIT) 상태인지 확인
+            return "This store is not in a NEW state";
+        }
+
         s.setEnterState(EnterState.CONFIRM);
         s.setConfirmStatusTimestamp(timeSetter());
 
@@ -400,6 +412,12 @@ public class ResultServiceImpl implements ResultService {
 
             // isAccepted 가 false 일 경우 원하는 로직 찾지 못함
             return "Cannot find request";
+        }
+
+        if (s.getEnterState() != EnterState.CONFIRM) {
+
+            // 노출 승인(CONFIRM) 상태인지 확인
+            return "This store is not in a CONFIRM state";
         }
 
         s.setEnterState(EnterState.WAIT);
