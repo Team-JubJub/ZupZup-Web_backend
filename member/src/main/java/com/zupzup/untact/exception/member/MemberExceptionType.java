@@ -13,7 +13,7 @@ public enum MemberExceptionType implements BaseExceptionType {
     ALREADY_WANTED_DELETE(HttpStatus.BAD_REQUEST,"이미 탈퇴를 신청한 회원입니다."),
     SERVER_ERR(HttpStatus.EXPECTATION_FAILED, "저장에 실패하였습니다. 다시 시도해주세요.");
 
-    private int errorCode;
+//    private int errorCode;
     private HttpStatus httpStatus;
     private String errorMessage;
 
