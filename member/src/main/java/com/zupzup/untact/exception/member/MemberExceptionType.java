@@ -10,6 +10,7 @@ public enum MemberExceptionType implements BaseExceptionType {
     NOT_FOUND_MEMBER(HttpStatus.BAD_REQUEST, "회원 정보가 없습니다."),
     NOT_SAME_PASSWORD(HttpStatus.BAD_REQUEST, "비밀번호가 같지 않습니다."),
     CANNOT_USE_SAME_PASSWORD(HttpStatus.BAD_REQUEST, "이전 비밀번호와 같은 비밀번호를 사용할 수 없습니다."),
+    ALREADY_WANTED_DELETE(HttpStatus.BAD_REQUEST,"이미 탈퇴를 신청한 회원입니다."),
     SERVER_ERR(HttpStatus.EXPECTATION_FAILED, "저장에 실패하였습니다. 다시 시도해주세요.");
 
     private int errorCode;

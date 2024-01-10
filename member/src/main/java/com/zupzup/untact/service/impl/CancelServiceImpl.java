@@ -3,7 +3,8 @@ package com.zupzup.untact.service.impl;
 import com.zupzup.untact.domain.auth.seller.Seller;
 import com.zupzup.untact.domain.enums.EnterState;
 import com.zupzup.untact.domain.store.Store;
-import com.zupzup.untact.exception.apple.AppleException;
+import com.zupzup.untact.exception.member.MemberException;
+import com.zupzup.untact.exception.store.StoreException;
 import com.zupzup.untact.repository.SellerRepository;
 import com.zupzup.untact.repository.StoreRepository;
 import com.zupzup.untact.service.CancelService;
@@ -15,7 +16,9 @@ import java.time.ZoneId;
 import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
-import static com.zupzup.untact.exception.apple.AppleExceptionType.*;
+import static com.zupzup.untact.exception.member.MemberExceptionType.ALREADY_WANTED_DELETE;
+import static com.zupzup.untact.exception.member.MemberExceptionType.NOT_FOUND_MEMBER;
+import static com.zupzup.untact.exception.store.StoreExceptionType.NO_MATCH_STORE;
 
 @Service
 @AllArgsConstructor
@@ -29,17 +32,17 @@ public class CancelServiceImpl implements CancelService {
      */
     @Override
     @Transactional
-    public String wantDelete(Long storeId) throws AppleException {
+    public String wantDelete(Long storeId) {
 
         // 가게 찾기
         Store store = storeRepository.findById(storeId)
-                .orElseThrow(() -> new AppleException(NO_STORE));
+                .orElseThrow(() -> new StoreException(NO_MATCH_STORE));
         // 회원 찾기
         Seller s = sellerRepository.findById(store.getSellerId())
-                .orElseThrow(() -> new AppleException(NO_MEMBER));
+                .orElseThrow(() -> new MemberException(NOT_FOUND_MEMBER));
 
         if (s.getWantDeletion()) {
-            throw new AppleException(ALREADY_WANTED_DELETE);
+            throw new MemberException(ALREADY_WANTED_DELETE);
         }
 
         // 삭제 요청 상태 변경
