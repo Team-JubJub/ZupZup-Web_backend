@@ -2,8 +2,7 @@
 //
 //import com.fasterxml.jackson.databind.ObjectMapper;
 //import com.zupzup.untact.documents.RestDocsConfig;
-//import com.zupzup.untact.exception.apple.AppleException;
-//import com.zupzup.untact.exception.apple.AppleExceptionType;
+//import com.zupzup.untact.exception.member.MemberException;
 //import com.zupzup.untact.exception.store.StoreException;
 //import com.zupzup.untact.service.impl.CancelServiceImpl;
 //import org.junit.jupiter.api.BeforeEach;
@@ -22,14 +21,15 @@
 //import org.springframework.web.context.WebApplicationContext;
 //import org.springframework.web.filter.CharacterEncodingFilter;
 //
-//import static com.zupzup.untact.exception.apple.AppleExceptionType.NO_MEMBER;
+//import static com.zupzup.untact.exception.member.MemberExceptionType.NOT_FOUND_MEMBER;
+//import static com.zupzup.untact.exception.store.StoreExceptionType.NO_MATCH_STORE;
 //import static org.mockito.Mockito.when;
 //import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 //import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
+//import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.patch;
 //import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 //import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
 //import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
-//import static org.springframework.restdocs.mockmvc.RestDocumentationRequestBuilders.*;
 //import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 //import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 //
@@ -91,7 +91,7 @@
 //    @DisplayName("회원탈퇴 요청 - 회원 찾기 실패")
 //    public void fail_wantDelete() throws Exception {
 //
-//        when(cancelService.wantDelete(1L)).thenThrow(new AppleException(NO_MEMBER));
+//        when(cancelService.wantDelete(1L)).thenThrow(new MemberException(NOT_FOUND_MEMBER));
 //
 //        // when
 //        mockMvc.perform(
@@ -100,6 +100,26 @@
 //                // then
 //                .andExpect(status().isBadRequest())
 //                .andDo(document("fail-wantDelete-seller-err",
+//                        preprocessRequest(prettyPrint()),
+//                        preprocessResponse(prettyPrint()),
+//                        pathParameters(
+//                                parameterWithName("id").description("seller unique id")
+//                        )));
+//    }
+//
+//    @Test
+//    @DisplayName("회원탈퇴 요청 - 가게 찾기 실패")
+//    public void fail_wantDelete_cannotFindStore() throws Exception {
+//
+//        when(cancelService.wantDelete(1L)).thenThrow(new StoreException(NO_MATCH_STORE));
+//
+//        // when
+//        mockMvc.perform(
+//                        patch("/cancel/{id}", 1L)
+//                                .header("Authorization", "Bearer " + bearerToken))
+//                // then
+//                .andExpect(status().isBadRequest())
+//                .andDo(document("fail-wantDelete-store-err",
 //                        preprocessRequest(prettyPrint()),
 //                        preprocessResponse(prettyPrint()),
 //                        pathParameters(

@@ -6,8 +6,9 @@ import org.springframework.http.HttpStatus;
 public enum MemberExceptionType implements BaseExceptionType {
     // 회원가입, 로그인 시
     ALREADY_EXIST_USERNAME(HttpStatus.BAD_REQUEST, "이미 존재하는 아이디입니다."),
+    ALREADY_EXIST_MEMBER(HttpStatus.BAD_REQUEST, "이미 신청한 내역이 있는 회원입니다. (동일 이름 및 전화번호 존재)"),
     WRONG_PASSWORD(HttpStatus.BAD_REQUEST, "비밀번호가 잘못되었습니다."),
-    NOT_FOUND_MEMBER(HttpStatus.BAD_REQUEST, "회원 정보가 없습니다."),
+    NOT_FOUND_MEMBER(HttpStatus.BAD_REQUEST, "회원을 찾을 수 없습니다."),
     NOT_SAME_PASSWORD(HttpStatus.BAD_REQUEST, "비밀번호가 같지 않습니다."),
     CANNOT_USE_SAME_PASSWORD(HttpStatus.BAD_REQUEST, "이전 비밀번호와 같은 비밀번호를 사용할 수 없습니다."),
     ALREADY_WANTED_DELETE(HttpStatus.BAD_REQUEST,"이미 탈퇴를 신청한 회원입니다."),

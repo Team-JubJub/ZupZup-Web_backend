@@ -26,7 +26,7 @@
 //import org.springframework.web.context.WebApplicationContext;
 //import org.springframework.web.filter.CharacterEncodingFilter;
 //
-//import static com.zupzup.untact.exception.member.MemberExceptionType.ALREADY_EXIST_USERNAME;
+//import static com.zupzup.untact.exception.member.MemberExceptionType.*;
 //import static org.mockito.ArgumentMatchers.any;
 //import static org.mockito.BDDMockito.given;
 //import static org.mockito.Mockito.when;
@@ -59,28 +59,6 @@
 //                .addFilters(new CharacterEncodingFilter("UTF-8", true))
 //                .alwaysDo(print())
 //                .build();
-//    }
-//
-//    /**
-//     * 테스트시 쓰기 위한 에러 Response
-//     */
-//    static class TestExceptionRes {
-//
-//        private Integer errCode;
-//        private String errMsg;
-//
-//        public TestExceptionRes(Integer errCode, String errMsg) {
-//            this.errCode = errCode;
-//            this.errMsg = errMsg;
-//        }
-//
-//        public Integer getErrCode() {
-//            return errCode;
-//        }
-//
-//        public String getErrMsg() {
-//            return errMsg;
-//        }
 //    }
 //
 //    @Test
@@ -145,6 +123,91 @@
 //                ));
 //    }
 //
+//    @Test
+//    @DisplayName("사장님 생성/회원가입 - 실패 - 이미 존재하는 회원")
+//    public void fail_save_already_exists() throws Exception {
+//
+//        // given
+//        when(memberService.save(any(MemberReq.class))).thenThrow(new MemberException(ALREADY_EXIST_MEMBER));
+//
+//        // when
+//        mockMvc.perform(
+//                        // POST 요청
+//                        post(url)
+//                                .contentType(MediaType.APPLICATION_JSON)
+//                                .accept(MediaType.APPLICATION_JSON)
+//                                .content(
+//                                        "{"
+//                                                + " \"name\": \"test\", "
+//                                                + " \"phoneNum\": \"010-1111-1111\", "
+//                                                + " \"ad\": false, "
+//                                                + " \"loginId\": \"test\", "
+//                                                + " \"loginPwd1\": \"pwd1\", "
+//                                                + " \"loginPwd2\": \"pwd1\", "
+//                                                + " \"email\": \"email\" "
+//                                                + "}"
+//                                )
+//                )
+//                // then
+//                .andExpect(status().isBadRequest())
+//                .andDo(document(
+//                        "fail-create-seller-already-exists",
+//                        preprocessRequest(prettyPrint()),
+//                        preprocessResponse(prettyPrint()),
+//                        requestFields(
+//                                fieldWithPath("name").type(JsonFieldType.STRING).description("사장님 이름"),
+//                                fieldWithPath("phoneNum").type(JsonFieldType.STRING).description("사장님 전화번호"),
+//                                fieldWithPath("ad").type(JsonFieldType.BOOLEAN).description("광고성 정보 수신 동의 여부"),
+//                                fieldWithPath("loginId").type(JsonFieldType.STRING).description("로그인 아이디"),
+//                                fieldWithPath("loginPwd1").type(JsonFieldType.STRING).description("로그인 비밀번호"),
+//                                fieldWithPath("loginPwd2").type(JsonFieldType.STRING).description("로그인 비밀번호(같은지 서버에서 한 번 더 확인)"),
+//                                fieldWithPath("email").type(JsonFieldType.STRING).description("이메일")
+//                        )
+//                ));
+//    }
+//
+//    @Test
+//    @DisplayName("사장님 생성/회원가입 - 실패 - 비밀번호 동일 여부 확인")
+//    public void fail_save_not_same_password() throws Exception {
+//
+//        // given
+//        when(memberService.save(any(MemberReq.class))).thenThrow(new MemberException(NOT_SAME_PASSWORD));
+//
+//        // when
+//        mockMvc.perform(
+//                        // POST 요청
+//                        post(url)
+//                                .contentType(MediaType.APPLICATION_JSON)
+//                                .accept(MediaType.APPLICATION_JSON)
+//                                .content(
+//                                        "{"
+//                                                + " \"name\": \"test\", "
+//                                                + " \"phoneNum\": \"010-1111-1111\", "
+//                                                + " \"ad\": false, "
+//                                                + " \"loginId\": \"test\", "
+//                                                + " \"loginPwd1\": \"pwd1\", "
+//                                                + " \"loginPwd2\": \"pwd12\", "
+//                                                + " \"email\": \"email\" "
+//                                                + "}"
+//                                )
+//                )
+//                // then
+//                .andExpect(status().isBadRequest())
+//                .andDo(document(
+//                        "fail-create-seller-not-same-password",
+//                        preprocessRequest(prettyPrint()),
+//                        preprocessResponse(prettyPrint()),
+//                        requestFields(
+//                                fieldWithPath("name").type(JsonFieldType.STRING).description("사장님 이름"),
+//                                fieldWithPath("phoneNum").type(JsonFieldType.STRING).description("사장님 전화번호"),
+//                                fieldWithPath("ad").type(JsonFieldType.BOOLEAN).description("광고성 정보 수신 동의 여부"),
+//                                fieldWithPath("loginId").type(JsonFieldType.STRING).description("로그인 아이디"),
+//                                fieldWithPath("loginPwd1").type(JsonFieldType.STRING).description("로그인 비밀번호"),
+//                                fieldWithPath("loginPwd2").type(JsonFieldType.STRING).description("로그인 비밀번호(같은지 서버에서 한 번 더 확인)"),
+//                                fieldWithPath("email").type(JsonFieldType.STRING).description("이메일")
+//                        )
+//                ));
+//    }
 //
 //    @Test
 //    @DisplayName("중복 아이디 확인 - 아이디 존재")
@@ -183,32 +246,27 @@
 //    }
 //
 //    @Test
-//    @DisplayName("중복 아이디 확인 - 아이디 없음")
+//    @DisplayName("중복 아이디 확인 - 아이디 이미 존재")
 //    public void fail_find_loginId() throws Exception {
 //
 //        // given
-//        MemberLoginIdReq rq = new MemberLoginIdReq();
-//        rq.setLoginId("test");
-//
-//        TestExceptionRes rs = new TestExceptionRes(600, "이미 존재하는 아이디입니다.");
-//
-//        // 값 json 으로 매핑
 //        ObjectMapper objectMapper = new ObjectMapper();
-//        String jsonRq = objectMapper.writeValueAsString(rq);
-//        String jsonEx = objectMapper.writeValueAsString(rs);
+//
+//        MemberLoginIdReq loginIdReq = new MemberLoginIdReq();
+//        loginIdReq.setLoginId("Test Login ID");
 //
 //        when(memberService.checkLoginId(any(String.class))).thenThrow(new MemberException(ALREADY_EXIST_USERNAME));
+//
+//        String loginId = objectMapper.writeValueAsString(loginIdReq);
 //
 //        // when
 //        mockMvc.perform(
 //                post(url + "/check")
 //                        .contentType(MediaType.APPLICATION_JSON)
-//                        .content(jsonRq)
+//                        .content(loginId)
 //        )
 //        // then
-//                .andExpect(status().isOk())
-//                .andExpect(jsonPath("errCode").value(600))
-//                .andExpect(jsonPath("errMsg").value("이미 존재하는 아이디입니다."))
+//                .andExpect(status().isBadRequest())
 //                .andDo(
 //                        document(
 //                                "error-find-loginId",
@@ -216,10 +274,6 @@
 //                                preprocessResponse(prettyPrint()),
 //                                requestFields(
 //                                        fieldWithPath("loginId").type(JsonFieldType.STRING).description("중복 확인을 위한 로그인 아이디(String)")
-//                                ),
-//                                responseFields(
-//                                        fieldWithPath("errCode").description("에러 코드"),
-//                                        fieldWithPath("errMsg").description("에러 메세지")
 //                                )
 //                        )
 //                );

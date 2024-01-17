@@ -25,6 +25,7 @@ public class Member extends BaseEntity {
     @Column(nullable = false) private String email; // 이메일 주소
     @Column(nullable = false) private Boolean ad; // 광고성 정보 수신 동의 여부
     @Column private int cnt; // 지원 횟수
+    // @Column private int numOfApplicant; // 지원 횟수
 
     @Column private Long sellerId; // seller 저장 후 sellerId 저장
 //    @Column(nullable = false)
