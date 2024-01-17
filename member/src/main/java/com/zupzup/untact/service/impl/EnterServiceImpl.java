@@ -2,6 +2,7 @@ package com.zupzup.untact.service.impl;
 
 import com.zupzup.untact.domain.enums.EnterState;
 import com.zupzup.untact.exception.member.MemberException;
+import com.zupzup.untact.exception.store.StoreException;
 import com.zupzup.untact.model.Enter;
 import com.zupzup.untact.model.Member;
 import com.zupzup.untact.model.request.EnterReq;
@@ -10,6 +11,7 @@ import com.zupzup.untact.repository.EnterRepository;
 import com.zupzup.untact.repository.MemberRepository;
 import com.zupzup.untact.service.BaseServiceImpl;
 import com.zupzup.untact.service.EnterService;
+import org.apache.catalina.Store;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,7 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 
 import static com.zupzup.untact.exception.member.MemberExceptionType.NOT_FOUND_MEMBER;
+import static com.zupzup.untact.exception.store.StoreExceptionType.CANNOT_APPLY_TWICE;
 
 @Service
 public class EnterServiceImpl extends BaseServiceImpl<Enter, EnterReq, EnterRes, EnterRepository> implements EnterService {
@@ -41,54 +44,39 @@ public class EnterServiceImpl extends BaseServiceImpl<Enter, EnterReq, EnterRes,
     @Override
     public EnterRes save(EnterReq rq) {
 
-        try {
+        // 멤버 찾지 못하면 에러 발생
+        Member m = memberRepository.findById(rq.getId())
+                .orElseThrow(() -> new MemberException(NOT_FOUND_MEMBER));
 
-            // 멤버 찾지 못하면 에러 발생
-            Member m = memberRepository.findById(rq.getId())
-                    .orElseThrow(() -> new MemberException(NOT_FOUND_MEMBER));
+        // 입점 신청 횟수 확인
+        if (m.getCnt() == 1) {
 
-            // 입점 신청 횟수 확인
-            if (m.getCnt() == 1) {
-
-                EnterRes rs = new EnterRes();
-                rs.setStoreName("입점 신청은 한 번만 가능합니다.");
-
-                return rs;
-            }
-
-            // 사장님과 입점 신청은 1:N 관계
-            // 입점 신청에서 받은 내용들 저장 + 문의 상태는 NEW 로 설정 (관리자용)
-            Enter e = Enter.builder()
-                    .created_at(timeSetter())
-                    .member(m)
-                    .name(rq.getName())
-                    .phoneNum(rq.getPhoneNum())
-                    .storeNum("")
-                    .storeName(rq.getStoreName())
-                    .storeAddress(rq.getStoreAddress())
-                    .crNumber(rq.getCrNumber())
-                    .longitude(rq.getLongitude())
-                    .latitude(rq.getLatitude())
-                    .state(EnterState.NEW)
-                    .build();
-
-            enterRepository.save(e);
-
-            // 신청 횟수 한 번 올리기
-            m.setCnt(1);
-            memberRepository.save(m);
-
-            return modelMapper.map(e, EnterRes.class);
-
-        } catch (Exception e) {
-
-            // 사용자가 존재하지 않을 경우 에러 발생
-            EnterRes rs = new EnterRes();
-            rs.setId(rq.getId());
-            rs.setStoreName("id 값에 해당하는 사용자는 존재하지 않습니다.");
-
-            return rs;
+            throw new StoreException(CANNOT_APPLY_TWICE);
         }
+
+        // 사장님과 입점 신청은 1:N 관계
+        // 입점 신청에서 받은 내용들 저장 + 문의 상태는 NEW 로 설정 (관리자용)
+        Enter e = Enter.builder()
+                .created_at(timeSetter())
+                .member(m)
+                .name(rq.getName())
+                .phoneNum(rq.getPhoneNum())
+                .storeNum("")
+                .storeName(rq.getStoreName())
+                .storeAddress(rq.getStoreAddress())
+                .crNumber(rq.getCrNumber())
+                .longitude(rq.getLongitude())
+                .latitude(rq.getLatitude())
+                .state(EnterState.NEW)
+                .build();
+
+        enterRepository.save(e);
+
+        // 신청 횟수 한 번 올리기
+        m.setCnt(1);
+        memberRepository.save(m);
+
+        return modelMapper.map(e, EnterRes.class);
     }
 
     /**

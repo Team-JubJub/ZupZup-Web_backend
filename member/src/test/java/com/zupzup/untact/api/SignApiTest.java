@@ -2,6 +2,7 @@
 //
 //import com.fasterxml.jackson.databind.ObjectMapper;
 //import com.zupzup.untact.documents.RestDocsConfig;
+//import com.zupzup.untact.exception.member.MemberException;
 //import com.zupzup.untact.model.request.MemberFindReq;
 //import com.zupzup.untact.model.request.MemberLoginReq;
 //import com.zupzup.untact.model.request.MemberPwdReq;
@@ -27,14 +28,13 @@
 //import org.springframework.web.context.WebApplicationContext;
 //import org.springframework.web.filter.CharacterEncodingFilter;
 //
+//import static com.zupzup.untact.exception.member.MemberExceptionType.*;
 //import static org.mockito.ArgumentMatchers.any;
 //import static org.mockito.Mockito.when;
 //import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.document;
 //import static org.springframework.restdocs.mockmvc.MockMvcRestDocumentation.documentationConfiguration;
 //import static org.springframework.restdocs.operation.preprocess.Preprocessors.*;
 //import static org.springframework.restdocs.payload.PayloadDocumentation.*;
-//import static org.springframework.restdocs.request.RequestDocumentation.parameterWithName;
-//import static org.springframework.restdocs.request.RequestDocumentation.pathParameters;
 //import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 //import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 //import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
@@ -111,6 +111,41 @@
 //    }
 //
 //    @Test
+//    @DisplayName("아이디찾기 - 실패(회원 찾지 못함)")
+//    public void fail_find_loginId() throws Exception {
+//
+//        // given
+//        // request 생성
+//        MemberFindReq rq = new MemberFindReq();
+//        rq.setName("test");
+//        rq.setPhoneNum("010-1111-1111");
+//        when(signService.findLoginId(any(MemberFindReq.class))).thenThrow(new MemberException(NOT_FOUND_MEMBER));
+//
+//        // rq -> JSON 형식으로 변환
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        String jsonContent = objectMapper.writeValueAsString(rq);
+//
+//        // when
+//        mockMvc.perform(
+//                        post( "/find")
+//                                .contentType(MediaType.APPLICATION_JSON)
+//                                .content(jsonContent)
+//                )
+//                // then
+//                .andDo(print())
+//                .andExpect(status().isBadRequest())
+//                // documentation 처리
+//                .andDo(
+//                        document("fail-find-id",
+//                                preprocessRequest(prettyPrint()),
+//                                preprocessResponse(prettyPrint()),
+//                                requestFields(
+//                                        fieldWithPath("name").type(JsonFieldType.STRING).description("이름"),
+//                                        fieldWithPath("phoneNum").type(JsonFieldType.STRING).description("휴대폰 전화번호")
+//                                ))
+//                );
+//    }
+//    @Test
 //    @DisplayName("비밀번호 변경 - 성공")
 //    public void success_change_pwd() throws Exception {
 //
@@ -137,6 +172,117 @@
 //        // then
 //                .andDo(document(
 //                        "change_pwd_success",
+//                        preprocessRequest(prettyPrint()),
+//                        preprocessResponse(prettyPrint()),
+//                        requestFields(
+//                                fieldWithPath("loginId").type(JsonFieldType.STRING).description("변경할 유저 로그인 아이디"),
+//                                fieldWithPath("phoneNum").type(JsonFieldType.STRING).description("변경할 유저 전화번호"),
+//                                fieldWithPath("loginPwd1").type(JsonFieldType.STRING).description("수정된 비밀번호 1"),
+//                                fieldWithPath("loginPwd2").type(JsonFieldType.STRING).description("수정된 비밀번호 2")
+//                        )
+//                ));
+//    }
+//
+//    @Test
+//    @DisplayName("비밀번호 변경 - 실패(해당 정보를 가진 유저 없음)")
+//    public void fail_change_pwd_not_found_member() throws Exception {
+//
+//        // given
+//        MemberPwdReq rq = new MemberPwdReq();
+//        rq.setLoginId("loginId");
+//        rq.setPhoneNum("010-1111-1111");
+//        rq.setLoginPwd1("test");
+//        rq.setLoginPwd2("test");
+//
+//        when(signService.changePwd(any(MemberPwdReq.class))).thenThrow(new MemberException(NOT_FOUND_MEMBER));
+//
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        String json = objectMapper.writeValueAsString(rq);
+//
+//        // when
+//        mockMvc.perform(
+//                        RestDocumentationRequestBuilders.post("/change", 1L)
+//                                .content(json)
+//                                .contentType(MediaType.APPLICATION_JSON)
+//                )
+//                .andExpect(status().isBadRequest())
+//                // then
+//                .andDo(document(
+//                        "fail_change_pwd_not_found_member",
+//                        preprocessRequest(prettyPrint()),
+//                        preprocessResponse(prettyPrint()),
+//                        requestFields(
+//                                fieldWithPath("loginId").type(JsonFieldType.STRING).description("변경할 유저 로그인 아이디"),
+//                                fieldWithPath("phoneNum").type(JsonFieldType.STRING).description("변경할 유저 전화번호"),
+//                                fieldWithPath("loginPwd1").type(JsonFieldType.STRING).description("수정된 비밀번호 1"),
+//                                fieldWithPath("loginPwd2").type(JsonFieldType.STRING).description("수정된 비밀번호 2")
+//                        )
+//                ));
+//    }
+//
+//    @Test
+//    @DisplayName("비밀번호 변경 - 실패(비밀번호1, 2 동일하지 않음)")
+//    public void fail_change_pwd_not_same_password() throws Exception {
+//
+//        // given
+//        MemberPwdReq rq = new MemberPwdReq();
+//        rq.setLoginId("loginId");
+//        rq.setPhoneNum("010-1111-1111");
+//        rq.setLoginPwd1("test");
+//        rq.setLoginPwd2("test12");
+//
+//        when(signService.changePwd(any(MemberPwdReq.class))).thenThrow(new MemberException(NOT_SAME_PASSWORD));
+//
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        String json = objectMapper.writeValueAsString(rq);
+//
+//        // when
+//        mockMvc.perform(
+//                        RestDocumentationRequestBuilders.post("/change", 1L)
+//                                .content(json)
+//                                .contentType(MediaType.APPLICATION_JSON)
+//                )
+//                .andExpect(status().isBadRequest())
+//                // then
+//                .andDo(document(
+//                        "fail_change_pwd_not_same_password",
+//                        preprocessRequest(prettyPrint()),
+//                        preprocessResponse(prettyPrint()),
+//                        requestFields(
+//                                fieldWithPath("loginId").type(JsonFieldType.STRING).description("변경할 유저 로그인 아이디"),
+//                                fieldWithPath("phoneNum").type(JsonFieldType.STRING).description("변경할 유저 전화번호"),
+//                                fieldWithPath("loginPwd1").type(JsonFieldType.STRING).description("수정된 비밀번호 1"),
+//                                fieldWithPath("loginPwd2").type(JsonFieldType.STRING).description("수정된 비밀번호 2")
+//                        )
+//                ));
+//    }
+//
+//    @Test
+//    @DisplayName("비밀번호 변경 실패 - 이전 비밀번호와 동일")
+//    public void fail_change_pwd_not_use_same_password() throws Exception {
+//
+//        // given
+//        MemberPwdReq rq = new MemberPwdReq();
+//        rq.setLoginId("loginId");
+//        rq.setPhoneNum("010-1111-1111");
+//        rq.setLoginPwd1("test");
+//        rq.setLoginPwd2("test");
+//
+//        when(signService.changePwd(any(MemberPwdReq.class))).thenThrow(new MemberException(CANNOT_USE_SAME_PASSWORD));
+//
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        String json = objectMapper.writeValueAsString(rq);
+//
+//        // when
+//        mockMvc.perform(
+//                        RestDocumentationRequestBuilders.post("/change", 1L)
+//                                .content(json)
+//                                .contentType(MediaType.APPLICATION_JSON)
+//                )
+//                .andExpect(status().isBadRequest())
+//                // then
+//                .andDo(document(
+//                        "fail_change_pwd_cannot_use_same_password",
 //                        preprocessRequest(prettyPrint()),
 //                        preprocessResponse(prettyPrint()),
 //                        requestFields(
@@ -190,6 +336,74 @@
 //                                        fieldWithPath("token").type(JsonFieldType.STRING).description("BEARER 토큰"),
 //                                        fieldWithPath("id").type(JsonFieldType.NUMBER).description("Long 타입 유저 unique Id"),
 //                                        fieldWithPath("cnt").type(JsonFieldType.NUMBER).description("int 타입 유저 가게 신청 횟수")
+//                                )
+//                        ));
+//    }
+//
+//    @Test
+//    @DisplayName("로그인 실패 - 유저를 찾을 수 없음")
+//    public void fail_login_cannot_find_user() throws Exception {
+//
+//        // given
+//        // 로그인 request
+//        MemberLoginReq rq = new MemberLoginReq();
+//        rq.setLoginId("test ID");
+//        rq.setLoginPwd("test Password");
+//
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        String json = objectMapper.writeValueAsString(rq);
+//
+//        when(signService.login(any(MemberLoginReq.class))).thenThrow(new MemberException(NOT_FOUND_MEMBER));
+//
+//        // when
+//        mockMvc.perform(
+//                        post("/login")
+//                                .contentType(MediaType.APPLICATION_JSON)
+//                                .content(json)
+//                )
+//                .andExpect(status().isBadRequest())
+//                // then
+//                .andDo(
+//                        document("fail-login-cannot-find-member",
+//                                preprocessRequest(prettyPrint()),
+//                                preprocessResponse(prettyPrint()),
+//                                requestFields(
+//                                        fieldWithPath("loginId").type(JsonFieldType.STRING).description("로그인 아이디"),
+//                                        fieldWithPath("loginPwd").type(JsonFieldType.STRING).description("로그인 비밀번호")
+//                                )
+//                        ));
+//    }
+//
+//    @Test
+//    @DisplayName("로그인 실패 - 비밀번호 틀림")
+//    public void fail_login_wrong_password() throws Exception {
+//
+//        // given
+//        // 로그인 request
+//        MemberLoginReq rq = new MemberLoginReq();
+//        rq.setLoginId("test ID");
+//        rq.setLoginPwd("test Password");
+//
+//        ObjectMapper objectMapper = new ObjectMapper();
+//        String json = objectMapper.writeValueAsString(rq);
+//
+//        when(signService.login(any(MemberLoginReq.class))).thenThrow(new MemberException(WRONG_PASSWORD));
+//
+//        // when
+//        mockMvc.perform(
+//                        post("/login")
+//                                .contentType(MediaType.APPLICATION_JSON)
+//                                .content(json)
+//                )
+//                .andExpect(status().isBadRequest())
+//                // then
+//                .andDo(
+//                        document("fail-login-wrong-password",
+//                                preprocessRequest(prettyPrint()),
+//                                preprocessResponse(prettyPrint()),
+//                                requestFields(
+//                                        fieldWithPath("loginId").type(JsonFieldType.STRING).description("로그인 아이디"),
+//                                        fieldWithPath("loginPwd").type(JsonFieldType.STRING).description("로그인 비밀번호")
 //                                )
 //                        ));
 //    }

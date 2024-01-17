@@ -61,7 +61,7 @@ public class SignService {
         // 비밀번호 동일 여부 확인
         if (!rq.getLoginPwd1().equals(rq.getLoginPwd2())) {
 
-            // 같지 않으면 rs 전송
+            // 같지 않으면 exception 발생
             throw new MemberException(NOT_SAME_PASSWORD);
         }
 

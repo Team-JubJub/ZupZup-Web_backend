@@ -21,7 +21,7 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Collections;
 
-import static com.zupzup.untact.exception.member.MemberExceptionType.ALREADY_EXIST_USERNAME;
+import static com.zupzup.untact.exception.member.MemberExceptionType.*;
 
 @Service
 public class MemberServiceImpl extends BaseServiceImpl<Member, MemberReq, MemberRes, MemberRepository> implements MemberService {
@@ -63,21 +63,13 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, MemberReq, Member
         // 이름과 전화번호가 같은 사람이 있는지 확인
         if (memberRepository.existsByNameAndPhoneNum(rq.getName(), rq.getPhoneNum())) {
 
-            // 존재하면 rs 전송
-            MemberRes rs = new MemberRes();
-            rs.setLoginId("이미 존재하는 회원입니다.");
-
-            return rs;
+            throw new MemberException(ALREADY_EXIST_MEMBER);
         }
 
         // 비밀번호 동일 여부 확인
         if (!rq.getLoginPwd1().equals(rq.getLoginPwd2())) {
 
-            // 같지 않으면 rs 전송
-            MemberRes rs = new MemberRes();
-            rs.setLoginId("비밀번호가 같지 않습니다.");
-
-            return rs;
+            throw new MemberException(NOT_SAME_PASSWORD);
         }
 
         // 패스워드 인코딩 후 저장
