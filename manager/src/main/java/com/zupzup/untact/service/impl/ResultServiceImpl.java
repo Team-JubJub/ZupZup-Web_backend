@@ -5,6 +5,7 @@ import com.zupzup.untact.domain.enums.EnterState;
 import com.zupzup.untact.domain.enums.StoreCategory;
 import com.zupzup.untact.domain.store.Store;
 import com.zupzup.untact.exception.ManagerException;
+import com.zupzup.untact.exception.enter.EnterException;
 import com.zupzup.untact.exception.member.MemberException;
 import com.zupzup.untact.model.Enter;
 import com.zupzup.untact.model.dto.request.EnterUpdateReq;
@@ -28,6 +29,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static com.zupzup.untact.exception.ManagerExceptionType.EMPTY_LIST;
+import static com.zupzup.untact.exception.enter.EnterExceptionType.*;
 import static com.zupzup.untact.exception.member.MemberExceptionType.NOT_FOUND_MEMBER;
 
 @Service
@@ -79,11 +81,7 @@ public class ResultServiceImpl implements ResultService {
         // 신규 신청 매장이 아닐 경우
         if (e.getState() != EnterState.NEW) {
 
-            EnterRes rs = new EnterRes();
-            rs.setName("신규 신청 매장이 아닙니다.");
-            rs.setMemberLoginId(e.getState().toString());
-
-            return rs;
+            throw new EnterException(ENTER_STATE_IS_NOT_NEW);
         }
 
         return modelMapper.map(e, EnterRes.class);
@@ -102,13 +100,13 @@ public class ResultServiceImpl implements ResultService {
         if (!rq.getIsAccepted()) {
 
             // isAccepted 가 false 일 경우 원하는 로직 찾지 못함
-            return "Cannot find request";
+            throw new EnterException(IS_ACCEPTED_FALSE);
         }
 
         if (e.getState() != EnterState.NEW) {
 
             // 신규 신청(NEW) 상태인지 확인
-            return "This store is not in a NEW state";
+            throw new EnterException(ENTER_STATE_IS_NOT_NEW);
         }
 
         // Store 엔티티로 정보 이전 및 저장
@@ -237,11 +235,7 @@ public class ResultServiceImpl implements ResultService {
         // 노출 대기 매장이 아닐 경우
         if (s.getEnterState() != EnterState.WAIT) {
 
-            StoreRes rs = new StoreRes();
-            rs.setSellerName("노출 대기 매장이 아닙니다.");
-            rs.setSellerLoginId(s.getEnterState().toString());
-
-            return rs;
+            throw new EnterException(ENTER_STATE_IS_NOT_WAIT);
         }
 
         // 판매자 로그인 아이디 가져오기
@@ -281,13 +275,13 @@ public class ResultServiceImpl implements ResultService {
         if (!rq.getIsAccepted()) {
 
             // isAccepted 가 false 일 경우 원하는 로직 찾지 못함
-            return "Cannot find request";
+            throw new EnterException(IS_ACCEPTED_FALSE);
         }
 
         if (s.getEnterState() != EnterState.WAIT) {
 
             // 노출 대기(WAIT) 상태인지 확인
-            return "This store is not in a NEW state";
+            throw new EnterException(ENTER_STATE_IS_NOT_WAIT);
         }
 
         s.setEnterState(EnterState.CONFIRM);
@@ -381,11 +375,7 @@ public class ResultServiceImpl implements ResultService {
         // 입점된 매장이 아닐 경우
         if (s.getEnterState() != EnterState.CONFIRM) {
 
-            StoreRes rs = new StoreRes();
-            rs.setSellerName("입점된 매장이 아닙니다.");
-            rs.setSellerLoginId(s.getEnterState().toString());
-
-            return rs;
+            throw new EnterException(ENTER_STATE_IS_NOT_CONFIRM);
         }
 
         // 판매자 로그인 아이디 가져오기
@@ -411,13 +401,13 @@ public class ResultServiceImpl implements ResultService {
         if (!rq.getIsAccepted()) {
 
             // isAccepted 가 false 일 경우 원하는 로직 찾지 못함
-            return "Cannot find request";
+            throw new EnterException(IS_ACCEPTED_FALSE);
         }
 
         if (s.getEnterState() != EnterState.CONFIRM) {
 
             // 노출 승인(CONFIRM) 상태인지 확인
-            return "This store is not in a CONFIRM state";
+            throw new EnterException(ENTER_STATE_IS_NOT_CONFIRM);
         }
 
         s.setEnterState(EnterState.WAIT);
