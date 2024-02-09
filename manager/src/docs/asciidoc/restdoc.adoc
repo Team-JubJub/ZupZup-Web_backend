@@ -33,19 +33,31 @@ operation::fail-new-list[snippets='http-request,response-body,response-fields']
 operation::success-new-detail[snippets='http-request,response-body,response-fields']
 
 === 신규 신청 매장 상세 확인 (실패 - 신규 신청 매장이 아닌 경우)
-operation::fail-new-detail[snippets='http-request,response-body,response-fields']
+operation::fail-new-detail[snippets='http-request,response-body,http-response']
 
 === 신규 신청 매장 -> 노출 대기로 변경 (성공)
 operation::success-new-to-wait[snippets='http-request,request-body,request-fields,response-body']
 
+=== 신규 신청 매장 -> 노출 대기로 변경 (실패 - 가게를 찾지 못함)
+operation::fail-new-to-wait-cannot-find-store[snippets='http-request,request-body,request-fields,http-response']
+
 === 신규 신청 매장 -> 노출 대기로 변경 (실패 - isAccepted=false)
-operation::fail-new-to-wait[snippets='http-request,request-body,request-fields,response-body']
+operation::fail-new-to-wait[snippets='http-request,request-body,request-fields,http-response']
+
+=== 신규 신청 매장 -> 노출 대기로 변경 (실패 - 가게의 본 상태가 NEW 가 아님)
+operation::fail-new-to-wait-enter-state-is-not-new[snippets='http-request,request-body,request-fields,http-response']
 
 === 신규 신청 매장 삭제 (성공)
 operation::success-delete-enter[snippets='http-request,path-parameters,response-body']
 
+=== 신규 신청 매장 삭제 (실패)
+operation::fail-delete-enter[snippets='http-request,path-parameters,http-response']
+
 === 신규 신청 매장 수정 (성공)
 operation::success-update-enter[snippets='http-request,request-body,request-fields,response-body,response-fields']
+
+=== 신규 신청 매장 수정 (실패)
+operation::fail-enter-detail[snippets='http-request,path-parameters,http-response']
 
 === 신규 신청 매장 검색 (성공)
 operation::success-new-search[snippets='http-request,query-parameters,response-body,response-fields']
@@ -61,19 +73,31 @@ operation::fail-wait-list[snippets='http-request,response-body,response-fields']
 operation::success-wait-detail[snippets='http-request,response-body,response-fields']
 
 === 노출 대기 매장 상세 확인 (실패 - 노출 대기 매장이 아닌 경우)
-operation::fail-wait-detail[snippets='http-request,response-body,response-fields']
+operation::fail-wait-detail[snippets='http-request,path-parameters,http-response']
 
 === 노출 대기 매장 삭제 (성공)
 operation::success-wait-delete[snippets='http-request,response-body']
 
+=== 노출 대기 매장 삭제 (실패 - 매장 없는 경우)
+operation::fail-wait-delete[snippets='http-request,http-response']
+
 === 노출 대기 매장 -> 노출 승인으로 변경 (성공)
 operation::success-wait-to-confirm[snippets='http-request,request-body,request-fields,response-body']
 
-=== 노출 대기 매장 -> 노출 승인으로 변경 (실패)
-operation::fail-wait-to-confirm[snippets='http-request,request-body,request-fields,response-body']
+=== 노출 대기 매장 -> 노출 승인으로 변경 (실패 - 가게 없음)
+operation::fail-wait-to-confirm-empty-list[snippets='http-request,request-body,request-fields,http-response']
+
+=== 노출 대기 매장 -> 노출 승인으로 변경 (실패 - isAccepted false)
+operation::fail-wait-to-confirm-is-accepted-false[snippets='http-request,request-body,request-fields,http-response']
+
+=== 노출 대기 매장 -> 노출 승인으로 변경 (실패 - enterstate wait 아님)
+operation::fail-wait-to-confirm-enterstate-is-not-wait[snippets='http-request,request-body,request-fields,http-response']
 
 === 노출 대기 매장 수정 (성공)
 operation::success-update-store[snippets='http-request,request-body,request-fields,response-body,response-fields']
+
+=== 노출 대기 매장 수정 (실패)
+operation::fail-update-store-empty-list[snippets='http-request,request-body,request-fields,http-response']
 
 === 노출 대기 매장 검색 (성공)
 operation::success-wait-search[snippets='http-request,query-parameters,response-body,response-fields']
@@ -82,20 +106,26 @@ operation::success-wait-search[snippets='http-request,query-parameters,response-
 === 노출 승인 매장 전체 보기 (성공)
 operation::success-confirm-list[snippets='http-request,response-body,response-fields']
 
-=== 노출 승인 매장 전체 보기 (실패, 검색 시 관련 데이터를 찾을 수 없을 경우에도 동일)
-operation::fail-confirm-list[snippets='http-request,response-body,response-fields']
-
 === 노출 승인 매장 상세 확인 (성공)
 operation::success-confirm-detail[snippets='http-request,response-body,response-fields']
 
-=== 노출 승인 매장 상세 확인 (실패 - 노출 승인 매장이 아닌 경우)
-operation::fail-confirm-detail[snippets='http-request,response-body,response-fields']
+=== 노출 승인 매장 상세 확인 (실패 - 가게 Id 찾지 못함)
+operation::fail-confirm-detail[snippets='http-request,http-response']
+
+=== 노출 승인 매장 상세 확인 (실패 - enterstate confirm 아님)
+operation::fail-confirm-detail-enterstate-is-not-confirm[snippets='http-request,http-response']
 
 === 노출 승인 매장 -> 노출 대기로 변경 (성공)
 operation::success-confirm-to-wait[snippets='http-request,request-body,request-fields,response-body']
 
-=== 노출 승인 매장 -> 노출 대기로 변경 (실패)
-operation::fail-confirm-to-wait[snippets='http-request,request-body,request-fields,response-body']
+=== 노출 승인 매장 -> 노출 대기로 변경 (실패 - 가게 id 없음)
+operation::fail-confirm-to-wait-no-store-id[snippets='http-request,http-response,request-fields,response-body']
+
+=== 노출 승인 매장 -> 노출 대기로 변경 (실패 - isAccepted false)
+operation::fail-confirm-to-wait-isAccepted_false[snippets='http-request,http-response,request-fields,response-body']
+
+=== 노출 승인 매장 -> 노출 대기로 변경 (실패 - enterState confirm 아님)
+operation::fail-confirm-to-wait-enterState-is-not-confirm[snippets='http-request,http-response,request-fields,response-body']
 
 === 노출 대기 매장 검색 (성공)
 operation::success-confirm-search[snippets='http-request,query-parameters,response-body,response-fields']
@@ -111,19 +141,19 @@ operation::list_gatherDeletionRequests[snippets='http-request,response-body,resp
 operation::success-deletionDetail[snippets='http-request,path-parameters,response-body,response-fields']
 
 === 탈퇴 신청 매장 상세 (가게가 없는 경우)
-operation::fail-deletionDetail-store-err[snippets='http-request,path-parameters,response-body,response-fields']
+operation::fail-deletionDetail-store-err[snippets='http-request,path-parameters,response-body']
 
 === 탈퇴 신청 매장 상세 (사장님이 없는 경우)
-operation::fail-deletionDetail-member-err[snippets='http-request,path-parameters,response-body,response-fields']
+operation::fail-deletionDetail-member-err[snippets='http-request,path-parameters,response-body']
 
 === 탈퇴 -> 노출대기 성공
 operation::success-deleteToConfirm[snippets='http-request,path-parameters,response-body']
 
 === 탈퇴 -> 노출대기 (가게가 없는 경우)
-operation::fail-deleteToConfirm-store-err[snippets='http-request,path-parameters,response-body,response-fields']
+operation::fail-deleteToConfirm-store-err[snippets='http-request,path-parameters,response-body']
 
 === 탈퇴 -> 노출대기 (사장님이 없는 경우)
-operation::fail-deleteToConfirm-member-err[snippets='http-request,path-parameters,response-body,response-fields']
+operation::fail-deleteToConfirm-member-err[snippets='http-request,path-parameters,response-body']
 
 === 탈퇴 성공
 operation::success-confirmDelete[snippets='http-request,path-parameters,response-body']

@@ -9,6 +9,10 @@ import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.filter.HiddenHttpMethodFilter;
 
+
+import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
+
 @SpringBootApplication
 //@EntityScan(basePackages = {"com.zupzup"})
 //@EnableJpaRepositories(basePackages = {"com.zupzup.untact.repository"})
@@ -18,7 +22,7 @@ public class ManagerApplication {
     public static void main(String[] args) {
         SpringApplication.run(ManagerApplication.class, args);
     }
-
+//
 //    @Bean
 //    public HiddenHttpMethodFilter hiddenHttpMethodFilter() {
 //        return new HiddenHttpMethodFilter();
