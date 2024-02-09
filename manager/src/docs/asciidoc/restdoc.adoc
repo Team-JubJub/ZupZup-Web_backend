@@ -118,8 +118,14 @@ operation::fail-confirm-detail-enterstate-is-not-confirm[snippets='http-request,
 === 노출 승인 매장 -> 노출 대기로 변경 (성공)
 operation::success-confirm-to-wait[snippets='http-request,request-body,request-fields,response-body']
 
-=== 노출 승인 매장 -> 노출 대기로 변경 (실패)
-operation::fail-confirm-to-wait[snippets='http-request,request-body,request-fields,response-body']
+=== 노출 승인 매장 -> 노출 대기로 변경 (실패 - 가게 id 없음)
+operation::fail-confirm-to-wait-no-store-id[snippets='http-request,http-response,request-fields,response-body']
+
+=== 노출 승인 매장 -> 노출 대기로 변경 (실패 - isAccepted false)
+operation::fail-confirm-to-wait-isAccepted_false[snippets='http-request,http-response,request-fields,response-body']
+
+=== 노출 승인 매장 -> 노출 대기로 변경 (실패 - enterState confirm 아님)
+operation::fail-confirm-to-wait-enterState-is-not-confirm[snippets='http-request,http-response,request-fields,response-body']
 
 === 노출 대기 매장 검색 (성공)
 operation::success-confirm-search[snippets='http-request,query-parameters,response-body,response-fields']
