@@ -199,16 +199,12 @@
 //                        get("/delete/{id}", 1L)
 //                                .header("Authorization", "Bearer " + bearerToken))
 //                // then
-//                .andExpect(status().isOk())
+//                .andExpect(status().isBadRequest())
 //                .andDo(document("fail-deletionDetail-store-err",
 //                        preprocessRequest(prettyPrint()),
 //                        preprocessResponse(prettyPrint()),
 //                        pathParameters(
 //                                parameterWithName("id").description("가게 unique id")
-//                        ),
-//                        responseFields(
-//                                fieldWithPath("errCode").description("The error code"),
-//                                fieldWithPath("errMsg").description("The error message")
 //                        )));
 //    }
 //
@@ -223,16 +219,12 @@
 //                        get("/delete/{id}", 1L)
 //                                .header("Authorization", "Bearer " + bearerToken))
 //                // then
-//                .andExpect(status().isOk())
+//                .andExpect(status().isBadRequest())
 //                .andDo(document("fail-deletionDetail-member-err",
 //                        preprocessRequest(prettyPrint()),
 //                        preprocessResponse(prettyPrint()),
 //                        pathParameters(
 //                                parameterWithName("id").description("가게 unique id")
-//                        ),
-//                        responseFields(
-//                                fieldWithPath("errCode").description("The error code"),
-//                                fieldWithPath("errMsg").description("The error message")
 //                        )));
 //    }
 //
@@ -270,16 +262,12 @@
 //                        patch("/delete/{id}", 1L)
 //                                .header("Authorization", "Bearer " + bearerToken))
 //                // then
-//                .andExpect(status().isOk())
+//                .andExpect(status().isBadRequest())
 //                .andDo(document("fail-deleteToConfirm-store-err",
 //                        preprocessRequest(prettyPrint()),
 //                        preprocessResponse(prettyPrint()),
 //                        pathParameters(
 //                                parameterWithName("id").description("가게 unique id")
-//                        ),
-//                        responseFields(
-//                                fieldWithPath("errCode").description("The error code"),
-//                                fieldWithPath("errMsg").description("The error message")
 //                        )));
 //    }
 //
@@ -294,16 +282,12 @@
 //                        patch("/delete/{id}", 1L)
 //                                .header("Authorization", "Bearer " + bearerToken))
 //                // then
-//                .andExpect(status().isOk())
+//                .andExpect(status().isBadRequest())
 //                .andDo(document("fail-deleteToConfirm-member-err",
 //                        preprocessRequest(prettyPrint()),
 //                        preprocessResponse(prettyPrint()),
 //                        pathParameters(
 //                                parameterWithName("id").description("가게 unique id")
-//                        ),
-//                        responseFields(
-//                                fieldWithPath("errCode").description("The error code"),
-//                                fieldWithPath("errMsg").description("The error message")
 //                        )));
 //    }
 //
