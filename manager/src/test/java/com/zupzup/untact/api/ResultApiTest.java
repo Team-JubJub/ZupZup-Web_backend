@@ -1105,35 +1105,6 @@ public class ResultApiTest {
     }
 
     @Test
-    @DisplayName("노출 승인 매장 전체 보기 - 실패")
-    public void fail_confirm_list() throws Exception {
-
-        // given
-        TestExceptionRes rs = new TestExceptionRes(802, "관련된 매장 정보를 찾을 수 없습니다.");
-
-        when(resultService.confirmStoreList()).thenThrow(new ManagerException(EMPTY_LIST));
-
-        // when
-        mockMvc.perform(
-                        get("/confirm")
-                                .header("Authorization", "Bearer " + bearerToken)
-                )
-                // then
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("errCode").value(802))
-                .andExpect(jsonPath("errMsg").value("관련된 매장 정보를 찾을 수 없습니다."))
-                .andDo(document(
-                        "fail-confirm-list",
-                        preprocessRequest(prettyPrint()),
-                        preprocessResponse(prettyPrint()),
-                        responseFields(
-                                fieldWithPath("errCode").description("에러 코드"),
-                                fieldWithPath("errMsg").description("에러 메세지")
-                        )
-                ));
-    }
-
-    @Test
     @DisplayName("노출 승인 매장 상세보기 - 성공")
     public void success_confirm_detail() throws Exception {
 
@@ -1180,41 +1151,42 @@ public class ResultApiTest {
     }
 
     @Test
-    @DisplayName("노출 승인 매장 상세보기 - 실패")
+    @DisplayName("노출 승인 매장 상세보기 - 실패 (가게 Id 찾지 못함)")
     public void fail_confirm_detail() throws Exception {
 
         // given
-        // 입점된 매장이 아닐 경우
-        StoreRes rs = new StoreRes();
-        rs.setSellerName("입점된 매장이 아닙니다.");
-        rs.setSellerLoginId(EnterState.NEW.toString());
-
-        given(resultService.confirmStoreDetail(1L)).willReturn(rs);
+        when(resultService.confirmStoreDetail(1L)).thenThrow(new ManagerException(EMPTY_LIST));
 
         // when
         mockMvc.perform(
                         get("/confirm/{id}", 1L)
                                 .header("Authorization", "Bearer " + bearerToken)
                 )// then
-                .andExpect(status().isOk())
-                .andExpect(jsonPath("sellerLoginId").value(EnterState.NEW.toString()))
-                .andExpect(jsonPath("sellerName").value("입점된 매장이 아닙니다."))
+                .andExpect(status().isBadRequest())
                 .andDo(document(
                         "fail-confirm-detail",
                         preprocessRequest(prettyPrint()),
-                        preprocessResponse(prettyPrint()),
-                        responseFields(
-                                fieldWithPath("storeId").type(JsonFieldType.NULL).description("null 값으로 전달"),
-                                fieldWithPath("sellerName").type(JsonFieldType.STRING).description("실패 이유 설명"),
-                                fieldWithPath("sellerLoginId").type(JsonFieldType.STRING).description("어떤 state 에 있는지 확인"),
-                                fieldWithPath("sellerContact").type(JsonFieldType.NULL).description("null 값으로 전달"),
-                                fieldWithPath("storeContact").type(JsonFieldType.NULL).description("null 값으로 전달"),
-                                fieldWithPath("crNumber").type(JsonFieldType.NULL).description("null 값으로 전달"),
-                                fieldWithPath("storeName").type(JsonFieldType.NULL).description("null 값으로 전달"),
-                                fieldWithPath("storeAddress").type(JsonFieldType.NULL).description("null 값으로 전달"),
-                                fieldWithPath("storeImageUrl").type(JsonFieldType.NULL).description("null 값으로 전달"),
-                                fieldWithPath("category").type(JsonFieldType.NULL).description("null 값으로 전달")
-                        )
+                        preprocessResponse(prettyPrint())
+                ));
+    }
+
+    @Test
+    @DisplayName("노출 승인 매장 상세보기 - 실패 (Enterstate confirm 아님)")
+    public void fail_confirm_detail_enterstate_is_not_confirm() throws Exception {
+
+        // given
+        when(resultService.confirmStoreDetail(1L)).thenThrow(new EnterException(ENTER_STATE_IS_NOT_CONFIRM));
+
+        // when
+        mockMvc.perform(
+                        get("/confirm/{id}", 1L)
+                                .header("Authorization", "Bearer " + bearerToken)
+                )// then
+                .andExpect(status().isBadRequest())
+                .andDo(document(
+                        "fail-confirm-detail-enterstate-is-not-confirm",
+                        preprocessRequest(prettyPrint()),
+                        preprocessResponse(prettyPrint())
                 ));
     }
 

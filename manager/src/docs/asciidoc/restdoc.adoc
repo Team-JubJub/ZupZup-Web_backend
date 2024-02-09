@@ -109,8 +109,11 @@ operation::success-confirm-list[snippets='http-request,response-body,response-fi
 === 노출 승인 매장 상세 확인 (성공)
 operation::success-confirm-detail[snippets='http-request,response-body,response-fields']
 
-=== 노출 승인 매장 상세 확인 (실패 - 노출 승인 매장이 아닌 경우)
-operation::fail-confirm-detail[snippets='http-request,response-body,response-fields']
+=== 노출 승인 매장 상세 확인 (실패 - 가게 Id 찾지 못함)
+operation::fail-confirm-detail[snippets='http-request,http-response']
+
+=== 노출 승인 매장 상세 확인 (실패 - enterstate confirm 아님)
+operation::fail-confirm-detail-enterstate-is-not-confirm[snippets='http-request,http-response']
 
 === 노출 승인 매장 -> 노출 대기로 변경 (성공)
 operation::success-confirm-to-wait[snippets='http-request,request-body,request-fields,response-body']
