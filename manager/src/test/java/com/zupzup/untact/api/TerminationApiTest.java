@@ -7,7 +7,6 @@
 //import com.zupzup.untact.model.dto.response.DeleteStoreListRes;
 //import com.zupzup.untact.model.dto.response.StoreRes;
 //import com.zupzup.untact.service.impl.TerminationServiceImpl;
-//import jakarta.persistence.JoinColumn;
 //import org.junit.jupiter.api.BeforeEach;
 //import org.junit.jupiter.api.DisplayName;
 //import org.junit.jupiter.api.Test;
@@ -307,6 +306,46 @@
 //                // then
 //                .andExpect(status().isOk())
 //                .andDo(document("success-confirmDelete",
+//                        preprocessRequest(prettyPrint()),
+//                        preprocessResponse(prettyPrint()),
+//                        pathParameters(
+//                                parameterWithName("id").description("가게 unique id")
+//                        )));
+//    }
+//
+//    @Test
+//    @DisplayName("탈퇴 승인 - 가게 찾지 못하는 에러")
+//    public void confirmDelete_cannot_find_store() throws Exception {
+//
+//        when(terminationService.confirmDelete(1L)).thenThrow(new StoreException(NO_MATCH_STORE));
+//
+//        // when
+//        mockMvc.perform(
+//                        delete("/delete/{id}", 1L)
+//                                .header("Authorization", "Bearer " + bearerToken))
+//                // then
+//                .andExpect(status().isBadRequest())
+//                .andDo(document("fail-confirmDelete-store-err",
+//                        preprocessRequest(prettyPrint()),
+//                        preprocessResponse(prettyPrint()),
+//                        pathParameters(
+//                                parameterWithName("id").description("가게 unique id")
+//                        )));
+//    }
+//
+//    @Test
+//    @DisplayName("탈퇴 승인 - 회원 찾지 못하는 에러")
+//    public void confirmDelete_cannot_find_member() throws Exception {
+//
+//        when(terminationService.confirmDelete(1L)).thenThrow(new MemberException(NOT_FOUND_MEMBER));
+//
+//        // when
+//        mockMvc.perform(
+//                        delete("/delete/{id}", 1L)
+//                                .header("Authorization", "Bearer " + bearerToken))
+//                // then
+//                .andExpect(status().isBadRequest())
+//                .andDo(document("fail-confirmDelete-member-err",
 //                        preprocessRequest(prettyPrint()),
 //                        preprocessResponse(prettyPrint()),
 //                        pathParameters(

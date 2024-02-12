@@ -150,10 +150,16 @@ operation::fail-deletionDetail-member-err[snippets='http-request,path-parameters
 operation::success-deleteToConfirm[snippets='http-request,path-parameters,response-body']
 
 === 탈퇴 -> 노출대기 (가게가 없는 경우)
-operation::fail-deleteToConfirm-store-err[snippets='http-request,path-parameters,response-body']
+operation::fail-deleteToConfirm-store-err[snippets='http-request,path-parameters,http-response']
 
 === 탈퇴 -> 노출대기 (사장님이 없는 경우)
-operation::fail-deleteToConfirm-member-err[snippets='http-request,path-parameters,response-body']
+operation::fail-deleteToConfirm-member-err[snippets='http-request,path-parameters,http-response']
 
 === 탈퇴 성공
 operation::success-confirmDelete[snippets='http-request,path-parameters,response-body']
+
+=== 탈퇴 성공 (가게가 없는 경우)
+operation::fail-confirmDelete-store-err[snippets='http-request,path-parameters,http-response']
+
+=== 탈퇴 성공 (사장님이 없는 경우)
+operation::fail-confirmDelete-member-err[snippets='http-request,path-parameters,http-response']
