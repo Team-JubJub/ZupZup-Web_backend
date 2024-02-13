@@ -7,5 +7,5 @@ import com.zupzup.untact.repository.MemberRepository;
 
 public interface MemberService extends BaseService<Member, MemberReq, MemberRes, MemberRepository> {
 
-    String checkLoginId(String loginId); // 아이디 중복 조회
+    String checkDuplicateLoginId(String loginId); // 아이디 중복 조회
 }

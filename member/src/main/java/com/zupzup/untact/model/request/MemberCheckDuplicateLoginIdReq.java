@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Getter @Setter
-public class MemberLoginIdReq {
+public class MemberCheckDuplicateLoginIdReq {
 
     private String loginId;
 }

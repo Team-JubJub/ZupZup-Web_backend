@@ -3,7 +3,7 @@ package com.zupzup.untact.api.impl;
 import com.zupzup.untact.api.BaseControllerImpl;
 import com.zupzup.untact.api.MemberController;
 import com.zupzup.untact.model.Member;
-import com.zupzup.untact.model.request.MemberLoginIdReq;
+import com.zupzup.untact.model.request.MemberCheckDuplicateLoginIdReq;
 import com.zupzup.untact.model.request.MemberReq;
 import com.zupzup.untact.model.response.MemberRes;
 import com.zupzup.untact.repository.MemberRepository;
@@ -29,8 +29,8 @@ public class MemberControllerImpl extends BaseControllerImpl<Member, MemberReq, 
      */
     @Override
     @PostMapping("/check")
-    public ResponseEntity checkLoginId(@RequestBody MemberLoginIdReq rq) {
-        String rs = memberService.checkLoginId(rq.getLoginId());
+    public ResponseEntity checkDuplicateLoginId(@RequestBody MemberCheckDuplicateLoginIdReq rq) {
+        String rs = memberService.checkDuplicateLoginId(rq.getLoginId());
 
         return new ResponseEntity(rs, HttpStatus.OK);
     }

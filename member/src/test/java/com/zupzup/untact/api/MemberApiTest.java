@@ -3,7 +3,7 @@
 //import com.fasterxml.jackson.databind.ObjectMapper;
 //import com.zupzup.untact.documents.RestDocsConfig;
 //import com.zupzup.untact.exception.member.MemberException;
-//import com.zupzup.untact.model.request.MemberLoginIdReq;
+//import com.zupzup.untact.model.request.MemberCheckDuplicateLoginIdReq;
 //import com.zupzup.untact.model.request.MemberReq;
 //import com.zupzup.untact.model.response.MemberRes;
 //import com.zupzup.untact.service.impl.MemberServiceImpl;
@@ -214,7 +214,7 @@
 //    public void success_find_loginId() throws Exception {
 //
 //        // given
-//        MemberLoginIdReq rq = new MemberLoginIdReq();
+//        MemberCheckDuplicateLoginIdReq rq = new MemberCheckDuplicateLoginIdReq();
 //        rq.setLoginId("test");
 //
 //        // 값 json 으로 매핑
@@ -252,7 +252,7 @@
 //        // given
 //        ObjectMapper objectMapper = new ObjectMapper();
 //
-//        MemberLoginIdReq loginIdReq = new MemberLoginIdReq();
+//        MemberCheckDuplicateLoginIdReq loginIdReq = new MemberCheckDuplicateLoginIdReq();
 //        loginIdReq.setLoginId("Test Login ID");
 //
 //        when(memberService.checkLoginId(any(String.class))).thenThrow(new MemberException(ALREADY_EXIST_USERNAME));
