@@ -44,7 +44,7 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, MemberReq, Member
      * 아이디 중복 확인
      */
     @Override
-    public String checkLoginId(String loginId) {
+    public String checkDuplicateLoginId(String loginId) {
 
         if (memberRepository.findByLoginId(loginId).isPresent()) {
 
@@ -73,7 +73,7 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, MemberReq, Member
         }
 
         // 패스워드 인코딩 후 저장
-        Member m = Member.builder()
+        Member member = Member.builder()
                 .created_at(timeSetter())
                 .name(rq.getName())
                 .phoneNum(rq.getPhoneNum())
@@ -84,31 +84,31 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, MemberReq, Member
                 .cnt(0)
                 .build();
 
-        m.setRoles(
+        member.setRoles(
                 Collections.singletonList(Authority.builder()
                         .name("ROLE_SELLER")
-                        .member(m)
+                        .member(member)
                         .build())
 
         );
 
         // Seller 엔티티에도 저장
-        Seller s = new Seller();
-        s.setName(rq.getName());
-        s.setLoginId(rq.getLoginId());
-        s.setLoginPwd(passwordEncoder.encode(rq.getLoginPwd1()));
-        s.setEmail(rq.getEmail());
-        s.setPhoneNumber(rq.getPhoneNum());
-        s.setRole(Role.ROLE_SELLER);
-        s.setWantDeletion(false);
+        Seller seller = new Seller();
+        seller.setName(rq.getName());
+        seller.setLoginId(rq.getLoginId());
+        seller.setLoginPwd(passwordEncoder.encode(rq.getLoginPwd1()));
+        seller.setEmail(rq.getEmail());
+        seller.setPhoneNumber(rq.getPhoneNum());
+        seller.setRole(Role.ROLE_SELLER);
+        seller.setWantDeletion(false);
 
-        sellerRepository.save(s);
+        sellerRepository.save(seller);
 
-        m.setSellerId(s.getSellerId());
-        memberRepository.save(m);
+        seller.setSellerId(seller.getSellerId());
+        memberRepository.save(member);
 
         // 저장후 response 형식에 맞춰 값 반환
-        return modelMapper.map(m, MemberRes.class);
+        return modelMapper.map(member, MemberRes.class);
 
     }
 
