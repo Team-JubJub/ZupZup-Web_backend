@@ -49,7 +49,7 @@ public class EnterServiceImpl extends BaseServiceImpl<Enter, EnterReq, EnterRes,
                 .orElseThrow(() -> new MemberException(NOT_FOUND_MEMBER));
 
         // 입점 신청 횟수 확인
-        if (member.getCnt() == 1) {
+        if (member.getApplicationCnt() == 1) {
 
             throw new StoreException(CANNOT_APPLY_TWICE);
         }
@@ -73,7 +73,7 @@ public class EnterServiceImpl extends BaseServiceImpl<Enter, EnterReq, EnterRes,
         enterRepository.save(enter);
 
         // 신청 횟수 한 번 올리기
-        member.setCnt(1);
+        member.setApplicationCnt(1);
         memberRepository.save(member);
 
         return modelMapper.map(enter, EnterRes.class);
