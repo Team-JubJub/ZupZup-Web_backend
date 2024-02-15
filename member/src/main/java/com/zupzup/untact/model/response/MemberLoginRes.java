@@ -8,5 +8,5 @@ public class MemberLoginRes {
     private String loginId;
     private String token;
     private Long id; // 사용자 unique Id
-    private int cnt;
+    private int applicationCnt;
 }

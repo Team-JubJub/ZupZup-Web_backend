@@ -45,20 +45,20 @@ public class EnterServiceImpl extends BaseServiceImpl<Enter, EnterReq, EnterRes,
     public EnterRes save(EnterReq rq) {
 
         // 멤버 찾지 못하면 에러 발생
-        Member m = memberRepository.findById(rq.getId())
+        Member member = memberRepository.findById(rq.getId())
                 .orElseThrow(() -> new MemberException(NOT_FOUND_MEMBER));
 
         // 입점 신청 횟수 확인
-        if (m.getCnt() == 1) {
+        if (member.getApplicationCnt() == 1) {
 
             throw new StoreException(CANNOT_APPLY_TWICE);
         }
 
         // 사장님과 입점 신청은 1:N 관계
         // 입점 신청에서 받은 내용들 저장 + 문의 상태는 NEW 로 설정 (관리자용)
-        Enter e = Enter.builder()
+        Enter enter = Enter.builder()
                 .created_at(timeSetter())
-                .member(m)
+                .member(member)
                 .name(rq.getName())
                 .phoneNum(rq.getPhoneNum())
                 .storeNum("")
@@ -70,13 +70,13 @@ public class EnterServiceImpl extends BaseServiceImpl<Enter, EnterReq, EnterRes,
                 .state(EnterState.NEW)
                 .build();
 
-        enterRepository.save(e);
+        enterRepository.save(enter);
 
         // 신청 횟수 한 번 올리기
-        m.setCnt(1);
-        memberRepository.save(m);
+        member.setApplicationCnt(1);
+        memberRepository.save(member);
 
-        return modelMapper.map(e, EnterRes.class);
+        return modelMapper.map(enter, EnterRes.class);
     }
 
     /**
