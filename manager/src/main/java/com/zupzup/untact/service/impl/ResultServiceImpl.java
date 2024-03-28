@@ -27,6 +27,7 @@ import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import static com.zupzup.untact.exception.ManagerExceptionType.EMPTY_LIST;
 import static com.zupzup.untact.exception.enter.EnterExceptionType.*;
@@ -44,6 +45,18 @@ public class ResultServiceImpl implements ResultService {
     private final StoreRepository storeRepository;
     private final SellerRepository sellerRepository;
 
+    // generic
+
+    /**
+     * S를 T로 변환하여 전달
+     */
+    private <S, T> List<T> entireList(List<S> sourceList, Class<T> targetClass) {
+
+        return sourceList.stream()
+                .map(entity -> modelMapper.map(entity, targetClass))
+                .collect(Collectors.toList());
+    }
+
     // --------- NEW ---------
 
     /**
@@ -52,21 +65,9 @@ public class ResultServiceImpl implements ResultService {
     @Override
     public List<EnterListRes> enterList() {
 
-        List<Enter> eList = enterRepository.findByState(EnterState.NEW);
+        List<Enter> enterList = enterRepository.findByState(EnterState.NEW);;
 
-        // list 길이가 0일 빈 리스트값 전달
-        if (eList.size() == 0) {
-            return new ArrayList<>();
-        }
-
-        List<EnterListRes> eListRes = new ArrayList<>();
-
-        for (Enter e : eList) {
-
-            eListRes.add(modelMapper.map(e, EnterListRes.class));
-        }
-
-        return eListRes;
+        return entireList(enterList, EnterListRes.class);
     }
 
     /**
@@ -181,21 +182,9 @@ public class ResultServiceImpl implements ResultService {
     @Override
     public List<EnterListRes> searchEnterList(String keyword) {
 
-        List<Enter> eList = enterRepository.searchByStoreNameContainingAndState(keyword, EnterState.NEW);
+        List<Enter> enterList = enterRepository.searchByStoreNameContainingAndState(keyword, EnterState.NEW);
 
-        // 비어 있을 경우 빈 리스트 전달
-        if (eList.isEmpty()) {
-            return new ArrayList<>();
-        }
-
-        List<EnterListRes> eListRes = new ArrayList<>();
-
-        for (Enter e : eList) {
-
-            eListRes.add(modelMapper.map(e, EnterListRes.class));
-        }
-
-        return eListRes;
+        return entireList(enterList, EnterListRes.class);
     }
 
     // --------- WAIT ---------
@@ -206,21 +195,9 @@ public class ResultServiceImpl implements ResultService {
     @Override
     public List<WaitStoreListRes> waitStoreList() {
 
-        List<Store> sList = storeRepository.findByEnterState(EnterState.WAIT);
+        List<Store> WaitStoreList = storeRepository.findByEnterState(EnterState.WAIT);
 
-        // list 사이즈가 0일 경우 빈 배열 리턴
-        if (sList.size() == 0) {
-            return new ArrayList<>();
-        }
-
-        List<WaitStoreListRes> wsList = new ArrayList<>();
-
-        for (Store s : sList) {
-
-            wsList.add(modelMapper.map(s, WaitStoreListRes.class));
-        }
-
-        return wsList;
+        return entireList(WaitStoreList, WaitStoreListRes.class);
     }
 
     /**
@@ -320,22 +297,9 @@ public class ResultServiceImpl implements ResultService {
     @Override
     public List<WaitStoreListRes> searchWaitStoreList(String keyword) {
 
-        List<Store> sList = storeRepository.searchByStoreNameContainingAndEnterState(keyword, EnterState.WAIT);
+        List<Store> waitStoreList = storeRepository.searchByStoreNameContainingAndEnterState(keyword, EnterState.WAIT);
 
-        // 리스트가 비어있을 경우
-        if (sList.isEmpty()) {
-
-            return new ArrayList<>();
-        }
-
-        List<WaitStoreListRes> wsList = new ArrayList<>();
-
-        for (Store s : sList) {
-
-            wsList.add(modelMapper.map(s, WaitStoreListRes.class));
-        }
-
-        return wsList;
+        return entireList(waitStoreList, WaitStoreListRes.class);
     }
 
     // --------- CONFIRM ---------
@@ -346,21 +310,9 @@ public class ResultServiceImpl implements ResultService {
     @Override
     public List<ConfirmStoreListRes> confirmStoreList() {
 
-        List<Store> sList = storeRepository.findByEnterState(EnterState.CONFIRM);
+        List<Store> confirmStoreList = storeRepository.findByEnterState(EnterState.CONFIRM);
 
-        // list 사이즈가 0일 경우 빈 배열 리턴
-        if (sList.size() == 0) {
-            return new ArrayList<>();
-        }
-
-        List<ConfirmStoreListRes> csList = new ArrayList<>();
-
-        for (Store s : sList) {
-
-            csList.add(modelMapper.map(s, ConfirmStoreListRes.class));
-        }
-
-        return csList;
+        return entireList(confirmStoreList, ConfirmStoreListRes.class);
     }
 
     /**
@@ -424,22 +376,9 @@ public class ResultServiceImpl implements ResultService {
     @Override
     public List<ConfirmStoreListRes> searchConfirmStoreList(String keyword) {
 
-        List<Store> sList = storeRepository.searchByStoreNameContainingAndEnterState(keyword, EnterState.CONFIRM);
+        List<Store> confirmStoreList = storeRepository.searchByStoreNameContainingAndEnterState(keyword, EnterState.CONFIRM);
 
-        // 리스트가 비어있을 경우
-        if (sList.isEmpty()) {
-
-            return new ArrayList<>();
-        }
-
-        List<ConfirmStoreListRes> csList = new ArrayList<>();
-
-        for (Store s : sList) {
-
-            csList.add(modelMapper.map(s, ConfirmStoreListRes.class));
-        }
-
-        return csList;
+        return entireList(confirmStoreList, ConfirmStoreListRes.class);
     }
 
     //-----------------------------

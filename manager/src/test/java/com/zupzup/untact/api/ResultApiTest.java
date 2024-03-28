@@ -616,13 +616,11 @@
 //    }
 //
 //    @Test
-//    @DisplayName("노출 대기 매장 전체 보기 - 실패")
-//    public void fail_wait_list() throws Exception {
+//    @DisplayName("노출 대기 매장 전체 보기 - 데이터 없음")
+//    public void no_data_wait_list() throws Exception {
 //
 //        // given
-//        TestExceptionRes rs = new TestExceptionRes(802, "관련된 매장 정보를 찾을 수 없습니다.");
-//
-//        when(resultService.waitStoreList()).thenThrow(new ManagerException(EMPTY_LIST));
+//        when(resultService.waitStoreList()).thenReturn(new ArrayList<>());
 //
 //        // when
 //        mockMvc.perform(
@@ -631,17 +629,15 @@
 //                )
 //                // then
 //                .andExpect(status().isOk())
-//                .andExpect(jsonPath("errCode").value(802))
-//                .andExpect(jsonPath("errMsg").value("관련된 매장 정보를 찾을 수 없습니다."))
+//                .andExpect(content().string("[]"))
 //                .andDo(document(
-//                        "fail-wait-list",
+//                        "none-data-wait-list",
 //                        preprocessRequest(prettyPrint()),
 //                        preprocessResponse(prettyPrint()),
 //                        responseFields(
-//                                fieldWithPath("errCode").description("에러 코드"),
-//                                fieldWithPath("errMsg").description("에러 메세지")
-//                        )
-//                ));
+//                                fieldWithPath("[]").description("빈 리스트 전달")
+//                        ))
+//                );
 //    }
 //
 //    @Test
@@ -1100,6 +1096,31 @@
 //                                fieldWithPath("[].sellerName").type(JsonFieldType.STRING).description("판매자 이름"),
 //                                fieldWithPath("[].storeName").type(JsonFieldType.STRING).description("가게 이름"),
 //                                fieldWithPath("[].confirmStatusTimestamp").type(JsonFieldType.STRING).description("변경된 시간")
+//                        ))
+//                );
+//    }
+//
+//    @Test
+//    @DisplayName("노출 승인 매장 전체보기 - 데이터 없음")
+//    public void none_data_confirm_list() throws Exception {
+//
+//        // given
+//        when(resultService.confirmStoreList()).thenReturn(new ArrayList<>());
+//
+//        // when
+//        mockMvc.perform(
+//                        get("/confirm")
+//                                .header("Authorization", "Bearer " + bearerToken)
+//                )
+//                // then
+//                .andExpect(status().isOk())
+//                .andExpect(content().string("[]"))
+//                .andDo(document(
+//                        "none-data-confirm-list",
+//                        preprocessRequest(prettyPrint()),
+//                        preprocessResponse(prettyPrint()),
+//                        responseFields(
+//                                fieldWithPath("[]").description("빈 리스트 전달")
 //                        ))
 //                );
 //    }
