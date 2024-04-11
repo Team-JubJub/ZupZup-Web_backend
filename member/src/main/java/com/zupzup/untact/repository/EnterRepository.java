@@ -1,6 +1,6 @@
 package com.zupzup.untact.repository;
 
-import com.zupzup.untact.domain.enums.EnterState;
+import com.zupzup.untact.model.domain.enums.EnterState;
 import com.zupzup.untact.model.Enter;
 import com.zupzup.untact.model.Member;
 import org.springframework.data.jdbc.repository.query.Query;

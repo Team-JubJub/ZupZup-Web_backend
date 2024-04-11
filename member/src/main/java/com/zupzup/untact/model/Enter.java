@@ -1,6 +1,6 @@
 package com.zupzup.untact.model;
 
-import com.zupzup.untact.domain.enums.EnterState;
+import com.zupzup.untact.model.domain.enums.EnterState;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

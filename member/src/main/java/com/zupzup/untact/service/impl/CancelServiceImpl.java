@@ -1,8 +1,8 @@
 package com.zupzup.untact.service.impl;
 
-import com.zupzup.untact.domain.auth.seller.Seller;
-import com.zupzup.untact.domain.enums.EnterState;
-import com.zupzup.untact.domain.store.Store;
+import com.zupzup.untact.model.domain.auth.seller.Seller;
+import com.zupzup.untact.model.domain.enums.EnterState;
+import com.zupzup.untact.model.domain.store.Store;
 import com.zupzup.untact.exception.member.MemberException;
 import com.zupzup.untact.exception.store.StoreException;
 import com.zupzup.untact.repository.SellerRepository;
