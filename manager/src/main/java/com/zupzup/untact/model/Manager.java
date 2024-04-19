@@ -28,9 +28,9 @@ public class Manager extends BaseEntity {
     @Column(nullable = false)
     private String loginPwd;
 
-//    @ElementCollection(fetch = FetchType.EAGER)
-//    @Getter
-//    private List<String> roles = new ArrayList<>();
+//    @Column(nullable = false)
+//    @Enumerated(EnumType.STRING)
+//    private Role role;  // 관리자 권한
     @Builder.Default
     @OneToMany(mappedBy = "manager", fetch = FetchType.EAGER, cascade = CascadeType.ALL)
     private List<ManagerAuthority> managerRoles = new ArrayList<>();

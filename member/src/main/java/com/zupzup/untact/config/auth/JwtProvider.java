@@ -1,9 +1,11 @@
 package com.zupzup.untact.config.auth;
 
-import com.zupzup.untact.domain.auth.Role;
 import com.zupzup.untact.model.auth.Authority;
 import com.zupzup.untact.service.auth.JpaUserDetailService;
-import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
+import io.jsonwebtoken.Jwts;
+import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
 import jakarta.servlet.http.HttpServletRequest;

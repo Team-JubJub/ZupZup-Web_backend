@@ -1,7 +1,7 @@
 package com.zupzup.untact.service.impl;
 
-import com.zupzup.untact.domain.auth.Role;
-import com.zupzup.untact.domain.auth.seller.Seller;
+import com.zupzup.untact.model.domain.auth.Role;
+import com.zupzup.untact.model.domain.auth.seller.Seller;
 import com.zupzup.untact.exception.member.MemberException;
 import com.zupzup.untact.model.Member;
 import com.zupzup.untact.model.auth.Authority;
@@ -104,7 +104,7 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, MemberReq, Member
 
         sellerRepository.save(seller);
 
-        seller.setSellerId(seller.getSellerId());
+        seller.setId(seller.getId());
         memberRepository.save(member);
 
         // 저장후 response 형식에 맞춰 값 반환

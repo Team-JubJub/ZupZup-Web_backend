@@ -1,9 +1,9 @@
 package com.zupzup.untact.service.impl;
 
-import com.zupzup.untact.domain.auth.seller.Seller;
-import com.zupzup.untact.domain.enums.EnterState;
-import com.zupzup.untact.domain.enums.StoreCategory;
-import com.zupzup.untact.domain.store.Store;
+import com.zupzup.untact.model.domain.auth.seller.Seller;
+import com.zupzup.untact.model.domain.enums.EnterState;
+import com.zupzup.untact.model.domain.enums.StoreCategory;
+import com.zupzup.untact.model.domain.store.Store;
 import com.zupzup.untact.exception.ManagerException;
 import com.zupzup.untact.exception.enter.EnterException;
 import com.zupzup.untact.exception.member.MemberException;
@@ -112,7 +112,7 @@ public class ResultServiceImpl implements ResultService {
 
         // Store 엔티티로 정보 이전 및 저장
         // "" 값은 null 방지용 값으로 전달
-        Store s = Store.StoreBuilder()
+        Store s = Store.builder()
                 .sellerId(e.getMember().getSellerId())
                 .storeName(e.getStoreName())
                 .storeImageUrl("")

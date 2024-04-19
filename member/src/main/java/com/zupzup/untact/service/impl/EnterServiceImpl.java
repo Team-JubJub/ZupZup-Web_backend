@@ -1,17 +1,16 @@
 package com.zupzup.untact.service.impl;
 
-import com.zupzup.untact.domain.enums.EnterState;
 import com.zupzup.untact.exception.member.MemberException;
 import com.zupzup.untact.exception.store.StoreException;
 import com.zupzup.untact.model.Enter;
 import com.zupzup.untact.model.Member;
+import com.zupzup.untact.model.domain.enums.EnterState;
 import com.zupzup.untact.model.request.EnterReq;
 import com.zupzup.untact.model.response.EnterRes;
 import com.zupzup.untact.repository.EnterRepository;
 import com.zupzup.untact.repository.MemberRepository;
 import com.zupzup.untact.service.BaseServiceImpl;
 import com.zupzup.untact.service.EnterService;
-import org.apache.catalina.Store;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
