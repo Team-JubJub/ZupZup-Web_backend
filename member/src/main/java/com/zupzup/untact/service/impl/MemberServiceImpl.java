@@ -74,7 +74,7 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, MemberReq, Member
 
         // 패스워드 인코딩 후 저장
         Member member = Member.builder()
-                .created_at(timeSetter())
+                .createdAt(timeSetter())
                 .name(rq.getName())
                 .phoneNum(rq.getPhoneNum())
                 .ad(rq.getAd())
@@ -120,8 +120,7 @@ public class MemberServiceImpl extends BaseServiceImpl<Member, MemberReq, Member
 
         ZonedDateTime nowTime = ZonedDateTime.now(ZoneId.of("Asia/Seoul"));
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        String formattedOrderTime = nowTime.format(formatter);
 
-        return formattedOrderTime;
+        return nowTime.format(formatter);
     }
 }

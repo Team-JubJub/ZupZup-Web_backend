@@ -43,7 +43,7 @@ public class ManagerServiceImpl extends BaseServiceImpl<Manager, ManagerReq, Man
 
         // 패스워드 인코딩 후 저장
         Manager m = Manager.builder()
-                .created_at(timeSetter())
+                .createdAt(timeSetter())
                 .name(rq.getName())
                 .loginId(rq.getLoginId())
                 .loginPwd(passwordEncoder.encode(rq.getLoginPwd()))
@@ -85,8 +85,7 @@ public class ManagerServiceImpl extends BaseServiceImpl<Manager, ManagerReq, Man
 
         ZonedDateTime nowTime = ZonedDateTime.now(ZoneId.of("Asia/Seoul"));
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        String formattedOrderTime = nowTime.format(formatter);
 
-        return formattedOrderTime;
+        return nowTime.format(formatter);
     }
 }

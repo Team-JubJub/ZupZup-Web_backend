@@ -56,7 +56,7 @@ public class EnterServiceImpl extends BaseServiceImpl<Enter, EnterReq, EnterRes,
         // 사장님과 입점 신청은 1:N 관계
         // 입점 신청에서 받은 내용들 저장 + 문의 상태는 NEW 로 설정 (관리자용)
         Enter enter = Enter.builder()
-                .created_at(timeSetter())
+                .createdAt(timeSetter())
                 .member(member)
                 .name(rq.getName())
                 .phoneNum(rq.getPhoneNum())
@@ -85,8 +85,7 @@ public class EnterServiceImpl extends BaseServiceImpl<Enter, EnterReq, EnterRes,
 
         ZonedDateTime nowTime = ZonedDateTime.now(ZoneId.of("Asia/Seoul"));
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        String formattedOrderTime = nowTime.format(formatter);
 
-        return formattedOrderTime;
+        return nowTime.format(formatter);
     }
 }
